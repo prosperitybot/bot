@@ -12,14 +12,15 @@
 name: "CodeQL"
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ main ]
+  # the 1st condition
+  workflow_run:
+    workflows: ["Linter"]
+    types:
+      - completed
 
 jobs:
   analyze:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Analyze
     runs-on: ubuntu-latest
     permissions:

@@ -17,4 +17,4 @@ jobs:
         run: yarn
 
       - name: Run ESLint
-        run: eslint .
+        run: yarn run eslint .

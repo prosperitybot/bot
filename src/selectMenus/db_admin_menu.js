@@ -26,11 +26,15 @@ module.exports = {
 						guild.members.cache.forEach(async member => {
 							const u = await User.findByPk(member.id);
 							if (u == null) {
-								await User.upsert({ id: member.id });
+								await User.upsert({
+									id: member.id,
+									username: member.user.username,
+									discriminator: member.user.discriminator,
+								});
 								await GuildUser.create({
 									userId: member.id,
 									guildId: guild.id,
-									level: 1,
+									level: 0,
 									xp: 0,
 								});
 								console.log(`Added user #${member.id} (${member.displayName})`);

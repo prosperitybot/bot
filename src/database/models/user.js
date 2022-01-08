@@ -4,5 +4,13 @@ module.exports = (sequelize, type) => {
 			type: type.BIGINT,
 			primaryKey: true,
 		},
+		username: {
+			type: type.STRING,
+			allowNull: false,
+		},
+		discriminator: {
+			type: type.STRING,
+			allowNull: false,
+		},
 	});
 };

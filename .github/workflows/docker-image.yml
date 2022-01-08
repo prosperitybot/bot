@@ -11,7 +11,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  mcyt-deployment:
+  aequum-deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

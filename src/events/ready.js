@@ -3,7 +3,7 @@ module.exports = {
 	once: true,
 	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-		const command = await client.guilds.cache.get('700059392770441216')?.commands.fetch('929133013718159370');
+		const command = await client.guilds.cache.get('700059392770441216')?.commands.fetch('929303455779139604');
 		const permissions = [
 			{
 				id: '126429064218017802',

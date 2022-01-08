@@ -1,0 +1,6 @@
+# Set to true to add reviewers to pull requests
+addReviewers: true
+
+# A list of team reviewers to be added to pull requests (GitHub team slug)
+reviewers:
+  - /approvers

@@ -5,7 +5,7 @@ module.exports = {
 		switch (interaction.values[0]) {
 		case 'db_run_migrations':
 			migrate();
-			interaction.reply({ content: 'Migrations Ran Successfully' });
+			interaction.reply({ content: 'Migrations Ran Successfully', ephemeral: true });
 			break;
 		case 'db_run_migrations_force':
 			migrate(true);
@@ -38,7 +38,7 @@ module.exports = {
 						});
 					}
 				});
-				await interaction.editReply({ content: 'Database Seeded' });
+				await interaction.editReply({ content: 'Database Seeded', ephemeral: true });
 			}
 			catch (e) {
 				console.error(e);

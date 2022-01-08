@@ -4,19 +4,33 @@ const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('db')
-		.setDescription('Database related changes')
+		.setName('admin')
+		.setDescription('Admin bot settings')
 		.setDefaultPermission(false),
 	async execute(interaction) {
-		const row = new MessageActionRow()
+		const adminRow = new MessageActionRow()
+			.addComponents(
+				new MessageSelectMenu()
+					.setCustomId('admin_menu')
+					.setPlaceholder('Admin Menu')
+					.addOptions([
+						{
+							label: 'Deploy Commands',
+							description: 'This will deploy all of the commands in case anything has changed',
+							value: 'admin_deploy_commands',
+							emoji: '💾',
+						},
+					]),
+			);
+		const databaseAdminRow = new MessageActionRow()
 			.addComponents(
 				new MessageSelectMenu()
 					.setCustomId('db_admin_menu')
-					.setPlaceholder('Select an option...')
+					.setPlaceholder('Database Menu')
 					.addOptions([
 						{
 							label: 'Run Migrations',
-							description: 'This runs all migrations / syncs on teh database',
+							description: 'This runs all migrations / syncs on the database',
 							value: 'db_run_migrations',
 							emoji: '📜',
 						},
@@ -37,7 +51,7 @@ module.exports = {
 
 		await interaction.reply({
 			content: 'Please select an action from the below...',
-			components: [row],
+			components: [adminRow, databaseAdminRow],
 			ephemeral: true,
 		});
 	},

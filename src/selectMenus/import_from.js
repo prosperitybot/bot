@@ -39,45 +39,47 @@ module.exports = {
 			let currentPage = 0;
 			let userCount = 0;
 			while (stillSearching) {
-				const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
-				if (currentPage == 0) {
-					const roleRewards = data.role_rewards;
-					roleRewards.forEach(async role => {
-						await LevelRole.create({
-							id: role.role.id,
-							level: role.rank,
-							guildId: interaction.guild.id,
-						});
-					});
-				}
-				if (data.players.length == 0) {
-					stillSearching = false;
-				}
-				else {
-					currentPage += 1;
-					userCount += data.players.length;
-					data.players.forEach(async user => {
-						await User.upsert({
-							id: user.id,
-							username: user.username,
-							discriminator: user.discriminator,
-						});
-						let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
-						if (gu == null) {
-							gu = await GuildUser.create({
-								userId: user.id,
+				setTimeout(async () => {
+					const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
+					if (currentPage == 0) {
+						const roleRewards = data.role_rewards;
+						roleRewards.forEach(async role => {
+							await LevelRole.create({
+								id: role.role.id,
+								level: role.rank,
 								guildId: interaction.guild.id,
-								level: user.level,
-								xp: getXpNeeded(user.level),
 							});
-						}
-						else {
-							gu.level = user.level;
-							gu.xp = getXpNeeded(user.level);
-							await gu.save();
-						}
-					});
-				}
+						});
+					}
+					if (data.players.length == 0) {
+						stillSearching = false;
+					}
+					else {
+						currentPage += 1;
+						userCount += data.players.length;
+						data.players.forEach(async user => {
+							await User.upsert({
+								id: user.id,
+								username: user.username,
+								discriminator: user.discriminator,
+							});
+							let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
+							if (gu == null) {
+								gu = await GuildUser.create({
+									userId: user.id,
+									guildId: interaction.guild.id,
+									level: user.level,
+									xp: getXpNeeded(user.level),
+								});
+							}
+							else {
+								gu.level = user.level;
+								gu.xp = getXpNeeded(user.level);
+								await gu.save();
+							}
+						});
+					}
+				}, 2000);
 			}
 			await editReply(interaction, `You have successfully migrated **${userCount}** users.`, true);
 			break;

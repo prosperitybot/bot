@@ -31,7 +31,9 @@ module.exports = {
 				if (newLevelRole != null) {
 					message.member.roles.add(newLevelRole.id.toString());
 					const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: gu.level }, guildId: message.guild.id } });
-					message.member.roles.remove(oldLevelRole.id.toString());
+					if (oldLevelRole != null) {
+						message.member.roles.remove(oldLevelRole.id.toString());
+					}
 				}
 				const guild = await Guild.findByPk(message.guild.id);
 				switch (guild.notificationType) {

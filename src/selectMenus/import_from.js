@@ -41,7 +41,7 @@ module.exports = {
 			while (stillSearching) {
 				const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
 				if (currentPage == 0) {
-					const roleRewards = data.rolw_rewards;
+					const roleRewards = data.role_rewards;
 					roleRewards.forEach(async role => {
 						await LevelRole.create({
 							id: role.role.id,

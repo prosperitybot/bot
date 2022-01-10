@@ -6,29 +6,24 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ignoredchannels')
 		.setDescription('Adds a channel that is ignored from gaining levels')
-		.addSubcommandGroup(subCommandGroup =>
-			subCommandGroup
-				.setName('commands')
-				.setDescription('Configuration options for ignored channels')
-				.addSubcommand(subCommand =>
-					subCommand
-						.setName('add')
-						.setDescription('Adds an ignored channel')
-						.addChannelOption(channel =>
-							channel
-								.setName('channel')
-								.setDescription('The channel to ignore'),
-						),
-				)
-				.addSubcommand(subCommand =>
-					subCommand
-						.setName('remove')
-						.setDescription('Removes an ignored channel')
-						.addChannelOption(channel =>
-							channel
-								.setName('channel')
-								.setDescription('The channel to remove from the ignored list'),
-						),
+		.addSubcommand(subCommand =>
+			subCommand
+				.setName('add')
+				.setDescription('Adds an ignored channel')
+				.addChannelOption(channel =>
+					channel
+						.setName('channel')
+						.setDescription('The channel to ignore'),
+				),
+		)
+		.addSubcommand(subCommand =>
+			subCommand
+				.setName('remove')
+				.setDescription('Removes an ignored channel')
+				.addChannelOption(channel =>
+					channel
+						.setName('channel')
+						.setDescription('The channel to remove from the ignored list'),
 				),
 		),
 	async execute(interaction) {

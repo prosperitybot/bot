@@ -13,7 +13,7 @@ module.exports = () => {
 
 	const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-	rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
+	rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands })
 		.then((data) => {
 			console.log('Successfully registered application commands.');
 			console.log(data);

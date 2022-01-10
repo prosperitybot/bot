@@ -1,7 +1,7 @@
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { editReply, reply } = require('../utils/messages');
 const axios = require('axios').default;
-const { User, GuildUser } = require('../database/database');
+const { User, GuildUser, LevelRole } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 
 module.exports = {
@@ -40,6 +40,16 @@ module.exports = {
 			let userCount = 0;
 			while (stillSearching) {
 				const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
+				if (currentPage == 0) {
+					const roleRewards = data.rolw_rewards;
+					roleRewards.forEach(async role => {
+						await LevelRole.create({
+							id: role.role.id,
+							level: role.rank,
+							guildId: interaction.guild.id,
+						})
+					})
+				}
 				if (data.players.length == 0) {
 					stillSearching = false;
 				}
@@ -66,7 +76,7 @@ module.exports = {
 							gu.xp = getXpNeeded(user.level);
 							await gu.save();
 						}
-					})
+					});
 				}
 			}
 			await editReply(interaction, `You have successfully migrated **${userCount}** users.`, true);

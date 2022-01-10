@@ -47,8 +47,8 @@ module.exports = {
 							id: role.role.id,
 							level: role.rank,
 							guildId: interaction.guild.id,
-						})
-					})
+						});
+					});
 				}
 				if (data.players.length == 0) {
 					stillSearching = false;

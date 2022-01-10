@@ -16,7 +16,8 @@ module.exports = () => {
 	rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands })
 		.then((data) => {
 			console.log('Successfully registered application commands.');
-			console.log(data);
+			const cmds = data.map(c => ({ id: c.id, name: c.name }));
+			console.log(cmds);
 		})
 		.catch(console.error);
 };

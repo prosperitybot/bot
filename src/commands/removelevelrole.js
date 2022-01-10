@@ -24,7 +24,7 @@ module.exports = {
 			}
 
 			await reply(interaction, `${role} will no longer be granted at level **Level ${levelRole.level}**`, false);
-			levelRole.destroy();
+			await levelRole.destroy();
 
 			interaction.guild.roles.cache.get(role.id).members.forEach(m => {
 				m.roles.remove(role);

@@ -3,6 +3,7 @@ const UserModel = require('./models/user.js');
 const GuildModel = require('./models/guild.js');
 const GuildUserModel = require('./models/guilduser.js');
 const LevelRoleModel = require('./models/levelrole.js');
+const IgnoredChannelModel = require('./models/ignoredchannel.js');
 
 // const { Umzug, SequelizeStorage } = require('umzug');
 
@@ -16,6 +17,7 @@ const User = UserModel(sequelize, Sequelize);
 const Guild = GuildModel(sequelize, Sequelize);
 const GuildUser = GuildUserModel(sequelize, Sequelize);
 const LevelRole = LevelRoleModel(sequelize, Sequelize);
+const IgnoredChannel = IgnoredChannelModel(sequelize, Sequelize);
 
 User.belongsToMany(Guild, { through: GuildUser });
 Guild.belongsToMany(User, { through: GuildUser });
@@ -27,11 +29,15 @@ GuildUser.belongsTo(Guild);
 LevelRole.belongsTo(Guild);
 Guild.hasMany(LevelRole);
 
+IgnoredChannel.belongsTo(Guild);
+Guild.hasMany(IgnoredChannel);
+
 module.exports = {
 	User,
 	Guild,
 	GuildUser,
 	LevelRole,
+	IgnoredChannel,
 	sequelize,
 	migrate: (force = false) => {
 		sequelize.sync({ force: force })

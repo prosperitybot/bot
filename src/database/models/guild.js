@@ -22,5 +22,10 @@ module.exports = (sequelize, type) => {
 			type: type.BIGINT,
 			allowNull: true,
 		},
+		xpRate: {
+			type: type.INTEGER,
+			allowNull: false,
+			defaultValue: 1,
+		},
 	});
 };

@@ -1,14 +1,14 @@
 module.exports = (sequelize, type) => {
-	return sequelize.define('guilduser', {
+	return sequelize.define('guild_users', {
 		level: {
 			type: type.INTEGER,
 			allowNull: false,
-			default: 1,
+			defaultValue: 0,
 		},
 		xp: {
 			type: type.INTEGER,
 			allowNull: false,
-			default: 0,
+			defaultValue: 0,
 		},
 	});
 };

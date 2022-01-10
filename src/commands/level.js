@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { GuildUser } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
+const { reply } = require('../utils/messages');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,16 +15,16 @@ module.exports = {
 	async execute(interaction) {
 		if (interaction.options.getUser('user') == null) {
 			const guildUser = await GuildUser.findOne({ where: { userId: interaction.member.id, guildId: interaction.guild.id } });
-			await interaction.reply(`Your level is currently: ${guildUser.level}\nYou need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`);
+			await reply(interaction, `Your level is currently: ${guildUser.level}\nYou need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
 		}
 		else {
 			const user = interaction.options.getUser('user');
 			const guildUser = await GuildUser.findOne({ where: { userId: interaction.options.getUser('user').id, guildId: interaction.guild.id } });
 			if (guildUser == null) {
-				await interaction.reply(`${user.username}#${user.discriminator} has never talked before`);
+				await reply(interaction, `${user.username}#${user.discriminator} has never talked before`, true);
 			}
 			else {
-				await interaction.reply(`${user.username}#${user.discriminator}'s level is currently: ${guildUser.level}\nThey need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`);
+				await reply(interaction, `${user.username}#${user.discriminator}'s level is currently: ${guildUser.level}\nThey need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
 			}
 		}
 	},

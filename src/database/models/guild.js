@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-	return sequelize.define('guild', {
+	return sequelize.define('guilds', {
 		id: {
 			type: type.BIGINT,
 			primaryKey: true,
@@ -11,7 +11,16 @@ module.exports = (sequelize, type) => {
 		},
 		premium: {
 			type: type.BOOLEAN,
-			default: false,
+			defaultValue: false,
+		},
+		notificationType: {
+			type: type.STRING,
+			allowNull: false,
+			defaultValue: 'reply',
+		},
+		notificationChannel: {
+			type: type.BIGINT,
+			allowNull: true,
 		},
 	});
 };

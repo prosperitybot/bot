@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { GuildUser } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
+const { reply } = require('../utils/messages');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,7 +19,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-			await interaction.reply({ content: 'Access Denied', ephemeral: true });
+			await reply(interaction, 'Access Denied', true);
 			return;
 		}
 		try {
@@ -27,7 +28,7 @@ module.exports = {
 			const amount = interaction.options.getInteger('amount');
 
 			if (amount <= 0) {
-				await interaction.reply({ content: 'Levels to take must be a positive number', ephemeral: true });
+				await reply(interaction, 'Levels to take must be a positive number', true);
 				return;
 			}
 
@@ -35,7 +36,7 @@ module.exports = {
 			guildUser.xp = getXpNeeded(guildUser.level);
 
 			await guildUser.save();
-			await interaction.reply({ content: `Taken ${amount} level${amount > 1 ? 's' : ''} from ${user.username}#${user.discriminator}` });
+			await reply(interaction, `Taken ${amount} level${amount > 1 ? 's' : ''} from ${user.username}#${user.discriminator}`, false);
 		}
 		catch (e) {
 			console.error(e);

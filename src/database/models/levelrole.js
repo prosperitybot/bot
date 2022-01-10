@@ -1,15 +1,12 @@
 module.exports = (sequelize, type) => {
-	return sequelize.define('users', {
+	return sequelize.define('level_roles', {
 		id: {
 			type: type.BIGINT,
 			primaryKey: true,
-		},
-		username: {
-			type: type.STRING,
 			allowNull: false,
 		},
-		discriminator: {
-			type: type.STRING,
+		level: {
+			type: type.INTEGER,
 			allowNull: false,
 		},
 	});

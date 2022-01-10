@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-
+const { reply } = require('../utils/messages');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -8,6 +8,10 @@ module.exports = {
 		.setDescription('Admin bot settings')
 		.setDefaultPermission(false),
 	async execute(interaction) {
+		if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+			await reply(interaction, 'Access Denied', true);
+			return;
+		}
 		const adminRow = new MessageActionRow()
 			.addComponents(
 				new MessageSelectMenu()

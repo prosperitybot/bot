@@ -1,4 +1,4 @@
-FROM node:stretch-slim
+FROM node:alpine
 
 # Creates the directory for the bot
 RUN mkdir -p /usr/src/bot

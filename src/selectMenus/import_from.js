@@ -37,7 +37,7 @@ module.exports = {
 			// Run MEE6 Logic
 			let stillSearching = true;
 			let currentPage = 0;
-			let userList = [];
+			let userCount = 0;
 			while (stillSearching) {
 				const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
 				if (data.players.length == 0) {
@@ -45,32 +45,31 @@ module.exports = {
 				}
 				else {
 					currentPage += 1;
-					userList = userList.concat(userList, data.players);
+					userCount += data.players.length;
+					data.players.forEach(async user => {
+						await User.upsert({
+							id: user.id,
+							username: user.username,
+							discriminator: user.discriminator,
+						});
+						let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
+						if (gu == null) {
+							gu = await GuildUser.create({
+								userId: user.id,
+								guildId: interaction.guild.id,
+								level: user.level,
+								xp: getXpNeeded(user.level),
+							});
+						}
+						else {
+							gu.level = user.level;
+							gu.xp = getXpNeeded(user.level);
+							await gu.save();
+						}
+					})
 				}
 			}
-			await editReply(interaction, `Downloaded **${userList.length}** users to migrate, migrating now`, true);
-			userList.forEach(async user => {
-				await User.upsert({
-					id: user.id,
-					username: user.username,
-					discriminator: user.discriminator,
-				});
-				let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
-				if (gu == null) {
-					gu = await GuildUser.create({
-						userId: user.id,
-						guildId: interaction.guild.id,
-						level: user.level,
-						xp: getXpNeeded(user.level),
-					});
-				}
-				else {
-					gu.level = user.level;
-					gu.xp = getXpNeeded(user.level);
-					await gu.save();
-				}
-			});
-			await editReply(interaction, `You have successfully migrated **${userList.length}** users.`, true);
+			await editReply(interaction, `You have successfully migrated **${userCount}** users.`, true);
 			break;
 		}
 		case 'import_from-mee6-cancel':

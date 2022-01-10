@@ -8,6 +8,7 @@ module.exports = {
 			name: guild.name,
 			premium: false,
 		});
+		guild.client.user.setActivity(`${guild.client.guilds.cache.size} servers`, { type: 'WATCHING' });
 		console.log(`Joined a new guild with the name of '${guild.name} (${guild.id})'`);
 	},
 };

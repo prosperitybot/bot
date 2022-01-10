@@ -35,6 +35,7 @@ module.exports = {
 						message.member.roles.remove(oldLevelRole.id.toString());
 					}
 				}
+				await gu.save();
 				const guild = await Guild.findByPk(message.guild.id);
 				switch (guild.notificationType) {
 				case 'reply':
@@ -52,7 +53,9 @@ module.exports = {
 					break;
 				}
 			}
-			await gu.save();
+			else {
+				await gu.save();
+			}
 		}
 		catch (e) {
 			console.log(e);

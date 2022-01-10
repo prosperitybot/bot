@@ -40,7 +40,6 @@ module.exports = {
 			let userList = [];
 			while (stillSearching) {
 				const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
-				console.log(data);
 				if (data.players.length == 0) {
 					stillSearching = false;
 				}

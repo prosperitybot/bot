@@ -8,15 +8,13 @@ module.exports = {
 			deploy();
 		}
 		else {
-			const command = await client.application?.commands.fetch(process.env.ADMIN_COMMAND_ID);
-			const permissions = [
+			await client.guilds.cache.get('700059392770441216')?.commands.permissions.add({ command: process.env.ADMIN_COMMAND_ID, permissions: [
 				{
 					id: '126429064218017802',
 					type: 'USER',
 					permission: true,
 				},
-			];
-			await command.permissions.add({ permissions });
+			] });
 		}
 
 	},

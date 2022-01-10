@@ -9,6 +9,7 @@ module.exports = {
 		.addSubcommandGroup(subCommandGroup =>
 			subCommandGroup
 				.setName('commands')
+				.setDescription('Configuration options for ignored channels')
 				.addSubcommand(subCommand =>
 					subCommand
 						.setName('add')

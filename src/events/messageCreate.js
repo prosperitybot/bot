@@ -2,6 +2,7 @@ const { User, GuildUser, Guild, LevelRole, IgnoredChannel } = require('../databa
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply, send } = require('../utils/messages');
 const { Op, fn } = require('sequelize');
+const Sentry = require('@sentry/node');
 
 module.exports = {
 	name: 'messageCreate',
@@ -68,7 +69,7 @@ module.exports = {
 			}
 		}
 		catch (e) {
-			console.log(e);
+			Sentry.captureException(e);
 		}
 	},
 };

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { LevelRole } = require('../database/database');
 const { reply } = require('../utils/messages');
+const Sentry = require('@sentry/node');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -45,7 +46,8 @@ module.exports = {
 			await reply(interaction, `${role} will be granted at **Level ${level}**`, false);
 		}
 		catch (e) {
-			console.error(e);
+			const errorCode = Sentry.captureException(e);
+			await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
 		}
 	},
 };

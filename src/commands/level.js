@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { GuildUser } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply } = require('../utils/messages');
+const Sentry = require('@sentry/node');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,19 +14,25 @@ module.exports = {
 				.setRequired(false),
 		),
 	async execute(interaction) {
-		if (interaction.options.getUser('user') == null) {
-			const guildUser = await GuildUser.findOne({ where: { userId: interaction.member.id, guildId: interaction.guild.id } });
-			await reply(interaction, `Your level is currently: ${guildUser.level}\nYou need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
-		}
-		else {
-			const user = interaction.options.getUser('user');
-			const guildUser = await GuildUser.findOne({ where: { userId: interaction.options.getUser('user').id, guildId: interaction.guild.id } });
-			if (guildUser == null) {
-				await reply(interaction, `${user.username}#${user.discriminator} has never talked before`, true);
+		try {
+			if (interaction.options.getUser('user') == null) {
+				const guildUser = await GuildUser.findOne({ where: { userId: interaction.member.id, guildId: interaction.guild.id } });
+				await reply(interaction, `Your level is currently: ${guildUser.level}\nYou need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
 			}
 			else {
-				await reply(interaction, `${user.username}#${user.discriminator}'s level is currently: ${guildUser.level}\nThey need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
+				const user = interaction.options.getUser('user');
+				const guildUser = await GuildUser.findOne({ where: { userId: interaction.options.getUser('user').id, guildId: interaction.guild.id } });
+				if (guildUser == null) {
+					await reply(interaction, `${user.username}#${user.discriminator} has never talked before`, true);
+				}
+				else {
+					await reply(interaction, `${user.username}#${user.discriminator}'s level is currently: ${guildUser.level}\nThey need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
+				}
 			}
+		}
+		catch (e) {
+			const errorCode = Sentry.captureException(e);
+			await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
 		}
 	},
 };

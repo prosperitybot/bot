@@ -2,6 +2,14 @@ require('dotenv').config();
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { reply } = require('./utils/messages');
+const Sentry = require('@sentry/node');
+
+if (process.env.SENTRY_DSN != '') {
+	Sentry.init({
+		dsn: process.env.SENTRY_DSN,
+		tracesSampleRate: 1.0,
+	});
+}
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -52,8 +60,8 @@ client.on('interactionCreate', async interaction => {
 		return;
 	}
 	catch (error) {
-		console.error(error);
-		await reply(interaction, 'There was an error while executing this interaction!', true);
+		const errorCode = Sentry.captureException(error);
+		await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
 	}
 });
 

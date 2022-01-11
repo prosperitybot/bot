@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { LevelRole } = require('../database/database');
 const { reply } = require('../utils/messages');
+const Sentry = require('@sentry/node');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,11 +13,11 @@ module.exports = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-			await reply(interaction, 'Access Denied', true);
-			return;
-		}
 		try {
+			if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+				await reply(interaction, 'Access Denied', true);
+				return;
+			}
 			const role = interaction.options.getRole('role');
 			const levelRole = await LevelRole.findOne({ where: { id: role.id } });
 			if (levelRole == null) {
@@ -31,7 +32,8 @@ module.exports = {
 			});
 		}
 		catch (e) {
-			console.error(e);
+			const errorCode = Sentry.captureException(e);
+			await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
 		}
 	},
 };

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { IgnoredChannel } = require('../database/database');
 const { reply } = require('../utils/messages');
+const Sentry = require('@sentry/node');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,6 +26,11 @@ module.exports = {
 						.setName('channel')
 						.setDescription('The channel to remove from the ignored list'),
 				),
+		)
+		.addSubcommand(subCommand =>
+			subCommand
+				.setName('list')
+				.setDescription('Lists all of the ignored channels in the server'),
 		),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has('ADMINISTRATOR')) {
@@ -60,10 +66,15 @@ module.exports = {
 				await reply(interaction, `${channel} will not be ignored from gaining xp`, false);
 				break;
 			}
+			// case 'list': {
+			// 	const ignoredChannels = await IgnoredChannel.findAll({ where: { guildId: interaction.guild.id } });
+
+			// }
 			}
 		}
 		catch (e) {
-			console.error(e);
+			const errorCode = Sentry.captureException(e);
+			await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
 		}
 	},
 };

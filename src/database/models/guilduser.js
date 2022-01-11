@@ -10,5 +10,10 @@ module.exports = (sequelize, type) => {
 			allowNull: false,
 			defaultValue: 0,
 		},
+		lastXpMessageSent: {
+			type: type.DATE,
+			allowNull: false,
+			defaultValue: type.NOW,
+		},
 	});
 };

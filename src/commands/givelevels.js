@@ -27,6 +27,11 @@ module.exports = {
 			const guildUser = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
 			const amount = interaction.options.getInteger('amount');
 
+			if (guildUser == null) {
+				await reply(interaction, `${user} has not talked in chat since the bot was added`, true);
+				return;
+			}
+
 			if (amount <= 0) {
 				await reply(interaction, 'Levels to give must be a positive number', true);
 				return;

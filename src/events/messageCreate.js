@@ -1,7 +1,7 @@
 const { User, GuildUser, Guild, LevelRole, IgnoredChannel } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply, send } = require('../utils/messages');
-const { Op } = require('sequelize');
+const { Op, fn } = require('sequelize');
 
 module.exports = {
 	name: 'messageCreate',
@@ -21,44 +21,49 @@ module.exports = {
 					guildId: message.guild.id,
 					level: 0,
 					xp: 0,
+					lastXpMessageSent: fn('NOW'),
 				});
 			}
 
-			const ignoredChannel = await IgnoredChannel.findByPk(message.channel.id);
+			if ((gu.lastXpMessageSent - Date.now()) / 100 >= 60) {
 
-			if (ignoredChannel == null) {
+				const ignoredChannel = await IgnoredChannel.findByPk(message.channel.id);
 
-				gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
-				if (gu.xp > getXpNeeded(gu.level + 1)) {
-					gu.level += 1;
-					const newLevelRole = await LevelRole.findOne({ where: { level: gu.level, guildId: message.guild.id } });
-					if (newLevelRole != null) {
-						message.member.roles.add(newLevelRole.id.toString());
-						const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: gu.level }, guildId: message.guild.id } });
-						if (oldLevelRole != null) {
-							message.member.roles.remove(oldLevelRole.id.toString());
+				if (ignoredChannel == null) {
+
+					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
+					gu.lastXpMessageSent = fn('NOW');
+					if (gu.xp > getXpNeeded(gu.level + 1)) {
+						gu.level += 1;
+						const newLevelRole = await LevelRole.findOne({ where: { level: gu.level, guildId: message.guild.id } });
+						if (newLevelRole != null) {
+							message.member.roles.add(newLevelRole.id.toString());
+							const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: gu.level }, guildId: message.guild.id } });
+							if (oldLevelRole != null) {
+								message.member.roles.remove(oldLevelRole.id.toString());
+							}
+						}
+						await gu.save();
+						const guild = await Guild.findByPk(message.guild.id);
+						switch (guild.notificationType) {
+						case 'reply':
+							await reply(message, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);
+							break;
+						case 'channel': {
+							const channel = await message.guild.channels.fetch(guild.notificationChannel);
+							await send(channel, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);
+							break;
+						}
+						case 'dm':
+							message.author.createDM().then((c) => {
+								c.send(`Congratulations ${message.author} you have ranked up to level ${gu.level}`);
+							});
+							break;
 						}
 					}
-					await gu.save();
-					const guild = await Guild.findByPk(message.guild.id);
-					switch (guild.notificationType) {
-					case 'reply':
-						await reply(message, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);
-						break;
-					case 'channel': {
-						const channel = await message.guild.channels.fetch(guild.notificationChannel);
-						await send(channel, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);
-						break;
+					else {
+						await gu.save();
 					}
-					case 'dm':
-						message.author.createDM().then((c) => {
-							c.send(`Congratulations ${message.author} you have ranked up to level ${gu.level}`);
-						});
-						break;
-					}
-				}
-				else {
-					await gu.save();
 				}
 			}
 		}

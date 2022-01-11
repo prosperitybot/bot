@@ -25,7 +25,7 @@ module.exports = {
 				});
 			}
 
-			if ((gu.lastXpMessageSent - Date.now()) / 100 >= 60) {
+			if ((Date.now() - gu.lastXpMessageSent) / 1000 >= 60) {
 
 				const ignoredChannel = await IgnoredChannel.findByPk(message.channel.id);
 

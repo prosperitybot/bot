@@ -17,6 +17,10 @@ module.exports = {
 		try {
 			if (interaction.options.getUser('user') == null) {
 				const guildUser = await GuildUser.findOne({ where: { userId: interaction.member.id, guildId: interaction.guild.id } });
+				if (guildUser == null) {
+					await reply(interaction, 'You have not spoken where the bot can see you yet', true);
+					return;
+				}
 				await reply(interaction, `Your level is currently: ${guildUser.level}\nYou need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
 			}
 			else {
@@ -24,10 +28,9 @@ module.exports = {
 				const guildUser = await GuildUser.findOne({ where: { userId: interaction.options.getUser('user').id, guildId: interaction.guild.id } });
 				if (guildUser == null) {
 					await reply(interaction, `${user.username}#${user.discriminator} has never talked before`, true);
+					return;
 				}
-				else {
-					await reply(interaction, `${user.username}#${user.discriminator}'s level is currently: ${guildUser.level}\nThey need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
-				}
+				await reply(interaction, `${user.username}#${user.discriminator}'s level is currently: ${guildUser.level}\nThey need ${getXpNeeded(guildUser.level + 1) - guildUser.xp} xp to get to the next level`, false);
 			}
 		}
 		catch (e) {

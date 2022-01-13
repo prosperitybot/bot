@@ -38,10 +38,10 @@ module.exports = {
 			return;
 		}
 		try {
-			const channel = interaction.options.getChannel('channel');
-			const ignoredChannel = await IgnoredChannel.findOne({ where: { id: channel.id } });
 			switch (interaction.options.getSubcommand()) {
 			case 'add': {
+				const channel = interaction.options.getChannel('channel');
+				const ignoredChannel = await IgnoredChannel.findOne({ where: { id: channel.id } });
 				if (ignoredChannel != null) {
 					await reply(interaction, 'This channel is already being ignored.', true);
 					break;
@@ -56,6 +56,8 @@ module.exports = {
 				break;
 			}
 			case 'remove': {
+				const channel = interaction.options.getChannel('channel');
+				const ignoredChannel = await IgnoredChannel.findOne({ where: { id: channel.id } });
 				if (ignoredChannel == null) {
 					await reply(interaction, 'This channel is not being ignored.', true);
 					break;

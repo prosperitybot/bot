@@ -42,12 +42,12 @@ module.exports = {
 			return;
 		}
 		try {
-			const role = interaction.options.getRole('role');
-			const levelRole = await LevelRole.findOne({ where: { id: role.id } });
-			const level = interaction.options.getInteger('level');
 
 			switch (interaction.options.getSubcommand()) {
 			case 'add': {
+				const role = interaction.options.getRole('role');
+				const levelRole = await LevelRole.findOne({ where: { id: role.id } });
+				const level = interaction.options.getInteger('level');
 				if (levelRole != null) {
 					await reply(interaction, 'This role is already being used for a level.', true);
 					return;
@@ -68,6 +68,8 @@ module.exports = {
 				break;
 			}
 			case 'remove': {
+				const role = interaction.options.getRole('role');
+				const levelRole = await LevelRole.findOne({ where: { id: role.id } });
 				if (levelRole == null) {
 					await reply(interaction, 'This role is not being used for a level.', true);
 				}

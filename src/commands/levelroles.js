@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { LevelRole } = require('../database/database');
 const { reply } = require('../utils/messages');
+const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');
 
 module.exports = {
@@ -37,7 +38,7 @@ module.exports = {
 				.setDescription('Lists all of the level roles in the server'),
 		),
 	async execute(interaction) {
-		if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+		if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
 			await reply(interaction, 'Access Denied', true);
 			return;
 		}

@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { reply } = require('../utils/messages');
 const { Guild } = require('../database/database');
+const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
 				)),
 	async execute(interaction) {
 		try {
-			if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+			if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
 				await reply(interaction, 'Access Denied', true);
 				return;
 			}

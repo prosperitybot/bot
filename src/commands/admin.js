@@ -10,7 +10,7 @@ module.exports = {
 		.setDefaultPermission(false),
 	async execute(interaction) {
 		try {
-			if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+			if (!interaction.user.id == '126429064218017802') {
 				await reply(interaction, 'Access Denied', true);
 				return;
 			}

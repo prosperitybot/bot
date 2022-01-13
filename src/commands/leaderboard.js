@@ -26,7 +26,7 @@ module.exports = {
 			gu.sort((a, b) => (a.xp > b.xp) ? 1 : ((b.xp > a.xp) ? -1 : 0));
 			console.log(gu);
 			let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${Math.ceil(userCount / pageSize)})**: \n`;
-
+ 
 			gu.forEach(u => {
 				leaderboardMsg += `\n- <@${u.id}> (Level ${u.level})`;
 			});

@@ -15,12 +15,10 @@ module.exports = {
 	async execute(interaction) {
 		let offset = 0;
 		const pageSize = 10;
-		const page = interaction.options.getInteger('page');
+		const page = interaction.options.getInteger('page') ?? 1;
 		const userCount = await GuildUser.count({ where: { guildId: interaction.guild.id } });
 		try {
-			if (page != null) {
-				offset = pageSize * (page - 1);
-			}
+			offset = pageSize * (page - 1);
 
 			const guildUsers = await GuildUser.findAll({ where: { guildId: interaction.guild.id }, offset: offset, limit: pageSize });
 			let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${userCount / pageSize})**: \n`;

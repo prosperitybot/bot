@@ -19,7 +19,7 @@ module.exports = {
 							.addOptions([
 								{
 									label: 'Yes',
-									description: 'This will import all existing members levels from Mee6 into aequum',
+									description: 'This will import all existing members levels from Mee6 into Prosperity',
 									value: 'import_from-mee6-confirm',
 									emoji: '✅',
 								},
@@ -35,7 +35,7 @@ module.exports = {
 				break;
 			}
 			case 'import_from-mee6-confirm': {
-				await reply(interaction, 'Currently migrating users from Mee6 to aequum', true);
+				await reply(interaction, 'Currently migrating users from Mee6 to prosperity', true);
 				// Run MEE6 Logic
 				let stillSearching = true;
 				let currentPage = 0;

@@ -66,10 +66,15 @@ module.exports = {
 				await reply(interaction, `${channel} will not be ignored from gaining xp`, false);
 				break;
 			}
-			// case 'list': {
-			// 	const ignoredChannels = await IgnoredChannel.findAll({ where: { guildId: interaction.guild.id } });
+			case 'list': {
+				const ignoredChannels = await IgnoredChannel.findAll({ where: { guildId: interaction.guild.id } });
+				let listMsg = 'Ignored Channels: \n';
+				ignoredChannels.forEach(c => {
+					listMsg = listMsg + `\n- <#${c.id}>`;
+				});
 
-			// }
+				await reply(interaction, listMsg, false);
+			}
 			}
 		}
 		catch (e) {

@@ -18,5 +18,5 @@ module.exports = {
 function embed() {
 	return new MessageEmbed()
 		.setColor('#0099ff')
-		.setAuthor({ name: 'Aequum', url: 'https://aequum.info' });
+		.setAuthor({ name: 'Prosperity', url: 'https://prosperitybot.net' });
 }

@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  aequum-deployment:
+  prosperity-deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

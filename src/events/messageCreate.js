@@ -1,4 +1,4 @@
-const { User, GuildUser, Guild, LevelRole, IgnoredChannel } = require('../database/database');
+const { User, GuildUser, Guild, LevelRole, IgnoredChannel, IgnoredRole } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply, send } = require('../utils/messages');
 const { Op, fn } = require('sequelize');
@@ -29,8 +29,9 @@ module.exports = {
 			if ((Date.now() - gu.lastXpMessageSent) / 1000 >= 60) {
 
 				const ignoredChannel = await IgnoredChannel.findByPk(message.channel.id);
+				const ignoredRole = await IgnoredRole.findAll({ where: { id: message.member.roles.cache.map(mr => mr.id) } });
 
-				if (ignoredChannel == null) {
+				if (ignoredChannel == null && ignoredRole == null) {
 
 					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
 					gu.lastXpMessageSent = fn('NOW');

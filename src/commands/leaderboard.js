@@ -22,11 +22,13 @@ module.exports = {
 
 			const guildUsers = await GuildUser.findAll({ where: { guildId: interaction.guild.id }, offset: offset, limit: pageSize });
 			// Sorts by order of XP
-			guildUsers.sort((a, b) => (a.xp > b.xp) ? 1 : ((b.xp > a.xp) ? -1 : 0));
-			let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${userCount / pageSize})**: \n`;
+			const gu = guildUsers.map(u => ({id: u.userId, level: u.level, xp: u.xp }));
+			gu.sort((a, b) => (a.xp > b.xp) ? 1 : ((b.xp > a.xp) ? -1 : 0));
+			console.log(gu);
+			let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${Math.ceil(userCount / pageSize)})**: \n`;
 
-			guildUsers.forEach(gu => {
-				leaderboardMsg += `\n- <@${gu.userId}> (Level ${gu.level})`;
+			gu.forEach(u => {
+				leaderboardMsg += `\n- <@${u.id}> (Level ${u.level})`;
 			});
 
 			await reply(interaction, leaderboardMsg, false);

@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { reply } = require('../utils/messages');
-const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');
 
 module.exports = {
@@ -10,7 +9,7 @@ module.exports = {
 		.setDescription('Import Levels from another bot'),
 	async execute(interaction) {
 		try {
-			if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
+			if (!interaction.user.id == '126429064218017802') {
 				await reply(interaction, 'Access Denied', true);
 				return;
 			}

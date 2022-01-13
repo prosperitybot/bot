@@ -21,6 +21,8 @@ module.exports = {
 			offset = pageSize * (page - 1);
 
 			const guildUsers = await GuildUser.findAll({ where: { guildId: interaction.guild.id }, offset: offset, limit: pageSize });
+			// Sorts by order of XP
+			guildUsers.sort((a, b) => (a.xp > b.xp) ? 1 : ((b.xp > a.xp) ? -1 : 0));
 			let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${userCount / pageSize})**: \n`;
 
 			guildUsers.forEach(gu => {

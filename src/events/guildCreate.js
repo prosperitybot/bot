@@ -1,5 +1,6 @@
 const { Guild } = require('../database/database');
 const Sentry = require('@sentry/node');
+const { eventLogger } = require('../utils/loggingUtils');
 
 module.exports = {
 	name: 'guildCreate',
@@ -11,7 +12,7 @@ module.exports = {
 				premium: false,
 			});
 			guild.client.user.setActivity(`${guild.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)} members in ${guild.client.guilds.cache.size} servers`, { type: 'WATCHING' });
-			console.log(`Joined a new guild with the name of '${guild.name} (${guild.id})'`);
+			eventLogger.info(`Joined a new guild '${guild.name}' (${guild.id}) with ${guild.memberCount} members`);
 		}
 		catch (e) {
 			Sentry.captureException(e);

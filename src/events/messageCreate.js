@@ -36,10 +36,10 @@ module.exports = {
 				const ignoredRole = await IgnoredRole.findAll({ where: { id: message.member.roles.cache.map(mr => mr.id) } });
 				console.log('Updated User #5');
 
+				console.log(ignoredRole);
+				console.log(ignoredChannel);
 				if (ignoredChannel == null && ignoredRole == null) {
 					console.log('Updated User #6');
-					console.log(ignoredRole);
-					console.log(ignoredChannel);
 
 					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
 					gu.lastXpMessageSent = fn('NOW');

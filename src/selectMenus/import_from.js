@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { editReply, reply } = require('../utils/messages');
-const axios = require('axios').default;
+const { http } = require('../utils/httpUtils');
 const { User, GuildUser, LevelRole } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const Sentry = require('@sentry/node');
@@ -65,7 +65,7 @@ module.exports = {
 				let currentPage = 0;
 				let userCount = 0;
 				while (stillSearching) {
-					const { data } = await axios.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
+					const { data } = await http.get(`https://mee6.xyz/api/plugins/levels/leaderboard/${interaction.guild.id}?limit=1000&page=${currentPage}`);
 					if (currentPage == 0) {
 						const roleRewards = data.role_rewards;
 						roleRewards.forEach(async role => {
@@ -118,7 +118,7 @@ module.exports = {
 				let currentPage = 1;
 				let userCount = 0;
 				while (stillSearching) {
-					const { data } = await axios.get(`https://api.piggy.gg/api/v1/public/guilds/${interaction.guild.id}/leaderboard/player?limit=50&page=${currentPage}`);
+					const { data } = await http.get(`https://api.piggy.gg/api/v1/public/guilds/${interaction.guild.id}/leaderboard/player?limit=50&page=${currentPage}`);
 					if (data.data.leaderboard.length == 0 || currentPage == 50) {
 						stillSearching = false;
 					}

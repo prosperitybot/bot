@@ -7,7 +7,7 @@ module.exports = {
 	async execute(client) {
 		try {
 			console.log(`Ready! Logged in as ${client.user.tag}`);
-			client.user.setActivity(`${client.guilds.cache.size} servers`, { type: 'WATCHING' });
+			client.user.setActivity(`${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)} members in ${client.guilds.cache.size} servers`, { type: 'WATCHING' });
 			if (process.env.ADMIN_COMMAND_ID == '') {
 				deploy();
 			}

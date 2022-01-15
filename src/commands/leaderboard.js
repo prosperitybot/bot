@@ -21,12 +21,10 @@ module.exports = {
 			offset = pageSize * (page - 1);
 
 			const guildUsers = await GuildUser.findAll({ where: { guildId: interaction.guild.id }, offset: offset, limit: pageSize, order: [ ['xp', 'DESC'] ] });
-			// Sorts by order of XP
-			const gu = guildUsers.map(u => ({ id: u.userId, level: u.level, xp: u.xp }));
 			let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${Math.ceil(userCount / pageSize)})**: \n`;
 
-			gu.forEach(u => {
-				leaderboardMsg += `\n- <@${u.id}> (Level ${u.level})`;
+			guildUsers.forEach(gu => {
+				leaderboardMsg += `\n- <@${gu.userId}> (Level ${gu.level})`;
 			});
 
 			await reply(interaction, leaderboardMsg, false);

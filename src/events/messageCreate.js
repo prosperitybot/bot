@@ -15,7 +15,7 @@ module.exports = {
 				username: message.author.username,
 				discriminator: message.author.discriminator,
 			});
-			console.log('Updated User #1');
+
 			let gu = await GuildUser.findOne({ where: { userId: message.author.id, guildId: message.guild.id } });
 			if (gu == null) {
 				gu = await GuildUser.create({
@@ -25,25 +25,17 @@ module.exports = {
 					xp: 0,
 					lastXpMessageSent: fn('NOW'),
 				});
-				console.log('Updated User #2');
 			}
-			console.log('Updated User #3');
 
 			if ((Date.now() - gu.lastXpMessageSent) / 1000 >= 60) {
-				console.log('Updated User #4');
 
 				const ignoredChannel = await IgnoredChannel.findByPk(message.channel.id);
 				const ignoredRole = await IgnoredRole.findAll({ where: { id: message.member.roles.cache.map(mr => mr.id) } });
-				console.log('Updated User #5');
 
-				console.log(ignoredRole);
-				console.log(ignoredChannel);
-				if (ignoredChannel == null && ignoredRole == null) {
-					console.log('Updated User #6');
+				if (ignoredChannel == null && ignoredRole.length == 0) {
 
 					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
 					gu.lastXpMessageSent = fn('NOW');
-					console.log('Updated User #7');
 					if (gu.xp > getXpNeeded(gu.level + 1)) {
 						gu.level += 1;
 						const newLevelRole = await LevelRole.findOne({ where: { level: gu.level, guildId: message.guild.id } });

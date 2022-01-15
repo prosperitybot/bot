@@ -61,7 +61,7 @@ module.exports = {
 						case 'dm':
 							message.author.createDM().then((c) => {
 								c.send(`Congratulations ${message.author} you have ranked up to level ${gu.level}`);
-							});
+							}).catch(e => Sentry.captureException(e));
 							break;
 						}
 					}

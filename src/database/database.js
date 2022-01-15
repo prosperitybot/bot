@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize');
+const { sqlLogger } = require('../utils/loggingUtils');
+
 const UserModel = require('./models/user.js');
 const GuildModel = require('./models/guild.js');
 const GuildUserModel = require('./models/guilduser.js');
@@ -12,6 +14,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
 	host: process.env.DB_HOST,
 	port: process.env.DB_PORT,
 	dialect: 'mariadb',
+	logging: msg => sqlLogger.info(msg),
 });
 
 const User = UserModel(sequelize, Sequelize);

@@ -49,7 +49,10 @@ client.on('interactionCreate', async interaction => {
 			const command = client.commands.get(interaction.commandName);
 			if (!command) return;
 
-			commandLogger.info(`${interaction.user.tag} used ${interaction.commandName} in #${interaction.channel.name}`);
+			commandLogger.info(`${interaction.user.tag} used /${interaction.commandName} in #${interaction.channel.name}`, {
+				user: { name: interaction.user.tag, id: interaction.user.id },
+				guild: { name: interaction.guild.name, id: interaction.guild.id },
+			});
 			await command.execute(interaction);
 		}
 

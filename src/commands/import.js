@@ -25,6 +25,12 @@ module.exports = {
 								value: 'import_from-mee6',
 								emoji: '👽',
 							},
+							{
+								label: 'Piggy',
+								description: 'Import existing levels from Piggy',
+								value: 'import_from-piggy',
+								emoji: '🐷',
+							},
 						]),
 				);
 			await reply(interaction, 'Please select where you would like to import your data from...', true, [importRow]);

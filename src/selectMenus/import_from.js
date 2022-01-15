@@ -34,6 +34,30 @@ module.exports = {
 				await reply(interaction, 'Please confirm that you want the transfer to go ahead. \n**NOTE**: This will only move the data of the users that are currently in the server.', true, [confirmMee6Row]);
 				break;
 			}
+			case 'import_from-piggy': {
+				const confirmMee6Row = new MessageActionRow()
+					.addComponents(
+						new MessageSelectMenu()
+							.setCustomId('import_from')
+							.setPlaceholder('Please confirm...')
+							.addOptions([
+								{
+									label: 'Yes',
+									description: 'This will import all existing members levels from Piggy into Prosperity',
+									value: 'import_from-piggy-confirm',
+									emoji: '✅',
+								},
+								{
+									label: 'No',
+									description: 'This will cancel the pending transfer',
+									value: 'import_from-mee6-cancel',
+									emoji: '❎',
+								},
+							]),
+					);
+				await reply(interaction, 'Please confirm that you want the transfer to go ahead. \n**NOTE**: This will only move the data of the users that are currently in the server.', true, [confirmMee6Row]);
+				break;
+			}
 			case 'import_from-mee6-confirm': {
 				await reply(interaction, 'Currently migrating users from Mee6 to prosperity', true);
 				// Run MEE6 Logic
@@ -70,12 +94,53 @@ module.exports = {
 									userId: user.id,
 									guildId: interaction.guild.id,
 									level: user.level,
-									xp: getXpNeeded(user.level),
+									xp: user.xp,
 								});
 							}
 							else {
 								gu.level = user.level;
+								gu.xp = user.xp;
 								gu.xp = getXpNeeded(user.level);
+								await gu.save();
+							}
+						});
+					}
+				}
+				await editReply(interaction, `You have successfully migrated **${userCount}** users.`, true);
+				break;
+			}
+			case 'import_from-piggy-confirm': {
+				await reply(interaction, 'Currently migrating users from Piggy to prosperity', true);
+				// Run Piggy Logic
+				let stillSearching = true;
+				let currentPage = 1;
+				let userCount = 0;
+				while (stillSearching) {
+					const { data } = await axios.get(`https://api.piggy.gg/api/v1/public/guilds/${interaction.guild.id}/leaderboard/player?limit=50&page=${currentPage}`);
+					if (data.data.leaderboard.length == 0 || currentPage == 50) {
+						stillSearching = false;
+					}
+					else {
+						currentPage += 1;
+						userCount += data.data.leaderboard.length;
+						data.data.leaderboard.forEach(async user => {
+							await User.upsert({
+								id: user.id,
+								username: user.name,
+								discriminator: '0000',
+							});
+							let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
+							if (gu == null) {
+								gu = await GuildUser.create({
+									userId: user.id,
+									guildId: interaction.guild.id,
+									level: user.level,
+									xp: user.total_xp,
+								});
+							}
+							else {
+								gu.level = user.level;
+								gu.xp = user.total_xp;
 								await gu.save();
 							}
 						});

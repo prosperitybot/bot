@@ -3,6 +3,7 @@ const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { reply } = require('./utils/messages');
 const Sentry = require('@sentry/node');
+const { commandLogger } = require('./utils/loggingUtils');
 
 if (process.env.SENTRY_DSN != '') {
 	Sentry.init({
@@ -48,6 +49,7 @@ client.on('interactionCreate', async interaction => {
 			const command = client.commands.get(interaction.commandName);
 			if (!command) return;
 
+			commandLogger.info(`${interaction.user.tag} used ${interaction.commandName} in #${interaction.channel.name}`);
 			await command.execute(interaction);
 		}
 

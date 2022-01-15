@@ -15,5 +15,10 @@ module.exports = (sequelize, type) => {
 			allowNull: false,
 			defaultValue: type.NOW,
 		},
+		messageCount: {
+			type: type.INTEGER,
+			allowNull: false,
+			defaultValue: 1,
+		},
 	});
 };

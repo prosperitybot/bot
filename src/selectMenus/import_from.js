@@ -95,12 +95,14 @@ module.exports = {
 									guildId: interaction.guild.id,
 									level: user.level,
 									xp: user.xp,
+									messageCount: user.message_count,
 								});
 							}
 							else {
 								gu.level = user.level;
 								gu.xp = user.xp;
 								gu.xp = getXpNeeded(user.level);
+								gu.messageCount = user.message_count;
 								await gu.save();
 							}
 						});

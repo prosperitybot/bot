@@ -34,6 +34,7 @@ module.exports = {
 
 				if (ignoredChannel == null && ignoredRole.length == 0) {
 
+					gu.messageCount += 1;
 					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
 					gu.lastXpMessageSent = fn('NOW');
 					if (gu.xp > getXpNeeded(gu.level + 1)) {

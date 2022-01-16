@@ -66,8 +66,8 @@ module.exports = {
 				});
 
 				const dbMembers = await GuildUser.findAll({ where: { level: level, guildId: interaction.guild.id } });
-				dbMembers.forEach(dbMember => {
-					const member = interaction.guild.members.cache.get(dbMember.userId);
+				dbMembers.forEach(async dbMember => {
+					const member = await interaction.guild.members.fetch(dbMember.userId);
 					member.roles.add(role.id);
 				});
 

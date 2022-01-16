@@ -14,10 +14,10 @@ if (process.env.SENTRY_DSN != '') {
 }
 
 WhitelabelBot.findAll().then(whitelabelBots => {
-	whitelabelBots.forEach(bot => clients.push(login(bot.token)));
+	whitelabelBots.forEach(bot => clients.push(login(bot.botId, bot.token)));
 });
 
-clients.push(login(process.env.DISCORD_TOKEN));
+clients.push(login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN));
 
 
 deploy();

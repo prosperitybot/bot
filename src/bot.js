@@ -6,7 +6,7 @@ const { commandLogger } = require('./utils/loggingUtils');
 const deployCommands = require('./deploy-commands');
 
 module.exports = {
-	login: (token) => {
+	login: (botId, botToken) => {
 		const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS] });
 		// Register Commands & Menus
 		client.commands = new Collection();
@@ -65,10 +65,10 @@ module.exports = {
 		});
 
 		client.on('ready', () => {
-			deployCommands();
+			deployCommands(botId, botToken);
 		});
 
-		client.login(token);
+		client.login(botToken);
 
 		return client;
 	},

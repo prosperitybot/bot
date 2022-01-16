@@ -4,6 +4,7 @@ const { http } = require('../utils/httpUtils');
 const { User, GuildUser, LevelRole } = require('../database/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const Sentry = require('@sentry/node');
+const { Op } = require('sequelize');
 
 module.exports = {
 	name: 'import_from',
@@ -83,28 +84,32 @@ module.exports = {
 						currentPage += 1;
 						userCount += data.players.length;
 						data.players.forEach(async user => {
-							await User.upsert({
-								id: user.id,
-								username: user.username,
-								discriminator: user.discriminator,
-							});
-							let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
-							if (gu == null) {
-								gu = await GuildUser.create({
-									userId: user.id,
-									guildId: interaction.guild.id,
-									level: user.level,
-									xp: user.xp,
-									messageCount: user.message_count,
+							interaction.guild.members.fetch(user.id.toString()).then(async dUser => {
+								await User.upsert({
+									id: user.id,
+									username: user.username,
+									discriminator: user.discriminator,
 								});
-							}
-							else {
-								gu.level = user.level;
-								gu.xp = user.xp;
-								gu.xp = getXpNeeded(user.level);
-								gu.messageCount = user.message_count;
-								await gu.save();
-							}
+								let gu = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guild.id } });
+								if (gu == null) {
+									gu = await GuildUser.create({
+										userId: user.id,
+										guildId: interaction.guild.id,
+										level: user.level,
+										xp: user.xp,
+										messageCount: user.message_count,
+									});
+								}
+								else {
+									gu.level = user.level;
+									gu.xp = user.xp;
+									gu.xp = getXpNeeded(user.level);
+									gu.messageCount = user.message_count;
+									await gu.save();
+								}
+								const roleToAssign = await LevelRole.findOne({ where: { level: { [Op.lte]: user.level }, guildId: interaction.guild.id } });
+								dUser.roles.add(roleToAssign.id.toString());
+							}).catch(e => Sentry.captureException(e));
 						});
 					}
 				}

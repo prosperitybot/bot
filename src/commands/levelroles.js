@@ -1,8 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { GuildUser, LevelRole } = require('../database/database');
-const { reply } = require('../utils/messages');
+const { reply, editReply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');
+const { Op } = require('sequelize');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -65,14 +66,23 @@ module.exports = {
 					level: level,
 				});
 
-				const dbMembers = await GuildUser.findAll({ where: { level: level, guildId: interaction.guild.id } });
+				const nextHighestRole = await LevelRole.findOne({ where: { level: { [Op.gt]: level }, guildId: interaction.guild.id } });
+				let newHighestLevel = 1000;
+				if (nextHighestRole != null) {
+					newHighestLevel = nextHighestRole.level;
+				}
+
+				await reply(interaction, `${role} will be granted at **Level ${level}**`, false);
+
+				const { count: dbMemberCount, rows: dbMembers } = await GuildUser.findAndCountAll({ where: { level: { [Op.gte]: level, [Op.lt]: newHighestLevel }, guildId: interaction.guild.id } });
+				await editReply(interaction, `${role} will be granted at **Level ${level}**\n\n**Status**:\nCurrently adding this role to ${dbMemberCount} members`, false);
 				dbMembers.forEach(async dbMember => {
 					interaction.guild.members.fetch(dbMember.userId.toString()).then(member => {
 						member.roles.add(role.id.toString(), 'Level role was added');
 					}).catch((e) => console.log(`Could not add role - ${e}`));
 				});
+				await editReply(interaction, `${role} will be granted at **Level ${level}**\n\n**Status**:\nAdded ${dbMemberCount} members to this role`, false);
 
-				await reply(interaction, `${role} will be granted at **Level ${level}**`, false);
 				break;
 			}
 			case 'remove': {

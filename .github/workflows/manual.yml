@@ -1,5 +1,5 @@
 # if: github.ref == 'refs/heads/master'
-name: Deploy Github Package
+name: Deploy Github Package (Manual)
 
 on:
   workflow_dispatch:

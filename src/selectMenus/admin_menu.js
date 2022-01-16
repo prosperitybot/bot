@@ -1,4 +1,4 @@
-const deploy = require('../deploy-commands');
+const { deploy } = require('../deploy-commands');
 const { reply } = require('../utils/messages');
 const Sentry = require('@sentry/node');
 

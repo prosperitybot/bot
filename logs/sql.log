@@ -1,0 +1,28 @@
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): INSERT INTO `level_roles` (`id`,`level`,`createdAt`,`updatedAt`,`guildId`) VALUES (?,?,?,?,?);"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`level` = 70 AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): DELETE FROM `level_roles` WHERE `id` = '706912618778066975'"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): INSERT INTO `level_roles` (`id`,`level`,`createdAt`,`updatedAt`,`guildId`) VALUES (?,?,?,?,?);"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`level` = 70 AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`userId` = '126429064218017802' AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): DELETE FROM `level_roles` WHERE `id` = '706912618778066975'"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`userId` = '126429064218017802' AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): UPDATE `guild_users` SET `level`=?,`xp`=?,`updatedAt`=? WHERE `userId` = ? AND `guildId` = ?"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`userId` = '126429064218017802' AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): INSERT INTO `level_roles` (`id`,`level`,`createdAt`,`updatedAt`,`guildId`) VALUES (?,?,?,?,?);"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`level` = 70 AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): DELETE FROM `level_roles` WHERE `id` = '706912618778066975'"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): INSERT INTO `level_roles` (`id`,`level`,`createdAt`,`updatedAt`,`guildId`) VALUES (?,?,?,?,?);"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`level` = 70 AND `guild_users`.`guildId` = '700059392770441216';"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): DELETE FROM `level_roles` WHERE `id` = '706912618778066975'"}
+{"level":"info","message":"Executing (default): SELECT `id`, `level`, `createdAt`, `updatedAt`, `guildId` FROM `level_roles` AS `level_roles` WHERE `level_roles`.`id` = '706912618778066975';"}
+{"level":"info","message":"Executing (default): INSERT INTO `level_roles` (`id`,`level`,`createdAt`,`updatedAt`,`guildId`) VALUES (?,?,?,?,?);"}
+{"level":"info","message":"Executing (default): SELECT `level`, `xp`, `lastXpMessageSent`, `messageCount`, `createdAt`, `updatedAt`, `userId`, `guildId` FROM `guild_users` AS `guild_users` WHERE `guild_users`.`level` = 70 AND `guild_users`.`guildId` = '700059392770441216';"}

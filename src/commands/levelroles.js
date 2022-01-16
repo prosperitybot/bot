@@ -67,9 +67,8 @@ module.exports = {
 
 				const dbMembers = await GuildUser.findAll({ where: { level: level, guildId: interaction.guild.id } });
 				dbMembers.forEach(async dbMember => {
-					interaction.guild.members.fetch(dbMember.userId).then(member => {
-						console.log(member);
-						member.roles.add(role.id);
+					interaction.guild.members.fetch(dbMember.userId.toString()).then(member => {
+						member.roles.add(role.id.toString(), 'Level role was added');
 					});
 				});
 

@@ -41,7 +41,7 @@ module.exports = {
 						gu.level += 1;
 						const newLevelRole = await LevelRole.findOne({ where: { level: gu.level, guildId: message.guild.id } });
 						if (newLevelRole != null) {
-							message.member.roles.add(newLevelRole.id.toString());
+							message.member.roles.add(newLevelRole.id.toString(), 'User levelled up');
 							const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: gu.level }, guildId: message.guild.id } });
 							if (oldLevelRole != null) {
 								message.member.roles.remove(oldLevelRole.id.toString());

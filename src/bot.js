@@ -3,7 +3,7 @@ const { Client, Collection, Intents } = require('discord.js');
 const { reply } = require('./utils/messages');
 const Sentry = require('@sentry/node');
 const { commandLogger } = require('./utils/loggingUtils');
-const deployCommands = require('./deploy-commands');
+const { deploy: deployCommands } = require('./deploy-commands');
 
 module.exports = {
 	login: (botId, botToken) => {

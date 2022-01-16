@@ -8,7 +8,7 @@ module.exports = {
 		switch (interaction.values[0]) {
 		case 'admin_deploy_commands':
 			try {
-				deploy();
+				deploy(interaction.client.application.id, process.env.DISCORD_TOKEN);
 				await reply(interaction, 'Deployed Commands Successfully', true);
 				break;
 			}

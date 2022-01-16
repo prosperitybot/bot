@@ -7,6 +7,7 @@ const GuildUserModel = require('./models/guilduser.js');
 const LevelRoleModel = require('./models/levelrole.js');
 const IgnoredChannelModel = require('./models/ignoredchannel.js');
 const IgnoredRoleModel = require('./models/ignoredrole.js');
+const WhitelabelBotModel = require('./models/whitelabelbot.js');
 
 // const { Umzug, SequelizeStorage } = require('umzug');
 
@@ -23,6 +24,7 @@ const GuildUser = GuildUserModel(sequelize, Sequelize);
 const LevelRole = LevelRoleModel(sequelize, Sequelize);
 const IgnoredChannel = IgnoredChannelModel(sequelize, Sequelize);
 const IgnoredRole = IgnoredRoleModel(sequelize, Sequelize);
+const WhitelabelBot = WhitelabelBotModel(sequelize, Sequelize);
 
 User.belongsToMany(Guild, { through: GuildUser });
 Guild.belongsToMany(User, { through: GuildUser });
@@ -40,6 +42,8 @@ Guild.hasMany(IgnoredChannel);
 IgnoredRole.belongsTo(Guild);
 Guild.hasMany(IgnoredRole);
 
+WhitelabelBot.belongsTo(User);
+
 module.exports = {
 	User,
 	Guild,
@@ -47,6 +51,7 @@ module.exports = {
 	LevelRole,
 	IgnoredChannel,
 	IgnoredRole,
+	WhitelabelBot,
 	sequelize,
 	migrate: (force = false) => {
 		sequelize.sync({ force: force })

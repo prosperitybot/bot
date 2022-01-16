@@ -15,6 +15,8 @@ module.exports = {
 			eventLogger.info(`Joined a new guild '${guild.name}' (${guild.id}) with ${guild.memberCount} members`);
 		}
 		catch (e) {
+			Sentry.setTag('guild_id', guild.id);
+			Sentry.setTag('bot_id', guild.client.application.id);
 			Sentry.captureException(e);
 		}
 	},

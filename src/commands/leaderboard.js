@@ -30,6 +30,8 @@ module.exports = {
 			await reply(interaction, leaderboardMsg, false);
 		}
 		catch (e) {
+			Sentry.setTag('guild_id', interaction.guild.id);
+			Sentry.setTag('bot_id', interaction.applicationId);
 			const errorCode = Sentry.captureException(e);
 			await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
 		}

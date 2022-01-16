@@ -72,6 +72,8 @@ module.exports = {
 			}
 		}
 		catch (e) {
+			Sentry.setTag('guild_id', message.guild.id);
+			Sentry.setTag('bot_id', message.client.application.id);
 			Sentry.captureException(e);
 		}
 	},

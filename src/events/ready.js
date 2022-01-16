@@ -12,9 +12,9 @@ module.exports = {
 				deploy();
 			}
 			else {
-				await client.guilds.cache.get('700059392770441216')?.commands.permissions.add({ command: process.env.ADMIN_COMMAND_ID, permissions: [
+				await client.guilds.cache.get(process.env.GUILD_ID)?.commands.permissions.add({ command: process.env.ADMIN_COMMAND_ID, permissions: [
 					{
-						id: '126429064218017802',
+						id: process.env.BOT_OWNER_ID,
 						type: 'USER',
 						permission: true,
 					},
@@ -22,6 +22,7 @@ module.exports = {
 			}
 		}
 		catch (e) {
+			Sentry.setTag('bot_id', client.application.id);
 			Sentry.captureException(e);
 		}
 

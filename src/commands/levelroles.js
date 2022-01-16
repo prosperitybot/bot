@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { GuildMember, LevelRole } = require('../database/database');
+const { GuildUser, LevelRole } = require('../database/database');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');
@@ -65,7 +65,7 @@ module.exports = {
 					level: level,
 				});
 
-				const dbMembers = await GuildMember.findAll({ where: { level: level, guildId: interaction.guild.id } });
+				const dbMembers = await GuildUser.findAll({ where: { level: level, guildId: interaction.guild.id } });
 				dbMembers.forEach(dbMember => {
 					const member = interaction.guild.members.cache.get(dbMember.userId);
 					member.roles.add(role.id);

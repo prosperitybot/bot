@@ -69,7 +69,7 @@ module.exports = {
 				dbMembers.forEach(async dbMember => {
 					interaction.guild.members.fetch(dbMember.userId.toString()).then(member => {
 						member.roles.add(role.id.toString(), 'Level role was added');
-					});
+					}).catch((e) => console.log(`Could not add role - ${e}`));
 				});
 
 				await reply(interaction, `${role} will be granted at **Level ${level}**`, false);

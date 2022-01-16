@@ -1,6 +1,5 @@
 require('dotenv').config();
 const Sentry = require('@sentry/node');
-const deploy = require('./deploy-commands');
 const { login } = require('./bot');
 const { WhitelabelBot } = require('./database/database');
 
@@ -19,8 +18,6 @@ WhitelabelBot.findAll().then(whitelabelBots => {
 
 clients.push(login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN));
 
-
-deploy();
 process.on('SIGINT', function() {
 	console.log('Shutting down nicely...');
 	clients.forEach(client => client.destroy());

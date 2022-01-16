@@ -1,4 +1,4 @@
-const deploy = require('../deploy-commands');
+const { deploy } = require('../deploy-commands');
 const Sentry = require('@sentry/node');
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
 			console.log(`Ready! Logged in as ${client.user.tag}`);
 			client.user.setActivity(`${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)} members in ${client.guilds.cache.size} servers`, { type: 'WATCHING' });
 			if (process.env.ADMIN_COMMAND_ID == '') {
-				deploy();
+				deploy(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);
 			}
 			else {
 				await client.guilds.cache.get(process.env.GUILD_ID)?.commands.permissions.add({ command: process.env.ADMIN_COMMAND_ID, permissions: [

@@ -23,8 +23,11 @@ setInterval(async () => {
 	const botsToStart = await WhitelabelBot.findAll({ where: { action: { [Op.ne]: null } } });
 	botsToStart.forEach(async bot => {
 		switch (bot.action) {
-		case 'start':
 		case 'restart':
+			clients[bot.oldBotId ?? bot.botId].destroy();
+			clients[bot.botId] = login(bot.botId, bot.token);
+			break;
+		case 'start':
 			if (bot.oldBotId != null) {
 				clients[bot.oldBotId].destroy();
 			}

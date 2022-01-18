@@ -5,6 +5,10 @@ module.exports = (sequelize, type) => {
 			primaryKey: true,
 			allowNull: false,
 		},
+		oldBotId: {
+			type: type.BIGINT,
+			allowNull: true,
+		},
 		token: {
 			type: type.STRING,
 			allowNull: false,

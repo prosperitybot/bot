@@ -13,10 +13,22 @@ if (process.env.SENTRY_DSN != '') {
 }
 
 WhitelabelBot.findAll().then(whitelabelBots => {
-	whitelabelBots.forEach(bot => clients.push(login(bot.botId, bot.token)));
+	whitelabelBots.forEach(bot => clients[bot.botId] = login(bot.botId, bot.token));
 });
 
-clients.push(login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN));
+clients[process.env.CLIENT_ID] = login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);
+
+setInterval(async () => {
+	const botsToStart = await WhitelabelBot.findAll({ where: { changeNoticed: false } });
+	botsToStart.forEach(async bot => {
+		if (bot.oldBotId != null) {
+			clients[bot.oldBotId].destroy();
+		}
+		clients[bot.botId] = login(bot.botId, bot.token);
+		bot.changeNoticed = true;
+		await bot.save();
+	});
+}, 5000);
 
 process.on('SIGINT', function() {
 	console.log('Shutting down nicely...');

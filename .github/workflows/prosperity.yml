@@ -99,16 +99,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Send Restart Request
-        uses: fjogeleit/http-request-action@v1.8.1
+      - name: Restarts Docker Stack
+        uses: garygrossgarten/github-action-ssh@release
         with:
-        # Request URL
-          url: ${{ secrets.PANEL_URL }}
-          # Request Method
-          method: POST
-          # Content Type
-          contentType: application/json
-          # Request Body as JSON String
-          data: '{"signal": "restart"}'
-          # Bearer Authentication Token
-          bearerToken: ${{ secrets.PANEL_API_KEY }}
+          command: docker-compose pull && docker-compose up -d
+          host: ${{ secrets.DEPLOYMENT_SSH_IP }}
+          port: ${{ secrets.DEPLOYMENT_SSH_PORT }}
+          username: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
+          privateKey: ${{ secrets.DEPLOYMENT_SSH_KEY }}

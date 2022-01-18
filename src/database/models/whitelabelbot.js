@@ -13,10 +13,10 @@ module.exports = (sequelize, type) => {
 			type: type.STRING,
 			allowNull: false,
 		},
-		changeNoticed: {
-			type: type.BOOLEAN,
-			allowNull: false,
-			defaultValue: false,
+		action: {
+			type: type.STRING,
+			allowNull: true,
+			defaultValue: 'start',
 		},
 	});
 };

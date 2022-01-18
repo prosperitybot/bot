@@ -2,6 +2,7 @@ require('dotenv').config();
 const Sentry = require('@sentry/node');
 const { login } = require('./bot');
 const { WhitelabelBot } = require('./database/database');
+const { Op } = require('sequelize');
 
 const clients = [];
 
@@ -19,14 +20,22 @@ WhitelabelBot.findAll().then(whitelabelBots => {
 clients[process.env.CLIENT_ID] = login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);
 
 setInterval(async () => {
-	const botsToStart = await WhitelabelBot.findAll({ where: { changeNoticed: false } });
+	const botsToStart = await WhitelabelBot.findAll({ where: { action: { [Op.ne]: null } } });
 	botsToStart.forEach(async bot => {
-		if (bot.oldBotId != null) {
-			clients[bot.oldBotId].destroy();
+		switch (bot.action) {
+		case 'start':
+		case 'restart':
+			if (bot.oldBotId != null) {
+				clients[bot.oldBotId].destroy();
+			}
+			clients[bot.botId] = login(bot.botId, bot.token);
+			bot.action = null;
+			await bot.save();
+			break;
+		case 'stop':
+			clients[bot.botId].destroy();
+			break;
 		}
-		clients[bot.botId] = login(bot.botId, bot.token);
-		bot.changeNoticed = true;
-		await bot.save();
 	});
 }, 5000);
 

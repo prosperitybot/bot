@@ -29,13 +29,13 @@ setInterval(async () => {
 				clients[bot.oldBotId].destroy();
 			}
 			clients[bot.botId] = login(bot.botId, bot.token);
-			bot.action = null;
-			await bot.save();
 			break;
 		case 'stop':
 			clients[bot.botId].destroy();
 			break;
 		}
+		bot.action = null;
+		await bot.save();
 	});
 }, 5000);
 

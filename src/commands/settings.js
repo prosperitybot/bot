@@ -23,7 +23,7 @@ module.exports = {
 				.setName('roles')
 				.setDescription('Choose the type of logic to apply on the role (Whether to stack or only assign one role)')
 				.addStringOption(options =>
-					options.setName('roleAssignType')
+					options.setName('type')
 						.setDescription('The type of logic to apply to the role')
 						.setRequired(true)
 						.addChoice('Single (Only apply one at a time and remove the previous role)', 'single')
@@ -81,7 +81,7 @@ module.exports = {
 				break;
 			}
 			case 'roles': {
-				const type = interaction.options.getString('roleAssignType');
+				const type = interaction.options.getString('type');
 				const guild = await Guild.findByPk(interaction.guild.id);
 				guild.roleAssignType = type;
 				await guild.save();

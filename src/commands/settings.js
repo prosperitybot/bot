@@ -26,8 +26,8 @@ module.exports = {
 					options.setName('roleAssignType')
 						.setDescription('The type of logic to apply to the role')
 						.setRequired(true)
-						.addChoice('Single (Only apply one at a time and remove the previous role)', 'roletype_single')
-						.addChoice('Stack (Stack all previous roles and never remove old ones)', 'roletype_stack'),
+						.addChoice('Single (Only apply one at a time and remove the previous role)', 'single')
+						.addChoice('Stack (Stack all previous roles and never remove old ones)', 'stack'),
 				)),
 	async execute(interaction) {
 		try {

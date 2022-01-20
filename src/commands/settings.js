@@ -17,6 +17,17 @@ module.exports = {
 					options.setName('channel')
 						.setDescription('The channel to set the notification to')
 						.setRequired(false),
+				))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('roles')
+				.setDescription('Choose the type of logic to apply on the role (Whether to stack or only assign one role)')
+				.addStringOption(options =>
+					options.setName('roleAssignType')
+						.setDescription('The type of logic to apply to the role')
+						.setRequired(true)
+						.addChoice('Single (Only apply one at a time and remove the previous role)', 'roletype_single')
+						.addChoice('Stack (Stack all previous roles and never remove old ones)', 'roletype_stack'),
 				)),
 	async execute(interaction) {
 		try {
@@ -68,6 +79,18 @@ module.exports = {
 					);
 				await reply(interaction, 'Please select the type of notifications you want below...', true, [notificationsRow]);
 				break;
+			}
+			case 'roles': {
+				const type = interaction.options.getString('roleAssignType');
+				const guild = await Guild.findByPk(interaction.guild.id);
+				guild.roleAssignType = type;
+				await guild.save();
+				if (type == 'stack') {
+					await reply(interaction, 'Users will now have stacked roles and their previous roles will not be removed', true);
+				}
+				else {
+					await reply(interaction, 'Users will now have single roles and their previous roles will be removed', true);
+				}
 			}
 			}
 		}

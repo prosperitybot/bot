@@ -25,18 +25,21 @@ setInterval(async () => {
 		switch (bot.action) {
 		case 'restart':
 			clients[bot.oldBotId ?? bot.botId].destroy();
+			clients[bot.oldBotId ?? bot.botId] = null;
 			clients[bot.botId] = login(bot.botId, bot.token);
 			break;
 		case 'start':
 			if (bot.oldBotId != null) {
 				clients[bot.oldBotId].destroy();
 			}
+			clients[bot.oldBotId ?? bot.botId] = null;
 			clients[bot.botId] = login(bot.botId, bot.token);
 			break;
 		case 'stop':
 			clients[bot.botId].destroy();
 			break;
 		}
+		bot.botId = bot.oldBotId ?? bot.botId;
 		bot.action = null;
 		await bot.save();
 	});

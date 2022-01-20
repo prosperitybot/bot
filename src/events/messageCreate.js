@@ -38,17 +38,19 @@ module.exports = {
 					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
 					gu.lastXpMessageSent = fn('NOW');
 					if (gu.xp > getXpNeeded(gu.level + 1)) {
+						const guild = await Guild.findByPk(message.guild.id);
 						gu.level += 1;
 						const newLevelRole = await LevelRole.findOne({ where: { level: gu.level, guildId: message.guild.id } });
 						if (newLevelRole != null) {
 							message.member.roles.add(newLevelRole.id.toString(), 'User levelled up');
-							const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: gu.level }, guildId: message.guild.id } });
-							if (oldLevelRole != null) {
-								message.member.roles.remove(oldLevelRole.id.toString());
+							if (guild.roleAssignType === 'single') {
+								const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: gu.level }, guildId: message.guild.id } });
+								if (oldLevelRole != null) {
+									message.member.roles.remove(oldLevelRole.id.toString());
+								}
 							}
 						}
 						await gu.save();
-						const guild = await Guild.findByPk(message.guild.id);
 						switch (guild.notificationType) {
 						case 'reply':
 							await reply(message, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);

@@ -9,8 +9,8 @@ module.exports = {
 		.setDescription('Import Levels from another bot'),
 	async execute(interaction) {
 		try {
-			if (!interaction.user.id == '126429064218017802') {
-				await reply(interaction, 'Access Denied', true);
+			if (interaction.user.id != '126429064218017802') {
+				await reply(interaction, 'Please message Ben#2028 to get your levels migrated', true);
 				return;
 			}
 			const importRow = new MessageActionRow()

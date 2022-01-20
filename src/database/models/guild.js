@@ -9,10 +9,6 @@ module.exports = (sequelize, type) => {
 			type: type.STRING,
 			allowNull: false,
 		},
-		premium: {
-			type: type.BOOLEAN,
-			defaultValue: false,
-		},
 		notificationType: {
 			type: type.STRING,
 			allowNull: false,
@@ -26,6 +22,11 @@ module.exports = (sequelize, type) => {
 			type: type.INTEGER,
 			allowNull: false,
 			defaultValue: 1,
+		},
+		roleAssignType: {
+			type: type.STRING,
+			allowNull: false,
+			defaultValue: 'single',
 		},
 	});
 };

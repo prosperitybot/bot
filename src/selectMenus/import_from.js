@@ -1,7 +1,7 @@
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { editReply, reply } = require('../utils/messages');
 const { http } = require('../utils/httpUtils');
-const { User, GuildUser, LevelRole } = require('../database/database');
+const { User, GuildUser, LevelRole } = require('@benhdev-projects/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const Sentry = require('@sentry/node');
 const { Op } = require('sequelize');

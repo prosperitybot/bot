@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { reply } = require('../utils/messages');
-const { Guild } = require('../database/database');
+const { Guild } = require('@benhdev-projects/database');
 const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');
 

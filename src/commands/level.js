@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { GuildUser } = require('../database/database');
+const { GuildUser } = require('@benhdev-projects/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply } = require('../utils/messages');
 const Sentry = require('@sentry/node');

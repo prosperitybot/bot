@@ -16,6 +16,7 @@ module.exports = {
 				discriminator: message.author.discriminator,
 			});
 
+			const guild = await Guild.findByPk(message.guild.id);
 			let gu = await GuildUser.findOne({ where: { userId: message.author.id, guildId: message.guild.id } });
 			if (gu == null) {
 				gu = await GuildUser.create({
@@ -35,10 +36,11 @@ module.exports = {
 				if (ignoredChannel == null && ignoredRole.length == 0) {
 
 					gu.messageCount += 1;
-					gu.xp += Math.floor(Math.random() * (15 - 7 + 1) + 7);
+					const xpToGive = Math.floor(Math.random() * (15 - 7 + 1) + 7) * guild.xpRate;
+					gu.xp += xpToGive;
 					gu.lastXpMessageSent = fn('NOW');
 					if (gu.xp > getXpNeeded(gu.level + 1)) {
-						const guild = await Guild.findByPk(message.guild.id);
+
 						gu.level += 1;
 						const newLevelRole = await LevelRole.findOne({ where: { level: gu.level, guildId: message.guild.id } });
 						if (newLevelRole != null) {

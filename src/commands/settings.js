@@ -28,6 +28,15 @@ module.exports = {
 						.setRequired(true)
 						.addChoice('Single (Only apply one at a time and remove the previous role)', 'single')
 						.addChoice('Stack (Stack all previous roles and never remove old ones)', 'stack'),
+				))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('multiplier')
+				.setDescription('Choose the XP multiplier for this server (1x by default)')
+				.addIntegerOption(options =>
+					options.setName('multiplier')
+						.setDescription('The multiplier to apply to this server')
+						.setRequired(true),
 				)),
 	async execute(interaction) {
 		try {
@@ -91,6 +100,14 @@ module.exports = {
 				else {
 					await reply(interaction, 'Users will now have single roles and their previous roles will be removed', true);
 				}
+				break;
+			}
+			case 'multiplier': {
+				const multiplier = interaction.options.getInteger('multiplier');
+				const guild = await Guild.findByPk(interaction.guild.id);
+				guild.xpRate = multiplier;
+				await guild.save();
+				await reply(interaction, `This guild now has a **${multiplier}x** multiplier assigned`, true);
 			}
 			}
 		}

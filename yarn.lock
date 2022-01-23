@@ -2,30 +2,6 @@
 # yarn lockfile v1
 
 
-"@benhdev-projects/database@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@benhdev-projects/database/-/database-1.3.1.tgz#b904ede290db4eac8d768e4a3a9833be59f4ff2c"
-  integrity sha512-CM2BBUOeX7XSfjBLIJCPw0vycRx7RGkY9rEJpLJMEZmrrWllvxHJUoL0r0BV1ynbru6iyJkaVvEua6PrWMgeBQ==
-  dependencies:
-    debug "^4.3.3"
-    dottie "^2.0.2"
-    inflection "^1.13.1"
-    lodash "^4.17.21"
-    lru-cache "^6.0.0"
-    moment "^2.29.1"
-    moment-timezone "^0.5.34"
-    ms "^2.1.2"
-    pg-connection-string "^2.5.0"
-    retry-as-promised "^5.0.0"
-    semver "^7.3.5"
-    sequelize "^6.13.0"
-    sequelize-pool "^7.1.0"
-    toposort-class "^1.0.1"
-    uuid "^8.3.2"
-    validator "^13.7.0"
-    wkx "^0.5.0"
-    yallist "^4.0.0"
-
 "@dabh/diagnostics@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@dabh/diagnostics/-/diagnostics-2.0.2.tgz#290d08f7b381b8f94607dc8f471a12c675f9db31"
@@ -97,6 +73,30 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
+
+"@prosperitybot/database@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.0.0.tgz#152ed480274685bfb9a6b697aa3987aa0c68a3fc"
+  integrity sha512-3SDllg52P4kAP3rbVaxQDNi2p5gin9cL5kwBYlNjZrouuyiiDngRheiyaJ/0oVsrImPAqyi9FP0CtVQU/uz1NA==
+  dependencies:
+    debug "^4.3.3"
+    dottie "^2.0.2"
+    inflection "^1.13.1"
+    lodash "^4.17.21"
+    lru-cache "^6.0.0"
+    moment "^2.29.1"
+    moment-timezone "^0.5.34"
+    ms "^2.1.2"
+    pg-connection-string "^2.5.0"
+    retry-as-promised "^5.0.0"
+    semver "^7.3.5"
+    sequelize "^6.13.0"
+    sequelize-pool "^7.1.0"
+    toposort-class "^1.0.1"
+    uuid "^8.3.2"
+    validator "^13.7.0"
+    wkx "^0.5.0"
+    yallist "^4.0.0"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"

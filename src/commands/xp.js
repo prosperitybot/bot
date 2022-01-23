@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { GuildUser, LevelRole } = require('@benhdev-projects/database');
+const { GuildUser, LevelRole } = require('@prosperitybot/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');

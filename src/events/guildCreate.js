@@ -1,4 +1,4 @@
-const { Guild } = require('@benhdev-projects/database');
+const { Guild } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { eventLogger } = require('../utils/loggingUtils');
 

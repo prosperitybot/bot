@@ -1,4 +1,4 @@
-const { Guild, User, GuildUser, migrate } = require('@benhdev-projects/database');
+const { Guild, User, GuildUser, migrate } = require('@prosperitybot/database');
 const { editReply, reply } = require('../utils/messages');
 const Sentry = require('@sentry/node');
 

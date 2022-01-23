@@ -1,4 +1,4 @@
-const { User, GuildUser, Guild, LevelRole, IgnoredChannel, IgnoredRole } = require('@benhdev-projects/database');
+const { User, GuildUser, Guild, LevelRole, IgnoredChannel, IgnoredRole } = require('@prosperitybot/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply, send } = require('../utils/messages');
 const { Op, fn } = require('sequelize');

@@ -2,7 +2,7 @@ require('dotenv').config();
 const { sqlLogger } = require('./utils/loggingUtils');
 const Sentry = require('@sentry/node');
 const { login } = require('./bot');
-const { WhitelabelBot, setup: setupDatabase } = require('@benhdev-projects/database');
+const { WhitelabelBot, setup: setupDatabase } = require('@prosperitybot/database');
 const { Op } = require('sequelize');
 
 setupDatabase(sqlLogger);

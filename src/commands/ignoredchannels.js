@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { IgnoredChannel } = require('@benhdev-projects/database');
+const { IgnoredChannel } = require('@prosperitybot/database');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
 const Sentry = require('@sentry/node');

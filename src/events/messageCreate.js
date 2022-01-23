@@ -1,4 +1,4 @@
-const { User, GuildUser, Guild, LevelRole, IgnoredChannel, IgnoredRole } = require('@prosperitybot/database');
+const { User, GuildUser, Guild, LevelRole, IgnoredChannel, IgnoredRole, MessageLog } = require('@prosperitybot/database');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply, send } = require('../utils/messages');
 const { Op, fn } = require('sequelize');
@@ -29,6 +29,8 @@ module.exports = {
 			}
 
 			if ((Date.now() - gu.lastXpMessageSent) / 1000 >= 60) {
+
+				await MessageLog.create({ userId: message.author.id, guildId: message.guild.id });
 
 				const ignoredChannel = await IgnoredChannel.findByPk(message.channel.id);
 				const ignoredRole = await IgnoredRole.findAll({ where: { id: message.member.roles.cache.map(mr => mr.id) } });

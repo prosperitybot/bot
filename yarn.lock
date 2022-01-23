@@ -74,10 +74,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@prosperitybot/database@^1.0.1":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.0.2.tgz#6edd3898d356a5d4b25d4f41e0f333a3406abead"
-  integrity sha512-69FehaAL2yIgobjjx02iD6Qw+652yUv99sk3ZAwvmbnfZp2PpYHLX1kb34/rISZb7sy+MnDzaysJ6T2jsom8KA==
+"@prosperitybot/database@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.0.3.tgz#c946af0a09f885604811d457b62a2f93437bea8a"
+  integrity sha512-Z8tIuS5Ml5+/I6Xv8yTNDt9xPWKGmZ4VS4Ra2GuzBnyUOOdi8zYkkBXeX7bJcdQ9UK2FwZucpum+Oz7EnyVrEw==
   dependencies:
     debug "^4.3.3"
     dottie "^2.0.2"

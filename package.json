@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@prosperitybot/database": "^1.0.0",
+    "@prosperitybot/database": "^1.0.1",
     "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "@sentry/node": "^6.16.1",

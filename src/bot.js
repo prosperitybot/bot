@@ -7,7 +7,7 @@ const { deploy: deployCommands } = require('./deploy-commands');
 
 module.exports = {
 	login: (botId, botToken) => {
-		const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS] });
+		const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 		// Register Commands & Menus
 		client.commands = new Collection();
 		client.menus = new Collection();

@@ -4,10 +4,6 @@ name: Deploy Translations
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ automatic/update-translations ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -22,14 +18,25 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
         with:
-          branch: automatic/update-translations
-          delete-branch: true
-          team-reviewers: prosperitybot/approvers
-          labels: "🌍 Translations"
-          committer: "Prosperity Bot - Automation <github@prosperitybot.net>"
-          signoff: true
-          author: "Prosperity Bot - Automation <github@prosperitybot.net>"
-          commit-message: "🌍 Updated translations from @prosperitybot/translations"
+          ssh-key: ${{ secrets.BOT_SSH_KEY }}
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          submodules: true
+      - name: Pull & update submodules recursively
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+      - name: Commit
+        run: |
+          git config user.email "github@prosperitybot.net"
+          git config user.name "Prosperity Bot - Automation"
+          git add --all
+          git commit -m "Update submodules" || echo "No changes to commit"
+          git branch -M automatic/update-translations
+          git checkout automatic/update-translations
+          git push -u origin automatic/update-translations
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+        run: |
+          gh pr create --title "🌍 Updated Translations" --body "Pull Request for @prosperitybot/translations" -B main -H automatic/update-translations -l "🌍 Translations" -r "prosperitybot/approvers" -a "@me"

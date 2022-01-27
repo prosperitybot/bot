@@ -25,11 +25,12 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
           base: main
           branch: automatic/update-translations
-          delete-branch: true
           team-reviewers: prosperitybot/approvers
           labels: "🌍 Translations"
+          title: "🌍 Updated Translations"
           committer: "Prosperity Bot - Automation <github@prosperitybot.net>"
           signoff: true
           author: "Prosperity Bot - Automation <github@prosperitybot.net>"

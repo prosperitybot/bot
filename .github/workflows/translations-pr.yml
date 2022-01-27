@@ -40,15 +40,7 @@ jobs:
           git checkout automatic/update-translations
           git push -u origin automatic/update-translations
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.BOT_GITHUB_TOKEN }}
-          base: main
-          branch: automatic/update-translations
-          team-reviewers: prosperitybot/approvers
-          labels: "🌍 Translations"
-          title: "🌍 Updated Translations"
-          committer: "Prosperity Bot - Automation <github@prosperitybot.net>"
-          signoff: true
-          author: "Prosperity Bot - Automation <github@prosperitybot.net>"
-          commit-message: "🌍 Updated translations from @prosperitybot/translations"
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+        run: |
+          gh pr create --title "🌍 Updated Translations" --body "Pull Request for @prosperitybot/translations" -B main -H automatic/update-translations -l "🌍 Translations" -r "prosperitybot/approvers" -a "@me"

@@ -64,10 +64,10 @@ module.exports = {
 				guildUser.xp += amount;
 				if (guildUser.xp > getXpNeeded(guildUser.level + 1)) {
 					guildUser.level += 1;
-					const newLevelRole = await LevelRole.findOne({ where: { level: guildUser.level, guildId: user.guild.id } });
+					const newLevelRole = await LevelRole.findOne({ where: { level: guildUser.level, guildId: interaction.guild.id } });
 					if (newLevelRole != null) {
 						user.member.roles.add(newLevelRole.id.toString(), 'Xp was added to the user');
-						const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: guildUser.level }, guildId: user.guild.id } });
+						const oldLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: guildUser.level }, guildId: interaction.guild.id } });
 						if (oldLevelRole != null) {
 							user.member.roles.remove(oldLevelRole.id.toString());
 						}
@@ -92,10 +92,10 @@ module.exports = {
 				guildUser.xp -= amount;
 				if (guildUser.xp < getXpNeeded(guildUser.level)) {
 					guildUser.level -= 1;
-					const oldLevelRole = await LevelRole.findOne({ where: { level: guildUser.level, guildId: user.guild.id } });
+					const oldLevelRole = await LevelRole.findOne({ where: { level: guildUser.level, guildId: interaction.guild.id } });
 					if (oldLevelRole != null) {
 						user.member.roles.remove(oldLevelRole.id.toString());
-						const newLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: guildUser.level }, guildId: user.guild.id } });
+						const newLevelRole = await LevelRole.findOne({ where: { level: { [Op.lt]: guildUser.level }, guildId: interaction.guild.id } });
 						if (newLevelRole != null) {
 							user.member.roles.add(newLevelRole.id.toString(), 'Xp was added to the user');
 						}

@@ -81,6 +81,7 @@ module.exports = {
 						member.roles.add(role.id.toString(), 'Level role was added');
 					}).catch((e) => console.log(`Could not add role - ${e}`));
 				});
+
 				await editReply(interaction, `${role} will be granted at **Level ${level}**\n\n**Status**:\nAdded ${dbMemberCount} members to this role`, false);
 
 				break;

@@ -21,7 +21,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2      
+      - name: Pull & update submodules recursively
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+      - name: Commit
+        run: |
+          git config user.email "github@prosperitybot.net"
+          git config user.name "Prosperity Bot - Automation"
+          git add --all
+          git commit -m "Update submodules" || echo "No changes to commit"
+          git branch -M automatic/update-translations
+          git checkout automatic/update-translations
+          git push -u origin automatic/update-translations
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageActionRow, MessageButton } = require('discord.js');
 const { GuildUser } = require('@prosperitybot/database');
 const { reply } = require('../utils/messages');
 const Sentry = require('@sentry/node');
@@ -27,7 +28,16 @@ module.exports = {
 				leaderboardMsg += `\n- <@${gu.userId}> (Level ${gu.level})`;
 			});
 
-			await reply(interaction, leaderboardMsg, false);
+			const buttonRow = new MessageActionRow()
+				.addComponents(
+					new MessageButton()
+						.setCustomId('leaderboard-button')
+						.setLabel('View Leaderboard (BETA)')
+						.setStyle('PRIMARY')
+						.setURL(`https://dash.prosperitybot.net/leaderboard/${interaction.guild.id}`),
+				);
+
+			await reply(interaction, leaderboardMsg, false, [buttonRow]);
 		}
 		catch (e) {
 			Sentry.setTag('guild_id', interaction.guild.id);

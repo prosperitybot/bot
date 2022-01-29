@@ -31,9 +31,8 @@ module.exports = {
 			const buttonRow = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
-						.setCustomId('leaderboard-button')
 						.setLabel('View Leaderboard (BETA)')
-						.setStyle('PRIMARY')
+						.setStyle('LINK')
 						.setURL(`https://dash.prosperitybot.net/leaderboard/${interaction.guild.id}`),
 				);
 

@@ -13,7 +13,7 @@
     "mariadb": "^2.5.5",
     "sequelize": "^6.12.5",
     "umzug": "^3.0.0",
-    "winston": "^3.4.0",
+    "winston": "^3.5.1",
     "winston-loki": "^6.0.3"
   },
   "devDependencies": {

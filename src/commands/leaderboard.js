@@ -30,13 +30,17 @@ module.exports = {
 
       guildUsers.forEach((gu) => {
         let rolePrefix = '';
-        gu.user.access_levels.forEach((accessLevel) => {
-          if (accessLevel === 'TRANSLATOR') rolePrefix += '<:prosperity_language:940692871181381632>';
-          if (accessLevel === 'ADMINISTRATOR') rolePrefix += '<:prosperity_admin:940692667216564244>';
-          if (accessLevel === 'DEVELOPER') rolePrefix += '<:prosperity_dev:940692660388261928>';
-          if (accessLevel === 'OWNER') rolePrefix += '<:prosperity_owner:940692775454797825>';
-        });
-        leaderboardMsg += `\n- (${rolePrefix}) ${gu.user.username}#${gu.user.discriminator} (Level ${gu.level})`;
+        if (gu.user.access_levels.length > 0) {
+          rolePrefix = '(';
+          gu.user.access_levels.forEach((accessLevel) => {
+            if (accessLevel === 'TRANSLATOR') rolePrefix += '<:prosperity_language:940692871181381632>';
+            if (accessLevel === 'ADMINISTRATOR') rolePrefix += '<:prosperity_admin:940692667216564244>';
+            if (accessLevel === 'DEVELOPER') rolePrefix += '<:prosperity_dev:940692660388261928>';
+            if (accessLevel === 'OWNER') rolePrefix += '<:prosperity_owner:940692775454797825>';
+          });
+          rolePrefix += ') ';
+        }
+        leaderboardMsg += `\n- ${rolePrefix}${gu.user.username}#${gu.user.discriminator} (Level ${gu.level})`;
       });
 
       const buttonRow = new MessageActionRow()

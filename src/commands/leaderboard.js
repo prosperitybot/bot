@@ -30,7 +30,7 @@ module.exports = {
 
       guildUsers.forEach((gu) => {
         let rolePrefix = '';
-        if (gu.user.access_levels.length > 0) {
+        if (gu.user.access_levels.length > 0 || gu.user.access_levels[0] !== 'null') {
           rolePrefix = '(';
           gu.user.access_levels.forEach((accessLevel) => {
             if (accessLevel === 'TRANSLATOR') rolePrefix += '<:prosperity_language:940692871181381632>';

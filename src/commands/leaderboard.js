@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton } = require('discord.js');
-const { GuildUser } = require('@prosperitybot/database');
+const { GuildUser, User } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { reply } = require('../utils/messages');
 
@@ -20,12 +20,16 @@ module.exports = {
       offset = pageSize * (page - 1);
 
       const guildUsers = await GuildUser.findAll({
-        where: { guildId: interaction.guild.id }, offset, limit: pageSize, order: [['xp', 'DESC']],
+        where: { guildId: interaction.guild.id },
+        offset,
+        limit: pageSize,
+        order: [['xp', 'DESC']],
+        include: User,
       });
       let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${Math.ceil(userCount / pageSize)})**: \n`;
 
       guildUsers.forEach((gu) => {
-        leaderboardMsg += `\n- <@${gu.userId}> (Level ${gu.level})`;
+        leaderboardMsg += `\n- ${gu.user.username}#${gu.user.discriminator} (Level ${gu.level})`;
       });
 
       const buttonRow = new MessageActionRow()

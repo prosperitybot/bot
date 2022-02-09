@@ -8,8 +8,7 @@ const { reply } = require('../utils/messages');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('about')
-    .setDescription('Information about the bot')
-    .setDefaultPermission(false),
+    .setDescription('Information about the bot'),
   async execute(interaction) {
     try {
       const embed = new MessageEmbed()

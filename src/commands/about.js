@@ -22,9 +22,9 @@ module.exports = {
       const owners = await User.findAll({ where: { access_levels: { [Op.substring]: 'OWNER' } } });
 
       let translatorMsg = 'A huge thank you to all of these translators for making this project as accessible as possible\n';
-      let administratorMsg = 'These users are people that help offer higher level support for the bot';
-      let developerMsg = 'These are the core contributors to the project';
-      let ownerMsg = 'This is the owner of Prosperity';
+      let administratorMsg = 'These users are people that help offer higher level support for the bot\n';
+      let developerMsg = 'These are the core contributors to the project\n';
+      let ownerMsg = 'This is the owner of Prosperity\n';
 
       translators.forEach((u) => { translatorMsg += `- ${u.username}#${u.discriminator}\n`; });
       administrators.forEach((u) => { administratorMsg += `- ${u.username}#${u.discriminator}\n`; });
@@ -32,9 +32,9 @@ module.exports = {
       owners.forEach((u) => { ownerMsg += `- ${u.username}#${u.discriminator}\n`; });
 
       embed.setDescription('Prosperity is a levelling bot ready to skill up and boost up your Discord server. We pride ourselves on openness, transparency and collaboration.');
-      embed.addField('Bot Statistics', `Servers: ${interaction.client.guilds.cache.size}\n
-      Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}\n
-      Total Messages: ${totalMessageCount}\n`);
+      embed.addField('Bot Statistics', `Servers: ${interaction.client.guilds.cache.size}
+      Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
+      Total Messages: ${totalMessageCount}`);
 
       embed.addField(`<:prosperity_language:940692871181381632> Translators (${translators.length})`, translatorMsg);
       embed.addField(`<:prosperity_admin:940692667216564244> Administrators (${administrators.length})`, administratorMsg);

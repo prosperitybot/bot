@@ -36,10 +36,10 @@ module.exports = {
       Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
       Total Messages: ${totalMessageCount}`);
 
-      embed.addField(`<:prosperity_language:940692871181381632> Translators (${translators.length})`, translatorMsg);
-      embed.addField(`<:prosperity_admin:940692667216564244> Administrators (${administrators.length})`, administratorMsg);
-      embed.addField(`<:prosperity_dev:940692660388261928> Developers (${developers.length})`, developerMsg);
       embed.addField(`<:prosperity_owner:940692775454797825> Owners (${owners.length})`, ownerMsg);
+      embed.addField(`<:prosperity_dev:940692660388261928> Developers (${developers.length})`, developerMsg);
+      embed.addField(`<:prosperity_admin:940692667216564244> Administrators (${administrators.length})`, administratorMsg);
+      embed.addField(`<:prosperity_language:940692871181381632> Translators (${translators.length})`, translatorMsg);
 
       await interaction.reply({
         embeds: [embed],

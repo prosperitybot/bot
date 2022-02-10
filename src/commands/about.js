@@ -16,10 +16,10 @@ module.exports = {
         .setAuthor({ name: 'Prosperity', url: 'https://prosperitybot.net' });
 
       const totalMessageCount = await MessageLog.count();
-      const translators = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } } });
-      const administrators = await User.findAll({ where: { access_levels: { [Op.substring]: 'ADMINISTRATOR' } } });
-      const developers = await User.findAll({ where: { access_levels: { [Op.substring]: 'DEVELOPER' } } });
-      const owners = await User.findAll({ where: { access_levels: { [Op.substring]: 'OWNER' } } });
+      const translators = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } }, order: [['username', 'ASC']] });
+      const administrators = await User.findAll({ where: { access_levels: { [Op.substring]: 'ADMINISTRATOR' } }, order: [['username', 'ASC']] });
+      const developers = await User.findAll({ where: { access_levels: { [Op.substring]: 'DEVELOPER' } }, order: [['username', 'ASC']] });
+      const owners = await User.findAll({ where: { access_levels: { [Op.substring]: 'OWNER' } }, order: [['username', 'ASC']] });
 
       let translatorMsg = 'A huge thank you to all of these translators for making this project as accessible as possible\n';
       let administratorMsg = 'These users are people that help offer higher level support for the bot\n';

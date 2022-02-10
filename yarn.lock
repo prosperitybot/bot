@@ -661,6 +661,11 @@ discord-api-types@^0.26.0, discord-api-types@^0.26.1:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.26.1.tgz#726f766ddc37d60da95740991d22cb6ef2ed787b"
   integrity sha512-T5PdMQ+Y1MEECYMV5wmyi9VEYPagEDEi4S0amgsszpWY0VB9JJ/hEvM6BgLhbdnKky4gfmZEXtEEtojN8ZKJQQ==
 
+discord-api-types@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.27.0.tgz#4378e2f778fc974a315f1ae703fca149e4d0e615"
+  integrity sha512-l7AnQKffohJTembJRN4Bz54R/esSn+WmulWE7bDIHVcuCLdsUhlvt+4tns8ox+wsEPVlT+gEEko2BF5AL8/zjw==
+
 discord.js@^13.5.0:
   version "13.6.0"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.6.0.tgz#d8a8a591dbf25cbcf9c783d5ddf22c4694860475"
@@ -1640,10 +1645,10 @@ sequelize-pool@^7.1.0:
   resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-7.1.0.tgz#210b391af4002762f823188fd6ecfc7413020768"
   integrity sha512-G9c0qlIWQSK29pR/5U2JF5dDQeqqHRragoyahj/Nx4KOOQ3CPPfzxnfqFPCSB7x5UgjOgnZ61nSxz+fjDpRlJg==
 
-sequelize@^6.13.0, sequelize@^6.15.1:
-  version "6.16.0"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.16.0.tgz#05e7f8f73f8fe26f1b3be11ece92ecffcf561b6c"
-  integrity sha512-t0RRopzm4EN+nWrkbMt+EvND8pQcwqyPb/8M3k2wJgiMqNZy2X998VSw1SKhk3YzoNV2Ftdrqqy/NXB9th//JQ==
+sequelize@^6.13.0, sequelize@^6.16.1:
+  version "6.16.1"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.16.1.tgz#2c84036ae0a64843cdfa52c8e3d0bee9c52ce116"
+  integrity sha512-YFGqrwkmEhSbpZBxay5+PRKMiZNNUJzgIixCyFkLm9+/5Rqq5jBADEjTAC8RYHzwsOGNboYh18imXrYNCjBZCQ==
   dependencies:
     "@types/debug" "^4.1.7"
     debug "^4.3.3"

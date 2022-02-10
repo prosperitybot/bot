@@ -91,17 +91,3 @@ jobs:
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-
-  Restart:
-    needs: [Linter, CodeQL, Docker]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restarts Docker Stack
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: docker-compose pull && docker-compose up -d
-          host: ${{ secrets.DEPLOYMENT_SSH_IP }}
-          port: ${{ secrets.DEPLOYMENT_SSH_PORT }}
-          username: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-          privateKey: ${{ secrets.DEPLOYMENT_SSH_KEY }}

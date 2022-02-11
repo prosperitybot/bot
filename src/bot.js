@@ -66,7 +66,7 @@ module.exports = {
         }
 
         if (interaction.isButton()) {
-          const buttonList = client.buttonList.get(interaction.customId.split('-')[0]);
+          const buttonList = client.buttonLists.get(interaction.customId.split('-')[0]);
           if (!buttonList) return;
 
           await buttonList.execute(interaction);

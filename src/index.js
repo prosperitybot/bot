@@ -46,6 +46,7 @@ setInterval(async () => {
         break;
     }
     bot.botId = bot.oldBotId ?? bot.botId;
+    bot.oldbotId = null;
     bot.last_action = bot.action;
     bot.action = null;
     await bot.save();

@@ -29,7 +29,7 @@ module.exports = {
         }
         case 'whitelabel-bot_stop': {
           const bot = await WhitelabelBot.findOne({ where: { userId: interaction.member.id } });
-          bot.action = 'stop`';
+          bot.action = 'stop';
           await bot.save();
           await reply(interaction, 'Bot Stopped, it may take a few seconds to process.', true);
           break;

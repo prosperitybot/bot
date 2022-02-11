@@ -68,16 +68,16 @@ module.exports = {
                 new MessageButton()
                   .setLabel('Start')
                   .setStyle('SUCCESS')
-                  .setCustomId('whitelabel_bot_start')
+                  .setCustomId('whitelabel-bot_start')
                   .setDisabled(currentBot.last_action !== 'stop'),
                 new MessageButton()
                   .setLabel('Restart')
                   .setStyle('PRIMARY')
-                  .setCustomId('whitelabel_bot_restart'),
+                  .setCustomId('whitelabel-bot_restart'),
                 new MessageButton()
                   .setLabel('Stop')
                   .setStyle('DANGER')
-                  .setCustomId('whitelabel_bot_stop')
+                  .setCustomId('whitelabel-bot_stop')
                   .setDisabled(currentBot.last_action === 'stop'),
               );
 

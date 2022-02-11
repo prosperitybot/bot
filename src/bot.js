@@ -13,9 +13,11 @@ module.exports = {
     // Register Commands & Menus
     client.commands = new Collection();
     client.menus = new Collection();
+    client.buttonLists = new Collection();
 
     const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
     const menuFiles = fs.readdirSync('./src/selectMenus').filter((file) => file.endsWith('.js'));
+    const buttonListFiles = fs.readdirSync('./src/buttonLists').filter((file) => file.endsWith('.js'));
 
     commandFiles.forEach((file) => {
       const command = require(`./commands/${file}`);
@@ -25,6 +27,11 @@ module.exports = {
     menuFiles.forEach((file) => {
       const menu = require(`./selectMenus/${file}`);
       client.menus.set(menu.name, menu);
+    });
+
+    buttonListFiles.forEach((file) => {
+      const buttonList = require(`./buttonLists/${file}`);
+      client.buttonLists.set(buttonList.name, buttonList);
     });
 
     const eventFiles = fs.readdirSync('./src/events').filter((file) => file.endsWith('.js'));
@@ -56,6 +63,13 @@ module.exports = {
           if (!menu) return;
 
           await menu.execute(interaction);
+        }
+
+        if (interaction.isButton()) {
+          const buttonList = client.buttonList.get(interaction.customId.split('-')[0]);
+          if (!buttonList) return;
+
+          await buttonList.execute(interaction);
         }
         return;
       } catch (error) {

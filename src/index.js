@@ -17,7 +17,7 @@ if (process.env.SENTRY_DSN !== '') {
   });
 }
 
-WhitelabelBot.findAll({ where: { last_action: { [Op.any]: ['start', 'restart'] } } }).then((whitelabelBots) => {
+WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
   whitelabelBots.forEach((bot) => { clients[bot.botId] = login(bot.botId, bot.token); });
 });
 

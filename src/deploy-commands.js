@@ -11,7 +11,11 @@ module.exports = {
 
     commandFiles.forEach((file) => {
       const command = require(`./commands/${file}`);
-      commands.push(command.data.toJSON());
+      if (command.mainBotOnly !== true) {
+        commands.push(command.data.toJSON());
+      } else if (botId === process.env.CLIENT_ID) {
+        commands.push(command.data.toJSON());
+      }
     });
 
     const rest = new REST({ version: '9' }).setToken(botToken);

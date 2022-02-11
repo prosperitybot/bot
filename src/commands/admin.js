@@ -4,6 +4,7 @@ const Sentry = require('@sentry/node');
 const { reply } = require('../utils/messages');
 
 module.exports = {
+  mainBotOnly: true,
   data: new SlashCommandBuilder()
     .setName('admin')
     .setDescription('Admin bot settings')

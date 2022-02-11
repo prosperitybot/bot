@@ -145,10 +145,10 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/snappy-win32-x64-msvc/-/snappy-win32-x64-msvc-7.1.1.tgz#d30667e62057b8ec60a117722cc0662617330691"
   integrity sha512-Mu3yELySvzhBcNTVCq+hYxVh+lH3/KjoQ5HIEb3DDPoX0AGRTm3XZa+usq8pFWjl91Cgp9nWK+9lVSkCCIRaKA==
 
-"@prosperitybot/database@^1.0.3":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.3.0.tgz#7866547fd0cc76faf831a1a94b6adb1e8f276588"
-  integrity sha512-j1p6uy3YOCZLKGDj4maDb4fBdGBsgC72I9h08nuGMovdX+Y7GGntx8tRosrJ9HJWrFggbs81AkDexdHi4gY7Ww==
+"@prosperitybot/database@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.3.3.tgz#c32a07ac4bb40ce3f658f3ee1e1947c50fe62491"
+  integrity sha512-dnB9I1ZWRbRwXEEYL5FnuN3o5ES2itDuGvdDODE3bpz3xL2vNzGsCRjXb8VLkDCV7zYvbADrOz2oHnROaeqh9w==
   dependencies:
     debug "^4.3.3"
     dottie "^2.0.2"
@@ -271,7 +271,7 @@
     "@sentry/types" "6.17.7"
     tslib "^1.9.3"
 
-"@sentry/node@^6.16.1":
+"@sentry/node@^6.17.6":
   version "6.17.7"
   resolved "https://registry.yarnpkg.com/@sentry/node/-/node-6.17.7.tgz#c142d93328b29312098276e0cb66ec3b9e805a93"
   integrity sha512-YlBhEv8YYUimHLpwzUP5lXkagbGxGAfjvsbahhvqf7rRl8Fu5XbatAcSDcx7YE4R0Iox94IfZy95kF2NL4Idow==
@@ -1645,11 +1645,7 @@ sequelize-pool@^7.1.0:
   resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-7.1.0.tgz#210b391af4002762f823188fd6ecfc7413020768"
   integrity sha512-G9c0qlIWQSK29pR/5U2JF5dDQeqqHRragoyahj/Nx4KOOQ3CPPfzxnfqFPCSB7x5UgjOgnZ61nSxz+fjDpRlJg==
 
-<<<<<<< HEAD
-sequelize@^6.13.0, sequelize@^6.15.1:
-=======
 sequelize@^6.13.0, sequelize@^6.16.1:
->>>>>>> 9fa182b36835a3e27812d8e9c876c6e72e660037
   version "6.16.1"
   resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.16.1.tgz#2c84036ae0a64843cdfa52c8e3d0bee9c52ce116"
   integrity sha512-YFGqrwkmEhSbpZBxay5+PRKMiZNNUJzgIixCyFkLm9+/5Rqq5jBADEjTAC8RYHzwsOGNboYh18imXrYNCjBZCQ==

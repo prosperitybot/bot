@@ -5,10 +5,12 @@ const { Op, fn } = require('sequelize');
 const Sentry = require('@sentry/node');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply, send } = require('../utils/messages');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   name: 'messageCreate',
   async execute(message) {
+    const translations = translationManager.get(message);
     if (message.author.bot) return;
 
     try {
@@ -75,16 +77,36 @@ module.exports = {
             await gu.save();
             switch (guild.notificationType) {
               case 'reply':
-                await reply(message, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);
+                await reply(
+                  message,
+                  // eslint-disable-next-line max-len
+                  translationManager.format(
+                    translations.events.message_create.message_level_up_reply,
+                    [['user', message.author], ['level', gu.level]],
+                  ),
+                );
                 break;
               case 'channel': {
                 const channel = await message.guild.channels.fetch(guild.notificationChannel);
-                await send(channel, `Congratulations ${message.author} you have ranked up to level ${gu.level}`);
+                await send(
+                  channel,
+                  // eslint-disable-next-line max-len
+                  translationManager.format(
+                    translations.events.message_create.message_level_up_channel,
+                    [['user', message.author], ['level', gu.level]],
+                  ),
+                );
                 break;
               }
               case 'dm':
                 message.author.createDM().then((c) => {
-                  c.send(`Congratulations ${message.author} you have ranked up to level ${gu.level}`);
+                  c.send(
+                    // eslint-disable-next-line max-len
+                    translationManager.format(
+                      translations.events.message_create.message_level_up_dm,
+                      [['user', message.author], ['level', gu.level]],
+                    ),
+                  );
                 }).catch((e) => Sentry.captureException(e));
                 break;
               default:

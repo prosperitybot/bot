@@ -3,6 +3,7 @@ const { IgnoredRole } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,8 +25,9 @@ module.exports = {
       .setName('list')
       .setDescription('Lists all of the ignored roles in the server')),
   async execute(interaction) {
+    const translations = translationManager.get(interaction);
     if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
-      await reply(interaction, 'Access Denied', true);
+      await reply(interaction, translations.generic.access_denied, true);
       return;
     }
     try {
@@ -34,7 +36,14 @@ module.exports = {
           const role = interaction.options.getRole('role');
           const ignoredRole = await IgnoredRole.findOne({ where: { id: role.id } });
           if (ignoredRole != null) {
-            await reply(interaction, 'This role is already being ignored.', true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.ignoredroles.role_already_ignored,
+                [['role', role]],
+              ),
+              true,
+            );
             break;
           }
 
@@ -43,27 +52,48 @@ module.exports = {
             guildId: interaction.guild.id,
           });
 
-          await reply(interaction, `${role} will be ignored from gaining xp`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.ignoredroles.role_now_ignored,
+              [['role', role]],
+            ),
+            false,
+          );
           break;
         }
         case 'remove': {
           const role = interaction.options.getRole('role');
           const ignoredRole = await IgnoredRole.findOne({ where: { id: role.id } });
           if (ignoredRole == null) {
-            await reply(interaction, 'This role is not being ignored.', true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.ignoredroles.role_not_ignored,
+                [['role', role]],
+              ),
+              true,
+            );
             break;
           }
 
           await ignoredRole.destroy();
 
-          await reply(interaction, `${role} will not be ignored from gaining xp`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.ignoredroles.role_now_not_ignored,
+              [['role', role]],
+            ),
+            false,
+          );
           break;
         }
         case 'list': {
           const ignoredRoles = await IgnoredRole.findAll({
             where: { guildId: interaction.guild.id },
           });
-          let listMsg = 'Ignored Roles: \n';
+          let listMsg = `${translations.commands.ignoredroles.role_list_title}: \n`;
           ignoredRoles.forEach((c) => {
             listMsg += `\n- <#${c.id}>`;
           });
@@ -78,7 +108,14 @@ module.exports = {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await reply(
+        interaction,
+        translationManager.format(
+          translations.generic.error,
+          [['error_code', errorCode]],
+        ),
+        true,
+      );
     }
   },
 };

@@ -4,6 +4,7 @@ const { Guild } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,9 +31,10 @@ module.exports = {
         .setDescription('The multiplier to apply to this server')
         .setRequired(true))),
   async execute(interaction) {
+    const translations = await translationManager.get(interaction);
     try {
       if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
-        await reply(interaction, 'Access Denied', true);
+        await reply(interaction, translations.generic.access_denied, true);
         return;
       }
       switch (interaction.options.getSubcommand()) {
@@ -42,7 +44,14 @@ module.exports = {
             guild.notificationType = 'channel';
             guild.notificationChannel = interaction.options.getChannel('channel').id;
             await guild.save();
-            await reply(interaction, `Successfully updated level up notifications to be sent in ${interaction.options.getChannel('channel')}`, true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.settings.notification_channel_updated,
+                [['channel', interaction.otpions.getChannel('channel')]],
+              ),
+              true,
+            );
             break;
           }
           const notificationsRow = new MessageActionRow()
@@ -52,32 +61,35 @@ module.exports = {
                 .setPlaceholder('Choose type of notifications')
                 .addOptions([
                   {
-                    label: 'Reply to message',
-                    description: 'Send the level up message by replying to the message that triggered the level up',
+                    label: translations.commands.settings.notification_type_reply_label,
+                    description: translations.commands.settings.notification_type_reply_description,
                     value: 'guild_settings_notifications-reply',
                     emoji: '💬',
                   },
                   {
-                    label: 'Specify Channel',
-                    description: 'Send the level up message in a set channel',
+                    label: translations.commands.settings.notification_type_channel_label,
+                    // eslint-disable-next-line max-len
+                    description: translations.commands.settings.notification_type_channel_description,
                     value: 'guild_settings_notifications-channel',
                     emoji: '📃',
                   },
                   {
-                    label: 'Direct Messages',
-                    description: 'Send the level up message via direct messages',
+                    label: translations.commands.settings.notification_type_dm_label,
+                    description: translations.commands.settings.notification_type_dm_description,
                     value: 'guild_settings_notifications-dm',
                     emoji: '🔏',
                   },
                   {
-                    label: 'Disabled',
-                    description: 'Disable level up messages',
+                    label: translations.commands.settings.notification_type_disabled_label,
+                    // eslint-disable-next-line max-len
+                    description: translations.commands.settings.notification_type_disabled_description,
                     value: 'guild_settings_notifications-disable',
                     emoji: '🚫',
                   },
                 ]),
             );
-          await reply(interaction, 'Please select the type of notifications you want below...', true, [notificationsRow]);
+          // eslint-disable-next-line max-len
+          await reply(interaction, translations.commands.settings.please_select, true, [notificationsRow]);
           break;
         }
         case 'roles': {
@@ -86,9 +98,9 @@ module.exports = {
           guild.roleAssignType = type;
           await guild.save();
           if (type === 'stack') {
-            await reply(interaction, 'Users will now have stacked roles and their previous roles will not be removed', true);
+            await reply(interaction, translations.commands.settings.role_type_stacked, true);
           } else {
-            await reply(interaction, 'Users will now have single roles and their previous roles will be removed', true);
+            await reply(interaction, translations.commands.settings.role_type_single, true);
           }
           break;
         }
@@ -97,7 +109,14 @@ module.exports = {
           const guild = await Guild.findByPk(interaction.guild.id);
           guild.xpRate = multiplier;
           await guild.save();
-          await reply(interaction, `This guild now has a **${multiplier}x** multiplier assigned`, true);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.settings.multiplier_set,
+              [['multiplier', multiplier]],
+            ),
+            true,
+          );
           break;
         }
         default:
@@ -107,7 +126,14 @@ module.exports = {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await reply(
+        interaction,
+        translationManager.format(
+          translations.generic.error,
+          [['error_code', errorCode]],
+        ),
+        true,
+      );
     }
   },
 };

@@ -3,6 +3,7 @@ const { IgnoredChannel } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,8 +25,9 @@ module.exports = {
       .setName('list')
       .setDescription('Lists all of the ignored channels in the server')),
   async execute(interaction) {
+    const translations = await translationManager.get(interaction);
     if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
-      await reply(interaction, 'Access Denied', true);
+      await reply(interaction, translations.generic.access_denied, true);
       return;
     }
     try {
@@ -34,7 +36,14 @@ module.exports = {
           const channel = interaction.options.getChannel('channel');
           const ignoredChannel = await IgnoredChannel.findOne({ where: { id: channel.id } });
           if (ignoredChannel != null) {
-            await reply(interaction, 'This channel is already being ignored.', true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.ignoredchannels.channel_already_ignored,
+                [['channel', channel]],
+              ),
+              true,
+            );
             break;
           }
 
@@ -43,27 +52,48 @@ module.exports = {
             guildId: interaction.guild.id,
           });
 
-          await reply(interaction, `${channel} will be ignored from gaining xp`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.ignoredchannels.channel_now_ignored,
+              [['channel', channel]],
+            ),
+            false,
+          );
           break;
         }
         case 'remove': {
           const channel = interaction.options.getChannel('channel');
           const ignoredChannel = await IgnoredChannel.findOne({ where: { id: channel.id } });
           if (ignoredChannel == null) {
-            await reply(interaction, 'This channel is not being ignored.', true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.ignoredchannels.channel_not_ignored,
+                [['channel', channel]],
+              ),
+              true,
+            );
             break;
           }
 
           await ignoredChannel.destroy();
 
-          await reply(interaction, `${channel} will not be ignored from gaining xp`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.ignoredchannels.channel_now_not_ignored,
+              [['channel', channel]],
+            ),
+            false,
+          );
           break;
         }
         case 'list': {
           const ignoredChannels = await IgnoredChannel.findAll({
             where: { guildId: interaction.guild.id },
           });
-          let listMsg = 'Ignored Channels: \n';
+          let listMsg = `${translations.commands.ignoredchannels.channel_list_title}: \n`;
           ignoredChannels.forEach((c) => {
             listMsg += `\n- <#${c.id}>`;
           });
@@ -78,7 +108,14 @@ module.exports = {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await reply(
+        interaction,
+        translationManager.format(
+          translations.generic.error,
+          [['error_code', errorCode]],
+        ),
+        true,
+      );
     }
   },
 };

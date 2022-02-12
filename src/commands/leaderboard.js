@@ -3,6 +3,7 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 const { GuildUser, User } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { reply } = require('../utils/messages');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,6 +13,7 @@ module.exports = {
       .setDescription('The page you want to display')
       .setRequired(false)),
   async execute(interaction) {
+    const translations = await translationManager.get(interaction);
     let offset = 0;
     const pageSize = 10;
     const page = interaction.options.getInteger('page') ?? 1;
@@ -26,8 +28,11 @@ module.exports = {
         order: [['xp', 'DESC']],
         include: User,
       });
-      let leaderboardMsg = `**Top ${pageSize} members (Page ${page}/${Math.ceil(userCount / pageSize)})**: \n`;
-
+      let leaderboardMsg = translationManager.format(
+        translations.commands.leaderboard.leaderboard_title,
+        [['page_size', pageSize], ['page', page], ['total_pages', Math.ceil(userCount / pageSize)]],
+      );
+      leaderboardMsg += ': \n';
       guildUsers.forEach((gu) => {
         let rolePrefix = '';
         if (gu.user.access_levels.length > 0 && gu.user.access_levels[0] !== 'null') {
@@ -56,7 +61,14 @@ module.exports = {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await reply(
+        interaction,
+        translationManager.format(
+          translations.generic.error,
+          [['error_code', errorCode]],
+        ),
+        true,
+      );
     }
   },
 };

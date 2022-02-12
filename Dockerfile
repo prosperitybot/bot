@@ -8,6 +8,7 @@ COPY package.json /usr/src/bot
 RUN npm install
 
 COPY src /usr/src/bot/src
+COPY translations /usr/src/bot/translations
 
 # Start the bot
 CMD ["node", "src/index.js"]

@@ -4,6 +4,7 @@ const Sentry = require('@sentry/node');
 const { Op } = require('sequelize');
 const { reply, editReply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,8 +28,9 @@ module.exports = {
       .setName('list')
       .setDescription('Lists all of the level roles in the server')),
   async execute(interaction) {
+    const translations = await translationManager.get(interaction.guild.id, interaction.client);
     if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
-      await reply(interaction, 'Access Denied', true);
+      await reply(interaction, translations.generic.access_denied, true);
       return;
     }
     try {
@@ -38,12 +40,19 @@ module.exports = {
           const levelRole = await LevelRole.findOne({ where: { id: role.id } });
           const level = interaction.options.getInteger('level');
           if (levelRole != null) {
-            await reply(interaction, 'This role is already being used for a level.', true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.levelroles.role_already_used,
+                [['role', role]],
+              ),
+              true,
+            );
             return;
           }
 
           if (level <= 0) {
-            await reply(interaction, 'Level must be a positive number.', true);
+            await reply(interaction, translations.commands.levelroles.level_must_be_positive, true);
             return;
           }
 
@@ -64,7 +73,14 @@ module.exports = {
             newHighestLevel = nextHighestRole.level;
           }
 
-          await reply(interaction, `${role} will be granted at **Level ${level}**`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.levelroles.role_granted,
+              [['role', role], ['level', level]],
+            ),
+            false,
+          );
 
           const { count: dbMemberCount, rows: dbMembers } = await GuildUser.findAndCountAll({
             where: {
@@ -72,25 +88,44 @@ module.exports = {
               guildId: interaction.guild.id,
             },
           });
-          await editReply(interaction, `${role} will be granted at **Level ${level}**\n\n**Status**:\nCurrently adding this role to ${dbMemberCount} members`, false);
+          await editReply(
+            interaction,
+            translationManager.format(
+              translations.commands.levelroles.role_granted_status,
+              [['role', role], ['level', level], ['amount', dbMemberCount]],
+            ),
+            false,
+          );
           dbMembers.forEach(async (dbMember) => {
             interaction.guild.members.fetch(dbMember.userId.toString()).then((member) => {
               member.roles.add(role.id.toString(), 'Level role was added');
             }).catch((e) => console.log(`Could not add role - ${e}`));
           });
 
-          await editReply(interaction, `${role} will be granted at **Level ${level}**\n\n**Status**:\nAdded ${dbMemberCount} members to this role`, false);
-
+          await editReply(
+            interaction,
+            translationManager.format(
+              translations.commands.levelroles.role_granted_status_complete,
+              [['role', role], ['level', level], ['amount', dbMemberCount]],
+            ),
+            false,
+          );
           break;
         }
         case 'remove': {
           const role = interaction.options.getRole('role');
           const levelRole = await LevelRole.findOne({ where: { id: role.id } });
           if (levelRole == null) {
-            await reply(interaction, 'This role is not being used for a level.', true);
+            await reply(interaction, translations.commands.levelroles.role_not_used, true);
           }
-
-          await reply(interaction, `${role} will no longer be granted at level **Level ${levelRole.level}**`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.levelroles.role_removed,
+              [['role', role], ['level', levelRole.level]],
+            ),
+            false,
+          );
           await levelRole.destroy();
 
           interaction.guild.roles.cache.get(role.id).members.forEach((m) => {
@@ -115,7 +150,14 @@ module.exports = {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await reply(
+        interaction,
+        translationManager.format(
+          translations.generic.error,
+          [['error_code', errorCode]],
+        ),
+        true,
+      );
     }
   },
 };

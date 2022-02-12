@@ -14,14 +14,22 @@ module.exports = {
     client.commands = new Collection();
     client.menus = new Collection();
     client.buttonLists = new Collection();
+    client.guildTranslations = new Collection();
+    client.translations = new Collection();
 
     const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
     const menuFiles = fs.readdirSync('./src/selectMenus').filter((file) => file.endsWith('.js'));
     const buttonListFiles = fs.readdirSync('./src/buttonLists').filter((file) => file.endsWith('.js'));
+    const translationFiles = fs.readdirSync('./translations').filter((file) => file.endsWith('.json'));
 
     commandFiles.forEach((file) => {
       const command = require(`./commands/${file}`);
       client.commands.set(command.data.name, command);
+    });
+
+    translationFiles.forEach((file) => {
+      const translation = require(`../translations/${file}`);
+      client.translations.set(file.replace('.json', ''), translation);
     });
 
     menuFiles.forEach((file) => {

@@ -5,6 +5,7 @@ const Sentry = require('@sentry/node');
 const { getXpNeeded } = require('../utils/levelUtils');
 const { reply } = require('../utils/messages');
 const permissions = require('../utils/permissionUtils');
+const translationManager = require('../translations/translationsManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -29,8 +30,9 @@ module.exports = {
         .setDescription('The amount of xp to take')
         .setRequired(true))),
   async execute(interaction) {
+    const translations = await translationManager.get(interaction.guild.id, interaction.client);
     if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
-      await reply(interaction, 'Access Denied', true);
+      await reply(interaction, translations.generic.access_denied, true);
       return;
     }
     try {
@@ -44,12 +46,19 @@ module.exports = {
       switch (interaction.options.getSubcommand()) {
         case 'give': {
           if (guildUser == null) {
-            await reply(interaction, `${user} has not talked in chat since the bot was added`, true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.xp.user_doesnt_exist,
+                [['user', user]],
+              ),
+              true,
+            );
             return;
           }
 
           if (amount <= 0) {
-            await reply(interaction, 'Xp to give must be a positive number', true);
+            await reply(interaction, translations.commands.xp.xp_to_give_must_be_positive, true);
             return;
           }
 
@@ -77,17 +86,31 @@ module.exports = {
           }
 
           await guildUser.save();
-          await reply(interaction, `Given ${amount} xp to ${user.username}#${user.discriminator}`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.xp.xp_added,
+              [['amount', amount], ['user', `${user.username}#${user.discriminator}`]],
+            ),
+            false,
+          );
           break;
         }
         case 'take': {
           if (guildUser == null) {
-            await reply(interaction, `${user} has not talked in chat since the bot was added`, true);
+            await reply(
+              interaction,
+              translationManager.format(
+                translations.commands.xp.user_doesnt_exist,
+                [['user', user]],
+              ),
+              true,
+            );
             return;
           }
 
           if (amount <= 0) {
-            await reply(interaction, 'Xp to take must be a positive number', true);
+            await reply(interaction, translations.commands.xp.xp_to_take_must_be_positive, true);
             return;
           }
 
@@ -115,7 +138,14 @@ module.exports = {
           }
 
           await guildUser.save();
-          await reply(interaction, `Taken ${amount} xp from ${user.username}#${user.discriminator}`, false);
+          await reply(
+            interaction,
+            translationManager.format(
+              translations.commands.xp.xp_taken,
+              [['amount', amount], ['user', `${user.username}#${user.discriminator}`]],
+            ),
+            false,
+          );
           break;
         }
         default:
@@ -125,7 +155,14 @@ module.exports = {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await reply(
+        interaction,
+        translationManager.format(
+          translations.generic.error,
+          [['error_code', errorCode]],
+        ),
+        true,
+      );
     }
   },
 };

@@ -1,16 +1,14 @@
 const { Guild } = require('@prosperitybot/database');
 
 module.exports = {
-  get: async (i) => {
-    if (i.client.guildTranslations.get(i.guildId) === null) {
-      const guild = await Guild.findByPk(i.guildId);
+  get: async (client, guildId) => {
+    if (client.guildTranslations.get(guildId) === null) {
+      const guild = await Guild.findByPk(guildId);
       console.log(guild.locale);
-      i.client.guildTranslations.set(i.guildId, guild.locale);
+      client.guildTranslations.set(guildId, guild.locale);
     }
-    const locale = i.client.guildTranslations.get(i.guildId);
-    console.log(locale);
-    console.log(i.client.translations.get(locale));
-    return i.client.translations.get(locale);
+    const locale = client.guildTranslations.get(guildId);
+    return client.translations.get(locale);
   },
   format: (str, format) => {
     let formatted = str;

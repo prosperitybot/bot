@@ -28,7 +28,7 @@ module.exports = {
       .setName('list')
       .setDescription('Lists all of the level roles in the server')),
   async execute(interaction) {
-    const translations = await translationManager.get(interaction);
+    const translations = await translationManager.get(interaction.guild.id, interaction.client);
     if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
       await reply(interaction, translations.generic.access_denied, true);
       return;

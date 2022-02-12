@@ -6,7 +6,7 @@ const translationManager = require('../translations/translationsManager');
 module.exports = {
   name: 'guild_settings_notifications',
   async execute(interaction) {
-    const translations = await translationManager.get(interaction);
+    const translations = await translationManager.get(interaction.guild.id, interaction.client);
     try {
       const guild = await Guild.findByPk(interaction.guild.id);
       switch (interaction.values[0]) {

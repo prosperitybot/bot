@@ -10,7 +10,7 @@ const translationManager = require('../translations/translationsManager');
 module.exports = {
   name: 'messageCreate',
   async execute(message) {
-    const translations = translationManager.get(message);
+    const translations = await translationManager.get(message.guild.id, message.client);
     if (message.author.bot) return;
 
     try {

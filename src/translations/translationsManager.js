@@ -1,14 +1,25 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 const { Guild } = require('@prosperitybot/database');
+const { Collection } = require('discord.js');
+
+const guildTranslations = new Collection();
+const translations = new Collection();
 
 module.exports = {
   get: async (client, guildId) => {
-    if (client.guildTranslations.get(guildId) === null) {
+    if (guildTranslations.get(guildId) === null) {
       const guild = await Guild.findByPk(guildId);
-      console.log(guild.locale);
-      client.guildTranslations.set(guildId, guild.locale);
+      guildTranslations.set(guildId, guild.locale);
     }
-    const locale = client.guildTranslations.get(guildId);
+    const locale = guildTranslations.get(guildId);
     return client.translations.get(locale);
+  },
+  setup: (translationFiles) => {
+    translationFiles.forEach((file) => {
+      const translation = require(`../../translations/${file}`);
+      translations.set(file, translation);
+    });
   },
   format: (str, format) => {
     let formatted = str;

@@ -20,7 +20,7 @@ module.exports = {
     const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
     const menuFiles = fs.readdirSync('./src/selectMenus').filter((file) => file.endsWith('.js'));
     const buttonListFiles = fs.readdirSync('./src/buttonLists').filter((file) => file.endsWith('.js'));
-    const translationFiles = fs.readdirSync('../translations').filter((file) => file.endsWith('.json'));
+    const translationFiles = fs.readdirSync('./translations').filter((file) => file.endsWith('.json'));
 
     commandFiles.forEach((file) => {
       const command = require(`./commands/${file}`);

@@ -4,9 +4,12 @@ module.exports = {
   get: async (i) => {
     if (i.client.guildTranslations.get(i.guildId) === null) {
       const guild = await Guild.findByPk(i.guildId);
+      console.log(guild.locale);
       i.client.guildTranslations.set(i.guildId, guild.locale);
     }
     const locale = i.client.guildTranslations.get(i.guildId);
+    console.log(locale);
+    console.log(i.client.translations.get(locale));
     return i.client.translations.get(locale);
   },
   format: (str, format) => {

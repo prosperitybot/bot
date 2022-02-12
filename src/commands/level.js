@@ -30,7 +30,7 @@ module.exports = {
           interaction,
           translationManager.format(
             translations.commands.level.your_current_level,
-            [['user_level', guildUser.level], ['user_xp_needed', getXpNeeded(guildUser.level + 1) - guildUser.xp]],
+            [['level', guildUser.level], ['xp', getXpNeeded(guildUser.level + 1) - guildUser.xp]],
           ),
           false,
         );
@@ -51,8 +51,8 @@ module.exports = {
         await reply(
           interaction,
           translationManager.format(
-            translations.commands.level.your_current_level,
-            [['user', `${user.username}#${user.discriminator}`], ['user_level', guildUser.level], ['user_xp_needed', getXpNeeded(guildUser.level + 1) - guildUser.xp]],
+            translations.commands.level.user_current_level,
+            [['user', `${user.username}#${user.discriminator}`], ['level', guildUser.level], ['xp', getXpNeeded(guildUser.level + 1) - guildUser.xp]],
           ),
           false,
         );

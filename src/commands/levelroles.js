@@ -92,7 +92,7 @@ module.exports = {
             interaction,
             translationManager.format(
               translations.commands.levelroles.role_granted_status,
-              [['role', role], ['level', level], ['member_count', dbMemberCount]],
+              [['role', role], ['level', level], ['amount', dbMemberCount]],
             ),
             false,
           );
@@ -106,7 +106,7 @@ module.exports = {
             interaction,
             translationManager.format(
               translations.commands.levelroles.role_granted_status_complete,
-              [['role', role], ['level', level], ['member_count', dbMemberCount]],
+              [['role', role], ['level', level], ['amount', dbMemberCount]],
             ),
             false,
           );

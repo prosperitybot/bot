@@ -7,13 +7,13 @@ const guildTranslations = new Collection();
 const translations = new Collection();
 
 module.exports = {
-  get: async (client, guildId) => {
+  get: async (guildId) => {
     if (guildTranslations.get(guildId) === null) {
       const guild = await Guild.findByPk(guildId);
       guildTranslations.set(guildId, guild.locale);
     }
     const locale = guildTranslations.get(guildId);
-    return client.translations.get(locale);
+    return translations.get(locale);
   },
   setup: (translationFiles) => {
     translationFiles.forEach((file) => {

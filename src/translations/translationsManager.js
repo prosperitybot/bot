@@ -12,7 +12,6 @@ module.exports = {
       locale = client.guildTranslations.get(guildId);
     }
     console.log(locale);
-    console.log(client.translations);
     console.log(client.translations.get(locale));
     return client.translations.get(locale);
   },

@@ -29,7 +29,7 @@ module.exports = {
 
     translationFiles.forEach((file) => {
       const translation = require(`../translations/${file}`);
-      client.translations.set(file, translation);
+      client.translations.set(file.replace('.json', ''), translation);
     });
 
     menuFiles.forEach((file) => {

@@ -150,10 +150,10 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/snappy-win32-x64-msvc/-/snappy-win32-x64-msvc-7.1.1.tgz#d30667e62057b8ec60a117722cc0662617330691"
   integrity sha512-Mu3yELySvzhBcNTVCq+hYxVh+lH3/KjoQ5HIEb3DDPoX0AGRTm3XZa+usq8pFWjl91Cgp9nWK+9lVSkCCIRaKA==
 
-"@prosperitybot/database@^1.0.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.3.3.tgz#c32a07ac4bb40ce3f658f3ee1e1947c50fe62491"
-  integrity sha512-dnB9I1ZWRbRwXEEYL5FnuN3o5ES2itDuGvdDODE3bpz3xL2vNzGsCRjXb8VLkDCV7zYvbADrOz2oHnROaeqh9w==
+"@prosperitybot/database@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.4.0.tgz#f4f6de446939563ee05866c91fe6ca14d9de8a36"
+  integrity sha512-oyKSv56MstICNoNi+Szi5HGyyt+ZLG8HIZ+svXBT7SffNy7XFhPfcoykyZT+qm5n6T8DYCHTW2jFAyWDf8zxUw==
   dependencies:
     debug "^4.3.3"
     dottie "^2.0.2"

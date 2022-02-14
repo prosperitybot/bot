@@ -5,10 +5,9 @@ const { WhitelabelBot, setup: setupDatabase } = require('@prosperitybot/database
 const { Op } = require('sequelize');
 const { login } = require('./bot');
 const { sqlLogger } = require('./utils/loggingUtils');
+const clients = require('./clientManager');
 
 setupDatabase(sqlLogger);
-
-const clients = [];
 
 if (process.env.SENTRY_DSN !== '') {
   Sentry.init({
@@ -18,29 +17,29 @@ if (process.env.SENTRY_DSN !== '') {
 }
 
 WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
-  whitelabelBots.forEach((bot) => { clients[bot.botId] = login(bot.botId, bot.token); });
+  whitelabelBots.forEach((bot) => { clients.addClient(bot.botId, login(bot.botId, bot.token)); });
 });
 
-clients[process.env.CLIENT_ID] = login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);
+clients.addClient(process.env.CLIENT_ID, login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN));
 
 setInterval(async () => {
   const botsToStart = await WhitelabelBot.findAll({ where: { action: { [Op.ne]: null } } });
   botsToStart.forEach(async (bot) => {
     switch (bot.action) {
       case 'restart':
-        clients[bot.oldBotId ?? bot.botId].destroy();
-        clients[bot.oldBotId ?? bot.botId] = null;
-        clients[bot.botId] = login(bot.botId, bot.token);
+        clients.getClient(bot.oldBotId ?? bot.botId).destroy();
+        clients.removeClient(bot.oldBotId ?? bot.botId);
+        clients.addClient(bot.botId, login(bot.botId, bot.token));
         break;
       case 'start':
         if (bot.oldBotId != null) {
-          clients[bot.oldBotId].destroy();
+          clients.getClient(bot.oldBotId).destroy();
         }
-        clients[bot.oldBotId ?? bot.botId] = null;
-        clients[bot.botId] = login(bot.botId, bot.token);
+        clients.removeClient(bot.oldBotId ?? bot.botId);
+        clients.addClient(bot.botId, login(bot.botId, bot.token));
         break;
       case 'stop':
-        clients[bot.botId].destroy();
+        clients.getClient(bot.botId).destroy();
         break;
       default:
         break;
@@ -55,6 +54,6 @@ setInterval(async () => {
 
 process.on('SIGINT', () => {
   console.log('Shutting down nicely...');
-  clients.forEach((client) => client.destroy());
+  clients.getAllClients().forEach((client) => client.destroy());
   process.exit();
 });

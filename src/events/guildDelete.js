@@ -1,6 +1,7 @@
 const { Guild } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { eventLogger } = require('../utils/loggingUtils');
+const clientManager = require('../clientManager');
 
 module.exports = {
   name: 'guildDelete',
@@ -10,7 +11,10 @@ module.exports = {
       dbGuild.active = false;
       await dbGuild.save();
 
-      guild.client.user.setActivity(`${guild.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)} members in ${guild.client.guilds.cache.size} servers`, { type: 'WATCHING' });
+      const guildCount = clientManager.getTotalGuildCount();
+      const memberCount = clientManager.getTotalMemberCount();
+      guild.client.user.setActivity(`over ${memberCount} members (${guildCount} servers)`, { type: 'WATCHING' });
+
       eventLogger.info(`Left a guild '${guild.name}' (${guild.id}) with ${guild.memberCount} members`);
     } catch (e) {
       Sentry.setTag('guild_id', guild.id);

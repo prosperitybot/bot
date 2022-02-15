@@ -10,6 +10,6 @@ module.exports = {
   removeClient: (botId) => {
     clients[botId] = null;
   },
-  getTotalGuildCount: () => this.getAllClients().map((c) => c.guilds.cache.size).reduce((a, g) => a + g, 0),
-  getTotalMemberCount: () => this.getAllClients().map((c) => c.guilds.cache.reduce((a, g) => a + g.memberCount, 0)).reduce((a, g) => a + g, 0),
+  getTotalGuildCount: () => module.exports.getAllClients().map((c) => c.guilds.cache.size).reduce((a, g) => a + g, 0),
+  getTotalMemberCount: () => module.exports.getAllClients().map((c) => c.guilds.cache.reduce((a, g) => a + g.memberCount, 0)).reduce((a, g) => a + g, 0),
 };

@@ -1,7 +1,6 @@
 const { Guild } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { eventLogger } = require('../utils/loggingUtils');
-const clientManager = require('../clientManager');
 
 module.exports = {
   name: 'guildCreate',
@@ -18,10 +17,6 @@ module.exports = {
           premium: false,
         });
       }
-
-      const guildCount = clientManager.getTotalGuildCount();
-      const memberCount = clientManager.getTotalMemberCount();
-      guild.client.user.setActivity(`over ${memberCount} members (${guildCount} servers)`, { type: 'WATCHING' });
 
       eventLogger.info(`Joined a new guild '${guild.name}' (${guild.id}) with ${guild.memberCount} members`);
     } catch (e) {

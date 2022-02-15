@@ -1,6 +1,5 @@
 const Sentry = require('@sentry/node');
 const { deploy } = require('../deploy-commands');
-const clientManager = require('../clientManager');
 
 module.exports = {
   name: 'ready',
@@ -9,9 +8,7 @@ module.exports = {
     try {
       console.log(`Ready! Logged in as ${client.user.tag}`);
 
-      const guildCount = clientManager.getTotalGuildCount();
-      const memberCount = clientManager.getTotalMemberCount();
-      clientManager.getAllClients((c) => c.user.setActivity(`over ${memberCount} members (${guildCount} servers)`, { type: 'WATCHING' }));
+      client.user.setAcitivity('/about', { type: 'LISTENING' });
 
       if (process.env.ADMIN_COMMAND_ID === '') {
         deploy(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);

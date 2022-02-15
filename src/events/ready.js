@@ -8,7 +8,7 @@ module.exports = {
     try {
       console.log(`Ready! Logged in as ${client.user.tag}`);
 
-      client.user.setAcitivity('/about', { type: 'LISTENING' });
+      client.user.setActivity('/about', { type: 'LISTENING' });
 
       if (process.env.ADMIN_COMMAND_ID === '') {
         deploy(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);

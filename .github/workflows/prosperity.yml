@@ -87,6 +87,7 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
+          ignore_missing: true
 
       - uses: sarisia/actions-status-discord@v1
         if: always()

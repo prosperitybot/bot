@@ -4,6 +4,7 @@ const Sentry = require('@sentry/node');
 const { MessageLog, User } = require('@prosperitybot/database');
 const { Op } = require('sequelize');
 const { reply } = require('../utils/messages');
+const clientManager = require('../clientManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -32,8 +33,8 @@ module.exports = {
       owners.forEach((u) => { ownerMsg += `- ${u.username}#${u.discriminator}\n`; });
 
       embed.setDescription('Prosperity is a levelling bot ready to skill up and boost up your Discord server. We pride ourselves on openness, transparency and collaboration.');
-      embed.addField('Bot Statistics', `Servers: ${interaction.client.guilds.cache.size}
-      Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
+      embed.addField('Bot Statistics', `Servers: ${clientManager.getTotalGuildCount()}
+      Total Members: ${clientManager.getTotalMemberCount()}
       Total Messages: ${totalMessageCount}`);
 
       embed.addField(`<:prosperity_owner:940692775454797825> Owners (${owners.length})`, ownerMsg);

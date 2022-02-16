@@ -32,8 +32,13 @@ module.exports = {
       developers.forEach((u) => { developerMsg += `- ${u.username}#${u.discriminator}\n`; });
       owners.forEach((u) => { ownerMsg += `- ${u.username}#${u.discriminator}\n`; });
 
+      let guildCount = 0;
+      clientManager.getAllClients().forEach((client) => {
+        guildCount += client.guilds.cache.size;
+      });
+
       embed.setDescription('Prosperity is a levelling bot ready to skill up and boost up your Discord server. We pride ourselves on openness, transparency and collaboration.');
-      embed.addField('Bot Statistics', `Servers: ${clientManager.getTotalGuildCount()}
+      embed.addField('Bot Statistics', `Servers: ${guildCount}
       Total Members: ${clientManager.getTotalMemberCount()}
       Total Messages: ${totalMessageCount}`);
 

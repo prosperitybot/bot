@@ -14,7 +14,6 @@ module.exports = {
         dbGuild = await Guild.create({
           id: guild.id,
           name: guild.name,
-          premium: false,
         });
       }
 

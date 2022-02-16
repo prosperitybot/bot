@@ -1,4 +1,3 @@
-const { Guild } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');
 const { eventLogger } = require('../utils/loggingUtils');
 
@@ -6,10 +5,6 @@ module.exports = {
   name: 'guildDelete',
   async execute(guild) {
     try {
-      const dbGuild = await Guild.findByPk(guild.id);
-      dbGuild.active = false;
-      await dbGuild.save();
-
       eventLogger.info(`Left a guild '${guild.name}' (${guild.id}) with ${guild.memberCount} members`);
     } catch (e) {
       Sentry.setTag('guild_id', guild.id);

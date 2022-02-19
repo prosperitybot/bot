@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { User, GuildUser, LevelRole } = require('@prosperitybot/database');
 const Sentry = require('@sentry/node');

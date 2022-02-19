@@ -10,8 +10,8 @@ const translationManager = require('../translations/translationsManager');
 module.exports = {
   name: 'messageCreate',
   async execute(message) {
-    const translations = await translationManager.get(message.guild.id, message.client);
     if (message.author.bot) return;
+    const translations = await translationManager.getTranslations(message.author.id, message.guild.id, message.client);
 
     try {
       await User.upsert({
@@ -79,7 +79,6 @@ module.exports = {
               case 'reply':
                 await reply(
                   message,
-                  // eslint-disable-next-line max-len
                   translationManager.format(
                     translations.events.message_create.message_level_up_reply,
                     [['user', message.author], ['level', gu.level]],
@@ -90,7 +89,6 @@ module.exports = {
                 const channel = await message.guild.channels.fetch(guild.notificationChannel);
                 await send(
                   channel,
-                  // eslint-disable-next-line max-len
                   translationManager.format(
                     translations.events.message_create.message_level_up_channel,
                     [['user', message.author], ['level', gu.level]],
@@ -101,7 +99,6 @@ module.exports = {
               case 'dm':
                 message.author.createDM().then((c) => {
                   c.send(
-                    // eslint-disable-next-line max-len
                     translationManager.format(
                       translations.events.message_create.message_level_up_dm,
                       [['user', message.author], ['level', gu.level]],

@@ -31,7 +31,7 @@ module.exports = {
         .setDescription('The multiplier to apply to this server')
         .setRequired(true))),
   async execute(interaction) {
-    const translations = await translationManager.get(interaction.guild.id, interaction.client);
+    const translations = await translationManager.getTranslations(interaction.user.id, interaction.guild.id, interaction.client);
     try {
       if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
         await reply(interaction, translations.generic.access_denied, true);
@@ -68,7 +68,6 @@ module.exports = {
                   },
                   {
                     label: translations.commands.settings.notification_type_channel_label,
-                    // eslint-disable-next-line max-len
                     description: translations.commands.settings.notification_type_channel_description,
                     value: 'guild_settings_notifications-channel',
                     emoji: '📃',
@@ -81,14 +80,12 @@ module.exports = {
                   },
                   {
                     label: translations.commands.settings.notification_type_disabled_label,
-                    // eslint-disable-next-line max-len
                     description: translations.commands.settings.notification_type_disabled_description,
                     value: 'guild_settings_notifications-disable',
                     emoji: '🚫',
                   },
                 ]),
             );
-          // eslint-disable-next-line max-len
           await reply(interaction, translations.commands.settings.please_select, true, [notificationsRow]);
           break;
         }

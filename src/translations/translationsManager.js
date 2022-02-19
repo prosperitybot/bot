@@ -29,8 +29,6 @@ module.exports = {
     }
     const guildLocale = await module.exports.getGuildLocale(guildId, client);
     const userLocale = await module.exports.getUserLocale(userId, client);
-    console.log(client.guildTranslationsOnly.get(guildId));
-    console.log(userLocale === undefined);
     if (client.guildTranslationsOnly.get(guildId) === true || userLocale === undefined) {
       return guildLocale;
     }
@@ -40,7 +38,6 @@ module.exports = {
     let locale;
     if (client.userTranslations.get(userId) === undefined) {
       const user = await User.findByPk(userId);
-      console.log(user == null);
       client.userTranslations.set(userId, user.locale);
       locale = user.locale;
     } else {

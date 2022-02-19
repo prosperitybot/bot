@@ -1,0 +1,19 @@
+name: Pull Request Approver
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches: [ main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.14.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "PR: Bot Owner"
+          MERGE_METHOD: "squash"
+          MERGE_FILTER_AUTHOR: "benhall-1"

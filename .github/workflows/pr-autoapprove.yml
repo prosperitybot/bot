@@ -17,4 +17,4 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.BOT_GITHUB_TOKEN }}"
           MERGE_LABELS: "PR: Bot Owner"
           MERGE_METHOD: "squash"
-          MERGE_FILTER_AUTHOR: "benhall-1"
+          MERGE_FILTER_AUTHOR: "BenHall-1"

@@ -35,7 +35,7 @@ module.exports = {
       leaderboardMsg += ': \n';
       guildUsers.forEach((gu) => {
         let rolePrefix = '';
-        if (gu.user.access_levels.length > 0 && gu.user.access_levels[0] !== 'null') {
+        if (gu.user.access_levels.length > 0 && gu.user.access_levels[0] !== '') {
           rolePrefix = '(';
           gu.user.access_levels.forEach((accessLevel) => {
             if (accessLevel === 'TRANSLATOR') rolePrefix += '<:prosperity_language:940692871181381632>';
@@ -60,6 +60,8 @@ module.exports = {
     } catch (e) {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
+      Sentry.setTag('user_id', interaction.user.id);
+      Sentry.setTag('command', interaction.commandName);
       const errorCode = Sentry.captureException(e);
       await reply(
         interaction,

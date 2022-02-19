@@ -107,6 +107,8 @@ module.exports = {
     } catch (e) {
       Sentry.setTag('guild_id', interaction.guild.id);
       Sentry.setTag('bot_id', interaction.applicationId);
+      Sentry.setTag('user_id', interaction.user.id);
+      Sentry.setTag('command', interaction.commandName);
       const errorCode = Sentry.captureException(e);
       await reply(
         interaction,

@@ -17,9 +17,9 @@ if (process.env.SENTRY_DSN !== '') {
 
 const clients = [];
 
-WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
-  whitelabelBots.forEach((bot) => { clients[bot.botId] = login(bot.botId, bot.token); });
-});
+// WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
+//   whitelabelBots.forEach((bot) => { clients[bot.botId] = login(bot.botId, bot.token); });
+// });
 
 clients[process.env.CLIENT_ID] = login(process.env.CLIENT_ID, process.env.DISCORD_TOKEN);
 

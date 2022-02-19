@@ -21,5 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-ecosystem/action-add-labels@v1
+        if: github.actor == 'BenHall-1'
         with:
           labels: 'PR: Bot Owner'

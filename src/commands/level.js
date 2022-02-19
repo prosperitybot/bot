@@ -13,7 +13,7 @@ module.exports = {
       .setDescription('The user you want to check the level of')
       .setRequired(false)),
   async execute(interaction) {
-    const translations = await translationManager.get(interaction.guild.id, interaction.client);
+    const translations = await translationManager.getTranslations(interaction.user.id, interaction.guild.id, interaction.client);
     try {
       if (interaction.options.getUser('user') == null) {
         const guildUser = await GuildUser.findOne({

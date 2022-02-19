@@ -13,7 +13,7 @@ module.exports = {
       .setDescription('The page you want to display')
       .setRequired(false)),
   async execute(interaction) {
-    const translations = await translationManager.get(interaction.guild.id, interaction.client);
+    const translations = await translationManager.getTranslations(interaction.user.id, interaction.guild.id, interaction.client);
     let offset = 0;
     const pageSize = 10;
     const page = interaction.options.getInteger('page') ?? 1;

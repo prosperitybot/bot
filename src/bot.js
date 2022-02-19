@@ -15,7 +15,9 @@ module.exports = {
     client.menus = new Collection();
     client.buttonLists = new Collection();
     client.guildTranslations = new Collection();
+    client.userTranslations = new Collection();
     client.translations = new Collection();
+    client.guildTranslationsOnly = new Collection();
 
     const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
     const menuFiles = fs.readdirSync('./src/selectMenus').filter((file) => file.endsWith('.js'));

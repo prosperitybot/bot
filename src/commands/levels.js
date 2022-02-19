@@ -29,7 +29,7 @@ module.exports = {
         .setDescription('The amount of levels to take')
         .setRequired(true))),
   async execute(interaction) {
-    const translations = await translationManager.get(interaction.guild.id, interaction.client);
+    const translations = await translationManager.getTranslations(interaction.user.id, interaction.guild.id, interaction.client);
     if (!permissions.has(interaction.member, 'ADMINISTRATOR')) {
       await reply(interaction, translations.generic.access_denied, true);
       return;
@@ -57,7 +57,6 @@ module.exports = {
           }
 
           if (amount <= 0) {
-            // eslint-disable-next-line max-len
             await reply(interaction, translations.commands.levels.level_to_give_must_be_positive, true);
             return;
           }
@@ -90,7 +89,6 @@ module.exports = {
           }
 
           if (amount <= 0) {
-            // eslint-disable-next-line max-len
             await reply(interaction, translations.commands.levels.level_to_take_must_be_positive, true);
             return;
           }

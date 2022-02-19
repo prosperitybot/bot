@@ -54,6 +54,7 @@ module.exports = {
             await editReply(interaction, 'Database Seeded', true);
           } catch (e) {
             const errorCode = Sentry.captureException(e);
+            // eslint-disable-next-line max-len
             await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
           }
           break;

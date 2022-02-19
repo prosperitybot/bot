@@ -8,13 +8,18 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  automerge:
+  auto-approve:
     runs-on: ubuntu-latest
     steps:
-      - name: automerge
-        uses: "pascalgn/automerge-action@v0.14.3"
-        env:
-          GITHUB_TOKEN: "${{ secrets.BOT_GITHUB_TOKEN }}"
-          MERGE_LABELS: "PR: Bot Owner"
-          MERGE_METHOD: "squash"
-          MERGE_FILTER_AUTHOR: "BenHall-1"
+    - uses: hmarr/auto-approve-action@v2
+      if: github.actor == 'BenHall-1'
+      with:
+        github-token: "${{ secrets.BOT_GITHUB_TOKEN }}"
+  add_label:
+    runs-on: ubuntu-latest
+    needs: auto-approve
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: 'PR: Bot Owner'

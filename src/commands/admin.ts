@@ -1,20 +1,19 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const Sentry = require('@sentry/node');
-const { reply } = require('../utils/messages');
+import {
+  BaseCommandInteraction, Client, MessageActionRow, MessageSelectMenu,
+} from 'discord.js';
+import * as Sentry from '@sentry/node';
+import { Command } from '../types/Command';
+import { ReplyToInteraction } from '../utils/messageUtils';
 
-module.exports = {
-  mainBotOnly: true,
-  data: new SlashCommandBuilder()
-    .setName('admin')
-    .setDescription('Admin bot settings')
-    .setDefaultPermission(false),
-  async execute(interaction) {
+const Admin: Command = {
+  name: 'admin',
+  needsAccessLevel: [],
+  needsPermissions: [],
+  ownerOnly: true,
+  description: 'Information about the bot',
+  type: 'CHAT_INPUT',
+  run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
-      if (!interaction.user.id === '126429064218017802') {
-        await reply(interaction, 'Access Denied', true);
-        return;
-      }
       const adminRow = new MessageActionRow()
         .addComponents(
           new MessageSelectMenu()
@@ -56,16 +55,17 @@ module.exports = {
             ]),
         );
 
-      await interaction.reply({
-        content: 'Please select an action from the below...',
-        components: [adminRow, databaseAdminRow],
-        ephemeral: true,
-      });
+      ReplyToInteraction(interaction, 'Please select an action from the below...', true, [adminRow, databaseAdminRow]);
+      return;
     } catch (e) {
-      Sentry.setTag('guild_id', interaction.guild.id);
+      Sentry.setTag('guild_id', interaction.guild?.id);
       Sentry.setTag('bot_id', interaction.applicationId);
+      Sentry.setTag('user_id', interaction.user.id);
+      Sentry.setTag('command', interaction.commandName);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
     }
   },
 };
+
+export default Admin;

@@ -15,3 +15,7 @@ node_modules/
 logs/
 
 .vscode/
+
+out/
+# TS -incremental file
+tsconfig.tsbuildinfo

@@ -1,25 +1,25 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
-const Sentry = require('@sentry/node');
-const { MessageLog, User } = require('@prosperitybot/database');
-const { Op } = require('sequelize');
-const { reply } = require('../utils/messages');
+import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js';
+import * as Sentry from '@sentry/node';
+import { User, MessageLog } from '@prosperitybot/database';
+import { Op } from 'sequelize';
+import { Command } from '../types/Command';
+import { CreateEmbed, ReplyToInteraction } from '../utils/messageUtils';
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('about')
-    .setDescription('Information about the bot'),
-  async execute(interaction) {
+const About: Command = {
+  name: 'about',
+  needsAccessLevel: [],
+  needsPermissions: [],
+  ownerOnly: true,
+  description: 'Information about the bot',
+  type: 'CHAT_INPUT',
+  run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
-      const embed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setAuthor({ name: 'Prosperity', url: 'https://prosperitybot.net' });
-
-      const totalMessageCount = await MessageLog.count();
-      const translators = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } }, order: [['username', 'ASC']] });
-      const administrators = await User.findAll({ where: { access_levels: { [Op.substring]: 'ADMINISTRATOR' } }, order: [['username', 'ASC']] });
-      const developers = await User.findAll({ where: { access_levels: { [Op.substring]: 'DEVELOPER' } }, order: [['username', 'ASC']] });
-      const owners = await User.findAll({ where: { access_levels: { [Op.substring]: 'OWNER' } }, order: [['username', 'ASC']] });
+      const embed: MessageEmbed = CreateEmbed();
+      const totalMessageCount: Number = await MessageLog.count();
+      const translators: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } }, order: [['username', 'ASC']] });
+      const administrators: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'ADMINISTRATOR' } }, order: [['username', 'ASC']] });
+      const developers: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'DEVELOPER' } }, order: [['username', 'ASC']] });
+      const owners: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'OWNER' } }, order: [['username', 'ASC']] });
 
       let translatorMsg = 'A huge thank you to all of these translators for making this project as accessible as possible\n';
       let administratorMsg = 'These users are people that help offer higher level support for the bot\n';
@@ -31,7 +31,6 @@ module.exports = {
       developers.forEach((u) => { developerMsg += `- ${u.username}#${u.discriminator}\n`; });
       owners.forEach((u) => { ownerMsg += `- ${u.username}#${u.discriminator}\n`; });
 
-      // eslint-disable-next-line max-len
       embed.setDescription('Prosperity is a levelling bot ready to skill up and boost up your Discord server. We pride ourselves on openness, transparency and collaboration.');
       embed.addField('Bot Statistics', `Servers: ${interaction.client.guilds.cache.size}
       Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
@@ -42,14 +41,17 @@ module.exports = {
       embed.addField(`<:prosperity_admin:940692667216564244> Administrators (${administrators.length})`, administratorMsg);
       embed.addField(`<:prosperity_language:940692871181381632> Translators (${translators.length})`, translatorMsg);
 
-      await interaction.reply({
-        embeds: [embed],
-      });
+      interaction.reply({ embeds: [embed] });
+      return;
     } catch (e) {
-      Sentry.setTag('guild_id', interaction.guild.id);
+      Sentry.setTag('guild_id', interaction.guild?.id);
       Sentry.setTag('bot_id', interaction.applicationId);
+      Sentry.setTag('user_id', interaction.user.id);
+      Sentry.setTag('command', interaction.commandName);
       const errorCode = Sentry.captureException(e);
-      await reply(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
     }
   },
 };
+
+export default About;

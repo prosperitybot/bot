@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
-    "@discordjs/rest": "^0.4.0-dev.1645142857.f7257f0",
+    "@discordjs/rest": "^0.4.0-dev.1645402054.78aa36f",
     "@prosperitybot/database": "^1.0.3",
     "@sentry/node": "^6.17.6",
     "@sentry/tracing": "^6.17.5",

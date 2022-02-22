@@ -16,6 +16,6 @@ logs/
 
 .vscode/
 
-out/
+dist/
 # TS -incremental file
 tsconfig.tsbuildinfo

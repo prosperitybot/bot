@@ -2,7 +2,7 @@ import { Collection } from 'discord.js';
 import { Guild, User } from '@prosperitybot/database';
 import { TranslationFile } from '../typings/Translation';
 
-const TranslationFiles: Collection<string, any> = new Collection();
+const TranslationFiles: Collection<string, TranslationFile> = new Collection();
 const GuildLocale: Collection<string, string> = new Collection();
 const UserLocale: Collection<string, string> = new Collection();
 const GuildLocalePreference: Collection<string, boolean> = new Collection();
@@ -20,7 +20,7 @@ const GetUserLocale = async (userId): Promise<string | undefined> => {
   return UserLocale.get(userId);
 };
 
-export const GetTranslations = async (userId: string, guildId: string): Promise<any> => {
+export const GetTranslations = async (userId: string, guildId: string): Promise<TranslationFile> => {
   if (GuildLocalePreference.get(guildId) === undefined) {
     const guild = await Guild.findByPk(guildId);
     GuildLocalePreference.set(guildId, guild.serverLocaleOnly);
@@ -28,17 +28,25 @@ export const GetTranslations = async (userId: string, guildId: string): Promise<
   }
 
   const guildLocale = TranslationFiles.get(GuildLocale.get(guildId)!);
-  const userLocale = userId === undefined ? undefined : await GetUserLocale(userId);
+  const userLocale = await GetUserLocale(userId);
   if (GuildLocalePreference.get(guildId) === true || userLocale === undefined) {
-    return guildLocale;
+    return guildLocale!;
   }
 
-  return TranslationFiles.get(userLocale);
+  return TranslationFiles.get(userLocale)!;
 };
 
 export const SetupTranslation = (locale: string): void => {
   // eslint-disable-next-line
-  const jsonFile = require(`../../translations/${locale}`);
-  const translation: TranslationFile = JSON.parse(jsonFile);
+  const translation: TranslationFile = require(`../../translations/${locale}`);
+  console.log(translation);
   TranslationFiles.set(locale, translation);
+};
+
+export const Format = (stringToFormat: string, formatter: Array<Array<string>>): string => {
+  let formatted = stringToFormat;
+  formatter.forEach((f) => {
+    formatted = formatted.replaceAll(`%${f[0]}%`, f[1]);
+  });
+  return formatted;
 };

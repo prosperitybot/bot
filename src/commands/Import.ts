@@ -1,7 +1,7 @@
 import { BaseCommandInteraction, Client } from 'discord.js';
 import * as Sentry from '@sentry/node';
 import { Command } from '../typings/Command';
-import { ReplyToInteraction } from '../utils/messageUtils';
+import { ReplyToInteraction } from '../managers/MessageManager';
 
 const Import: Command = {
   name: 'import',

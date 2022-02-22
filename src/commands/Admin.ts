@@ -1,9 +1,9 @@
 import {
   BaseCommandInteraction, Client, MessageActionRow, MessageSelectMenu,
 } from 'discord.js';
-import * as Sentry from '@sentry/node';
 import { Command } from '../typings/Command';
-import { ReplyToInteraction } from '../utils/messageUtils';
+import { ReplyToInteraction } from '../managers/MessageManager';
+import { LogInteractionError } from '../managers/ErrorManager';
 
 const Admin: Command = {
   name: 'admin',
@@ -58,12 +58,7 @@ const Admin: Command = {
       ReplyToInteraction(interaction, 'Please select an action from the below...', true, [adminRow, databaseAdminRow]);
       return;
     } catch (e) {
-      Sentry.setTag('guild_id', interaction.guild?.id);
-      Sentry.setTag('bot_id', interaction.applicationId);
-      Sentry.setTag('user_id', interaction.user.id);
-      Sentry.setTag('command', interaction.commandName);
-      const errorCode = Sentry.captureException(e);
-      await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await LogInteractionError(e, interaction);
     }
   },
 };

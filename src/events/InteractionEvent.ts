@@ -1,7 +1,7 @@
 import { CommandInteraction, Client, Interaction } from 'discord.js';
 import { User } from '@prosperitybot/database';
 import Commands from '../managers/CommandManager';
-import { CreateEmbed } from '../utils/messageUtils';
+import { CreateEmbed } from '../managers/MessageManager';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
   const slashCommand = Commands.find((c) => c.name === interaction.commandName);

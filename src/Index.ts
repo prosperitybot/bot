@@ -4,8 +4,8 @@ import * as fs from 'fs';
 import { Client } from 'discord.js';
 import { Op } from 'sequelize';
 import { WhitelabelBot, setup as SetupDatabase } from '@prosperitybot/database';
-import Bot from './bot';
-import { SqlLogger } from './utils/loggingUtils';
+import Bot from './Bot';
+import { SqlLogger } from './utils/Logging';
 import {
   AddClient, GetAllClients, GetClient, RemoveClient,
 } from './managers/ClientManager';

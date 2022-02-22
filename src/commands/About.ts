@@ -1,9 +1,9 @@
 import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js';
-import * as Sentry from '@sentry/node';
 import { User, MessageLog } from '@prosperitybot/database';
 import { Op } from 'sequelize';
 import { Command } from '../typings/Command';
-import { CreateEmbed, ReplyToInteraction } from '../utils/messageUtils';
+import { CreateEmbed } from '../managers/MessageManager';
+import { LogInteractionError } from '../managers/ErrorManager';
 
 const About: Command = {
   name: 'about',
@@ -44,12 +44,7 @@ const About: Command = {
       interaction.reply({ embeds: [embed] });
       return;
     } catch (e) {
-      Sentry.setTag('guild_id', interaction.guild?.id);
-      Sentry.setTag('bot_id', interaction.applicationId);
-      Sentry.setTag('user_id', interaction.user.id);
-      Sentry.setTag('command', interaction.commandName);
-      const errorCode = Sentry.captureException(e);
-      await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await LogInteractionError(e, interaction);
     }
   },
 };

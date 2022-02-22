@@ -1,10 +1,11 @@
 import {
   CommandInteraction, Client, Constants,
 } from 'discord.js';
-import * as Sentry from '@sentry/node';
 import { IgnoredChannel } from '@prosperitybot/database';
+import { LogInteractionError } from '../managers/ErrorManager';
 import { Command } from '../typings/Command';
-import { ReplyToInteraction } from '../utils/messageUtils';
+import { ReplyToInteraction } from '../managers/MessageManager';
+import { GetTranslations, Format } from '../managers/TranslationManager';
 
 const IgnoredChannels: Command = {
   name: 'ignoredchannels',
@@ -48,6 +49,7 @@ const IgnoredChannels: Command = {
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
+      const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
       const command: string = interaction.options.getSubcommand();
       const channel = interaction.options.getChannel('channel');
       switch (command) {
@@ -57,50 +59,48 @@ const IgnoredChannels: Command = {
           }
           const ignoredChannel: IgnoredChannel = await IgnoredChannel.findOne({ where: { id: channel?.id } });
           if (ignoredChannel !== null) {
-            // await ReplyToInteraction(interaction)
+            await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_already_ignored, [['channel', channel?.toString()!]]), true);
+            break;
           }
-          // const channel = interaction.options.getChannel('channel');
-          // const ignoredChannel = await IgnoredChannel.findOne({ where: { id: channel.id } });
-          // if (ignoredChannel != null) {
-          //   await reply(
-          //     interaction,
-          //     translationManager.format(
-          //       translations.commands.ignoredchannels.channel_already_ignored,
-          //       [['channel', channel]],
-          //     ),
-          //     true,
-          //   );
-          //   break;
-          // }
 
-          // await IgnoredChannel.create({
-          //   id: channel.id,
-          //   guildId: interaction.guild.id,
-          // });
+          await IgnoredChannel.create({
+            id: channel!.id,
+            guildId: interaction.guild!.id,
+          });
 
-          // await reply(
-          //   interaction,
-          //   translationManager.format(
-          //     translations.commands.ignoredchannels.channel_now_ignored,
-          //     [['channel', channel]],
-          //   ),
-          //   false,
-          // );
+          await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_now_ignored, [['channel', channel?.toString()!]]));
+          break;
+        }
+        case 'remove': {
+          if (channel === null) {
+            await ReplyToInteraction(interaction, 'Channel does not exist', true);
+          }
+          const ignoredChannel: IgnoredChannel = await IgnoredChannel.findOne({ where: { id: channel?.id } });
+          if (ignoredChannel === null) {
+            await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_not_ignored, [['channel', channel?.toString()!]]), true);
+            break;
+          }
+
+          await ignoredChannel.destroy();
+
+          await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_now_not_ignored, [['channel', channel?.toString()!]]));
+          break;
+        }
+        case 'list': {
+          const ignoredChannels: IgnoredChannel[] = await IgnoredChannel.findAll({ where: { guildId: interaction.guild!.id } });
+          let listMsg = `${translations.commands.ignoredchannels.channel_list_title}: \n`;
+          ignoredChannels.forEach((c) => {
+            listMsg += `\n- <#${c.id}>`;
+          });
+
+          await ReplyToInteraction(interaction, listMsg, false);
           break;
         }
         default:
           break;
       }
-
-      // await ReplyToInteraction(interaction, 'Please message Ben#2028 to get your levels migrated', true);
-      return;
     } catch (e) {
-      Sentry.setTag('guild_id', interaction.guild?.id);
-      Sentry.setTag('bot_id', interaction.applicationId);
-      Sentry.setTag('user_id', interaction.user.id);
-      Sentry.setTag('command', interaction.commandName);
-      const errorCode = Sentry.captureException(e);
-      await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+      await LogInteractionError(e, interaction);
     }
   },
 };

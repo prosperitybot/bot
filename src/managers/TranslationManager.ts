@@ -39,7 +39,6 @@ export const GetTranslations = async (userId: string, guildId: string): Promise<
 export const SetupTranslation = (locale: string): void => {
   // eslint-disable-next-line
   const translation: TranslationFile = require(`../../translations/${locale}`);
-  console.log(translation);
   TranslationFiles.set(locale, translation);
 };
 

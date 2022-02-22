@@ -11,7 +11,6 @@ module.exports = {
   name: 'messageCreate',
   async execute(message) {
     if (message.author.bot) return;
-    const translations = await translationManager.getTranslations(message.author.id, message.guild.id, message.client);
 
     try {
       await User.upsert({
@@ -19,6 +18,7 @@ module.exports = {
         username: message.author.username,
         discriminator: message.author.discriminator,
       });
+      const translations = await translationManager.getTranslations(message.author.id, message.guild.id, message.client);
 
       const guild = await Guild.findByPk(message.guild.id);
       let gu = await GuildUser.findOne({

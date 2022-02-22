@@ -1,6 +1,6 @@
 import { Client, Intents } from 'discord.js';
-import Commands from './commands';
-import interactionEvent from './events/interactionEvent';
+import Commands from './managers/CommandManager';
+import InteractionEvent from './events/InteractionEvent';
 
 const Login = async (botId: string, token: string): Promise<Client> => {
   const client = new Client({
@@ -15,7 +15,7 @@ const Login = async (botId: string, token: string): Promise<Client> => {
     await client.application?.commands.set(Commands);
   });
 
-  interactionEvent(client);
+  InteractionEvent(client);
 
   // Run Command Deployment
 

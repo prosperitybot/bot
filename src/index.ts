@@ -1,10 +1,15 @@
 import 'dotenv/config';
 import * as Sentry from '@sentry/node';
+import * as fs from 'fs';
 import { Client } from 'discord.js';
 import { Op } from 'sequelize';
 import { WhitelabelBot, setup as SetupDatabase } from '@prosperitybot/database';
 import Bot from './bot';
 import { SqlLogger } from './utils/loggingUtils';
+import {
+  AddClient, GetAllClients, GetClient, RemoveClient,
+} from './managers/ClientManager';
+import { SetupTranslation } from './managers/TranslationManager';
 
 SetupDatabase(SqlLogger);
 
@@ -14,7 +19,6 @@ if (process.env.SENTRY_DSN !== '') {
     tracesSampleRate: 1.0,
   });
 }
-const Clients: Client[] = [];
 
 async function start() {
   // WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
@@ -24,8 +28,13 @@ async function start() {
   // });
 
   const mainBot: Client = await Bot(process.env.CLIENT_ID!, process.env.DISCORD_TOKEN!);
-  Clients[process.env.CLIENT_ID!] = mainBot;
+  AddClient(process.env.CLIENT_ID!, mainBot);
 }
+
+const translationFiles = fs.readdirSync('./translations').filter((file) => file.endsWith('.json'));
+translationFiles.forEach((file) => {
+  SetupTranslation(file.replace('.json', ''));
+});
 
 start();
 
@@ -34,20 +43,20 @@ setInterval(async () => {
   BotsWithActions.forEach(async (bot) => {
     switch (bot.action) {
       case 'restart':
-        Clients[bot.oldBotId ?? bot.botId].destroy();
-        delete Clients[bot.oldBotId ?? bot.botId];
-        Clients[bot.botId] = await Bot(bot.botId, bot.token);
+        GetClient(bot.oldBotId ?? bot.botId).destroy();
+        RemoveClient(bot.oldBotId ?? bot.botId);
+        AddClient(bot.botId, await Bot(bot.botId, bot.token));
         break;
       case 'start':
         if (bot.oldBotId != null) {
-          Clients[bot.oldBotId].destroy();
+          GetClient(bot.oldBotId).destroy();
         }
-        delete Clients[bot.oldBotId ?? bot.botId];
-        Clients[bot.botId] = await Bot(bot.botId, bot.token);
+        RemoveClient(bot.oldBotId ?? bot.botId);
+        AddClient(bot.botId, await Bot(bot.botId, bot.token));
         break;
       case 'stop':
-        Clients[bot.botId].destroy();
-        delete Clients[bot.botId];
+        GetClient(bot.botId).destroy();
+        RemoveClient(bot.botId);
         break;
       default:
         break;
@@ -57,7 +66,7 @@ setInterval(async () => {
 
 process.on('SIGINT', () => {
   console.log('Shutting down all clients...');
-  Clients.forEach((client) => {
+  GetAllClients().forEach((client) => {
     console.log(`Shutting down ${client.user?.username}#${client.user?.discriminator}`);
     client.destroy();
   });

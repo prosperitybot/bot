@@ -1,13 +1,13 @@
 import { BaseCommandInteraction, Client } from 'discord.js';
 import * as Sentry from '@sentry/node';
-import { Command } from '../types/Command';
+import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../utils/messageUtils';
 
 const Import: Command = {
   name: 'import',
   needsAccessLevel: [],
   needsPermissions: [],
-  ownerOnly: true,
+  ownerOnly: false,
   description: 'Import levels from another bot',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {

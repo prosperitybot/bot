@@ -2,14 +2,14 @@ import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js';
 import * as Sentry from '@sentry/node';
 import { User, MessageLog } from '@prosperitybot/database';
 import { Op } from 'sequelize';
-import { Command } from '../types/Command';
+import { Command } from '../typings/Command';
 import { CreateEmbed, ReplyToInteraction } from '../utils/messageUtils';
 
 const About: Command = {
   name: 'about',
   needsAccessLevel: [],
   needsPermissions: [],
-  ownerOnly: true,
+  ownerOnly: false,
   description: 'Information about the bot',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {

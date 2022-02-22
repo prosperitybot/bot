@@ -1,9 +1,9 @@
 import { CommandInteraction, Client, Interaction } from 'discord.js';
 import { User } from '@prosperitybot/database';
-import Commands from '../commands';
+import Commands from '../managers/CommandManager';
 import { CreateEmbed } from '../utils/messageUtils';
 
-const handleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
+const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
   const slashCommand = Commands.find((c) => c.name === interaction.commandName);
   if (!slashCommand) {
     interaction.followUp({ content: 'An error has occurred' });
@@ -32,7 +32,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
 export default (client: Client): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand() && interaction.inCachedGuild()) {
-      await handleSlashCommand(client, interaction);
+      await HandleSlashCommand(client, interaction);
     }
   });
 };

@@ -2,7 +2,7 @@ import {
   BaseCommandInteraction, Client, MessageActionRow, MessageSelectMenu,
 } from 'discord.js';
 import * as Sentry from '@sentry/node';
-import { Command } from '../types/Command';
+import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../utils/messageUtils';
 
 const Admin: Command = {

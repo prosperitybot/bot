@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import { Command } from '../typings/Command';
 import { CreateEmbed } from '../managers/MessageManager';
 import { LogInteractionError } from '../managers/ErrorManager';
+import { GetTranslations } from '../managers/TranslationManager';
 
 const About: Command = {
   name: 'about',
@@ -14,6 +15,7 @@ const About: Command = {
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
+      const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
       const embed: MessageEmbed = CreateEmbed();
       const totalMessageCount: Number = await MessageLog.count();
       const translators: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } }, order: [['username', 'ASC']] });
@@ -21,17 +23,17 @@ const About: Command = {
       const developers: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'DEVELOPER' } }, order: [['username', 'ASC']] });
       const owners: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'OWNER' } }, order: [['username', 'ASC']] });
 
-      let translatorMsg = 'A huge thank you to all of these translators for making this project as accessible as possible\n';
-      let administratorMsg = 'These users are people that help offer higher level support for the bot\n';
-      let developerMsg = 'These are the core contributors to the project\n';
-      let ownerMsg = 'This is the owner of Prosperity\n';
+      let translatorMsg = `${translations.commands.about.translators_description}\n`;
+      let administratorMsg = `${translations.commands.about.administrators_description}\n`;
+      let developerMsg = `${translations.commands.about.developers_description}\n`;
+      let ownerMsg = `${translations.commands.about.owners_description}\n`;
 
       translators.forEach((u) => { translatorMsg += `- ${u.username}#${u.discriminator}\n`; });
       administrators.forEach((u) => { administratorMsg += `- ${u.username}#${u.discriminator}\n`; });
       developers.forEach((u) => { developerMsg += `- ${u.username}#${u.discriminator}\n`; });
       owners.forEach((u) => { ownerMsg += `- ${u.username}#${u.discriminator}\n`; });
 
-      embed.setDescription('Prosperity is a levelling bot ready to skill up and boost up your Discord server. We pride ourselves on openness, transparency and collaboration.');
+      embed.setDescription(translations.commands.about.bot_description);
       embed.addField('Bot Statistics', `Servers: ${interaction.client.guilds.cache.size}
       Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
       Total Messages: ${totalMessageCount}`);

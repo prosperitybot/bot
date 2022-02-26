@@ -11,3 +11,8 @@ export const GetXpForNextLevel = (user: GuildUser): number => {
   const nextLevel = user.level + 1;
   return Math.ceil((5 / 6) * nextLevel * (2 * nextLevel * nextLevel + 27 * nextLevel + 91));
 };
+
+export const GetXpNeededForLevel = (user: GuildUser, difference: number = 0): number => {
+  const nextLevel = user.level + difference;
+  return Math.ceil((5 / 6) * nextLevel * (2 * nextLevel * nextLevel + 27 * nextLevel + 91));
+};

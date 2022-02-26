@@ -8,8 +8,8 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 import { GetGuildUser, GetCurrentLevel, GetXpForNextLevel } from '../managers/GuildUserManager';
 
-const Leaderboard: Command = {
-  name: 'leaderboard',
+const Level: Command = {
+  name: 'level',
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
@@ -54,4 +54,4 @@ const Leaderboard: Command = {
   },
 };
 
-export default Leaderboard;
+export default Level;

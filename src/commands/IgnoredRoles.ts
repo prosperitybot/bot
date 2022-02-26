@@ -73,7 +73,7 @@ const IgnoredRoles: Command = {
         }
         case 'remove': {
           if (role === null) {
-            await ReplyToInteraction(interaction, 'Channel does not exist', true);
+            await ReplyToInteraction(interaction, 'Role does not exist', true);
           }
           const ignoredRole: IgnoredRole = await IgnoredRole.findOne({ where: { id: role?.id } });
           if (ignoredRole === null) {

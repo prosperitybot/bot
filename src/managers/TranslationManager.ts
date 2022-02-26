@@ -42,10 +42,10 @@ export const SetupTranslation = (locale: string): void => {
   TranslationFiles.set(locale, translation);
 };
 
-export const Format = (stringToFormat: string, formatter: Array<Array<string>>): string => {
+export const Format = (stringToFormat: string, formatter: Array<Array<string | number>>): string => {
   let formatted = stringToFormat;
   formatter.forEach((f) => {
-    formatted = formatted.replaceAll(`%${f[0]}%`, f[1]);
+    formatted = formatted.replaceAll(`%${f[0]}%`, f[1].toString());
   });
   return formatted;
 };

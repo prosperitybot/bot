@@ -7,7 +7,7 @@
     "@discordjs/builders": "^0.12.0",
     "@discordjs/rest": "^0.4.0-dev.1645142857.f7257f0",
     "@prosperitybot/database": "^1.0.3",
-    "@sentry/node": "^6.17.6",
+    "@sentry/node": "^6.18.1",
     "@sentry/tracing": "^6.17.5",
     "axios": "^0.26.0",
     "axios-rate-limit": "^1.3.0",

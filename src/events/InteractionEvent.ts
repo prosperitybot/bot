@@ -18,7 +18,16 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
   if (slashCommand.needsAccessLevel.length > 0 && interaction.user.id !== '126429064218017802') {
     const user = await User.findByPk(interaction.user.id);
     if (!user.access_levels.some((accessLevel: string) => slashCommand.needsAccessLevel.includes(accessLevel))) {
-      interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      if (slashCommand.needsAccessLevel.includes('WHITELABEL')) {
+        interaction.reply({
+          embeds: [
+            CreateEmbed().setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
+          ],
+          ephemeral: true,
+        });
+      } else {
+        interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      }
     }
   }
   if (slashCommand.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {

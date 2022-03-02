@@ -16,7 +16,7 @@ export interface Commands {
   level: Level;
   levelroles: Levelroles;
   levels: Levels;
-  settings: { [key: string]: string };
+  settings: Settings;
   whitelabel: Whitelabel;
   xp: XP;
 }
@@ -78,6 +78,22 @@ export interface Levels {
   levels_added: string;
   level_to_take_must_be_positive: string;
   levels_taken: string;
+}
+
+export interface Settings {
+  notification_channel_updated: string;
+  notification_type_reply_label: string;
+  notification_type_reply_description: string;
+  notification_type_channel_label: string;
+  notification_type_channel_description: string;
+  notification_type_dm_label: string;
+  notification_type_dm_description: string;
+  notification_type_disabled_label: string;
+  notification_type_disabled_description: string;
+  please_select: string;
+  role_type_stacked: string;
+  role_type_single: string;
+  multiplier_set: string;
 }
 
 export interface Whitelabel {

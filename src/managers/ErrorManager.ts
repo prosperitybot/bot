@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import {
-  BaseCommandInteraction, CommandInteraction, Guild, Message,
+  BaseCommandInteraction, Client, CommandInteraction, Guild, Message,
 } from 'discord.js';
 import { ReplyToInteraction } from './MessageManager';
 
@@ -11,6 +11,11 @@ export const LogInteractionError = async (error: Error, interaction: CommandInte
   Sentry.setTag('command', interaction.commandName);
   const errorCode = Sentry.captureException(error);
   await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+};
+
+export const LogClientError = async (error: Error, client: Client): Promise<void> => {
+  Sentry.setTag('bot_id', client.user?.id);
+  Sentry.captureException(error);
 };
 
 export const LogMessageError = (error: Error, message: Message): void => {

@@ -2,6 +2,8 @@ import { CommandInteraction, Client, Interaction } from 'discord.js';
 import { User } from '@prosperitybot/database';
 import Commands from '../managers/CommandManager';
 import { CreateEmbed } from '../managers/MessageManager';
+import { LogClientError } from '../managers/ErrorManager';
+import { Event } from '../typings/Event';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
   const slashCommand = Commands.find((c) => c.name === interaction.commandName);
@@ -38,10 +40,18 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
   slashCommand.run(client, interaction);
 };
 
-export default (client: Client): void => {
-  client.on('interactionCreate', async (interaction: Interaction) => {
-    if (interaction.isCommand() && interaction.inCachedGuild()) {
-      await HandleSlashCommand(client, interaction);
+const InteractionCreateEvent: Event = {
+  name: 'interactionCreate',
+  type: 'on',
+  on: async (client: Client, interaction: Interaction) => {
+    try {
+      if (interaction.isCommand() && interaction.inCachedGuild()) {
+        await HandleSlashCommand(client, interaction);
+      }
+    } catch (e) {
+      await LogClientError(e, client);
     }
-  });
+  },
 };
+
+export default InteractionCreateEvent;

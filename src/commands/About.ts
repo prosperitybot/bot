@@ -1,5 +1,7 @@
 import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js';
-import { User, MessageLog } from '@prosperitybot/database';
+import {
+  Guild, GuildUser, User, MessageLog,
+} from '@prosperitybot/database';
 import { Op } from 'sequelize';
 import { Command } from '../typings/Command';
 import { CreateEmbed } from '../managers/MessageManager';
@@ -16,6 +18,10 @@ const About: Command = {
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
+
+      const guildCount: number = await Guild.count();
+      const userCount: number = await GuildUser.count({ distinct: false });
+
       const embed: MessageEmbed = CreateEmbed();
       const totalMessageCount: Number = await MessageLog.count();
       const translators: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } }, order: [['username', 'ASC']] });
@@ -34,8 +40,8 @@ const About: Command = {
       owners.forEach((u) => { ownerMsg += `- ${u.username}#${u.discriminator}\n`; });
 
       embed.setDescription(translations.commands.about.bot_description);
-      embed.addField('Bot Statistics', `Servers: ${interaction.client.guilds.cache.size}
-      Total Members: ${interaction.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}
+      embed.addField('Bot Statistics', `Servers: ${guildCount}
+      Total Members: ${userCount}
       Total Messages: ${totalMessageCount}`);
 
       embed.addField(`<:prosperity_owner:940692775454797825> Owners (${owners.length})`, ownerMsg);

@@ -1,5 +1,7 @@
 import * as Sentry from '@sentry/node';
-import { BaseCommandInteraction, CommandInteraction, Message } from 'discord.js';
+import {
+  BaseCommandInteraction, CommandInteraction, Guild, Message,
+} from 'discord.js';
 import { ReplyToInteraction } from './MessageManager';
 
 export const LogInteractionError = async (error: Error, interaction: CommandInteraction | BaseCommandInteraction): Promise<void> => {
@@ -15,5 +17,11 @@ export const LogMessageError = (error: Error, message: Message): void => {
   Sentry.setTag('guild_id', message.guild?.id);
   Sentry.setTag('bot_id', message.applicationId);
   Sentry.setTag('user_id', message.author.id);
+  Sentry.captureException(error);
+};
+
+export const LogGuildError = (error: Error, guild: Guild): void => {
+  Sentry.setTag('guild_id', guild.id);
+  Sentry.setTag('bot_id', guild.applicationId);
   Sentry.captureException(error);
 };

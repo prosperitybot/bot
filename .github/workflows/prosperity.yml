@@ -3,6 +3,7 @@ name: Deploy Github Package
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches: [ main ]
 
@@ -47,9 +48,17 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+  Approve:
+    needs: [Linter, CodeQL]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/auto-approve-action@v2
+      if: github.event_name == 'pull_request' && github.actor == 'BenHall-1'
+      with:
+        github-token: "${{ secrets.BOT_GITHUB_TOKEN }}"
   Docker:
     needs: [Linter, CodeQL]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

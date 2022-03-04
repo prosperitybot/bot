@@ -16,7 +16,7 @@ const Language: Command = {
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
-      const translations = await GetTranslations(interaction.user.id, interaction.guildId);
+      const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
       const buttonRow = new MessageActionRow()
         .addComponents(
           new MessageButton()

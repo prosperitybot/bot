@@ -23,11 +23,11 @@ if (process.env.SENTRY_DSN !== '') {
 async function start() {
   // WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
   //   whitelabelBots.forEach(async (bot) => {
-  //     Clients[bot.botId] = await Bot(bot.botId, bot.token);
+  //     AddClient(bot.botId, await Bot(bot.token));
   //   });
   // });
 
-  const mainBot: Client = await Bot(process.env.CLIENT_ID!, process.env.DISCORD_TOKEN!);
+  const mainBot: Client = await Bot(process.env.DISCORD_TOKEN!);
   AddClient(process.env.CLIENT_ID!, mainBot);
 }
 
@@ -45,14 +45,14 @@ setInterval(async () => {
       case 'restart':
         GetClient(bot.oldBotId ?? bot.botId).destroy();
         RemoveClient(bot.oldBotId ?? bot.botId);
-        AddClient(bot.botId, await Bot(bot.botId, bot.token));
+        AddClient(bot.botId, await Bot(bot.token));
         break;
       case 'start':
         if (bot.oldBotId != null) {
           GetClient(bot.oldBotId).destroy();
         }
         RemoveClient(bot.oldBotId ?? bot.botId);
-        AddClient(bot.botId, await Bot(bot.botId, bot.token));
+        AddClient(bot.botId, await Bot(bot.token));
         break;
       case 'stop':
         GetClient(bot.botId).destroy();
@@ -65,8 +65,10 @@ setInterval(async () => {
 }, 5000);
 
 process.on('SIGINT', () => {
+  // eslint-disable-next-line no-console
   console.log('Shutting down all clients...');
   GetAllClients().forEach((client) => {
+    // eslint-disable-next-line no-console
     console.log(`Shutting down ${client.user?.username}#${client.user?.discriminator}`);
     client.destroy();
   });

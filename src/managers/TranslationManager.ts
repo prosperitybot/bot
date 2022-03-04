@@ -1,6 +1,7 @@
 import { Collection } from 'discord.js';
 import { Guild, User } from '@prosperitybot/database';
 import { TranslationFile } from '../typings/Translation';
+import { Language } from '../typings/Language';
 
 const TranslationFiles: Collection<string, TranslationFile> = new Collection();
 const GuildLocale: Collection<string, string> = new Collection();
@@ -18,6 +19,13 @@ const GetUserLocale = async (userId): Promise<string | undefined> => {
   }
 
   return UserLocale.get(userId);
+};
+
+export const SetUserLocale = (userId: string, locale: string): void => {
+  UserLocale.set(userId, locale);
+};
+export const SetGuildLocale = (guildId: string, locale: string): void => {
+  GuildLocale.set(guildId, locale);
 };
 
 export const GetTranslations = async (userId: string, guildId: string): Promise<TranslationFile> => {
@@ -49,3 +57,24 @@ export const Format = (stringToFormat: string, formatter: Array<Array<string | n
   });
   return formatted;
 };
+
+export const LanguageList = (): Language[] => [
+  { flag: '🌐', locale: 'ar-SA', name: 'Arabic' },
+  { flag: '🌐', locale: 'ca-ES', name: 'Catalan' },
+  { flag: '🇨🇳', locale: 'zh-CN', name: 'Chinese (Simplified)' },
+  { flag: '🇨🇳', locale: 'zh-TW', name: 'Chinese (Traditional)' },
+  { flag: '🐈', locale: 'lol-US', name: 'English (LOLCAT)' },
+  { flag: '🏴‍☠️', locale: 'en-PT', name: 'English (Pirate)' },
+  { flag: '🇺🇸', locale: 'en-US', name: 'English (United States)' },
+  { flag: '🇪🇪', locale: 'et-EE', name: 'Estonian' },
+  { flag: '🇫🇷', locale: 'fr-FR', name: 'French' },
+  { flag: '🇩🇪', locale: 'de-DE', name: 'German' },
+  { flag: '🇬🇷', locale: 'el-GR', name: 'Greek' },
+  { flag: '🇮🇩', locale: 'id-ID', name: 'Indonesian' },
+  { flag: '🇯🇵', locale: 'ja-JP', name: 'Japanese' },
+  { flag: '🇵🇹', locale: 'pt-PT', name: 'Portuguese' },
+  { flag: '🇵🇹', locale: 'pt-BR', name: 'Portuguese (Brazilian)' },
+  { flag: '🇷🇺', locale: 'ru-RU', name: 'Russian' },
+  { flag: '🇷🇸', locale: 'sr-SP', name: 'Serbian' },
+  { flag: '🇪🇸', locale: 'es-ES', name: 'Spanish' },
+];

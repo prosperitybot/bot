@@ -40,18 +40,6 @@ const Admin: Command = {
                 value: 'db_run_migrations',
                 emoji: '📜',
               },
-              {
-                label: 'Run Migrations (Force)',
-                description: 'This runs all migrations / syncs on the database - THIS WILL NUKE THE DATABASE',
-                value: 'db_run_migrations_force',
-                emoji: '⚠️',
-              },
-              {
-                label: 'Seed Database',
-                description: 'This will add all of the cached guilds into the database',
-                value: 'db_seed',
-                emoji: '🌱',
-              },
             ]),
         );
 

@@ -1,7 +1,7 @@
 import { Client, Intents } from 'discord.js';
 import Events from './managers/EventManager';
 
-const Login = async (botId: string, token: string): Promise<Client> => {
+const Login = async (token: string): Promise<Client> => {
   const client = new Client({
     intents: [
       Intents.FLAGS.GUILDS,

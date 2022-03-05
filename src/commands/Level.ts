@@ -46,7 +46,7 @@ const Level: Command = {
         interaction,
         Format(
           user === interaction.user ? translations.commands.level.your_current_level : translations.commands.level.user_current_level,
-          [['user', user.tag], ['level', GetCurrentLevel(guildUser).toString()], ['xp', GetXpForNextLevel(guildUser).toString()]],
+          [['user', user.tag], ['level', GetCurrentLevel(guildUser).toString()], ['xp', (GetXpForNextLevel(guildUser) - guildUser.xp).toString()]],
         ),
         false,
       );

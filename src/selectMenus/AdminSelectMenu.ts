@@ -10,7 +10,7 @@ const AdminSelectMenu: SelectMenu = {
     try {
       switch (interaction.values[0]) {
         case 'admin_deploy_commands':
-          await interaction.client.application?.commands.set(Commands);
+          await interaction.client.application?.commands.set(Commands.map((c) => c.data));
           await ReplyToInteraction(interaction, 'Deployed Commands Successfully', true);
           break;
         default:

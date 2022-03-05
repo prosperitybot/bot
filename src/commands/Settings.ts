@@ -19,7 +19,7 @@ const Settings: Command = {
         options: [
           {
             type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-            name: 'notification-channel',
+            name: 'channel',
             description: 'The channel to send the notifications to',
             required: false,
           },

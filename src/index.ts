@@ -25,7 +25,7 @@ async function start() {
     whitelabelBots.forEach(async (bot: WhitelabelBot) => {
       AddClient(bot.botId, await Bot(bot.token));
     });
-  });
+  }); 
 
   const mainBot: Client = await Bot(process.env.DISCORD_TOKEN!);
   AddClient(process.env.CLIENT_ID!, mainBot);

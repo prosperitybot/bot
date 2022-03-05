@@ -13,7 +13,7 @@ import { GetXpForNextLevel } from '../managers/GuildUserManager';
 import { ReplyToMessage, SendMessage } from '../managers/MessageManager';
 
 const MessageEvent: Event = {
-  name: 'message',
+  name: 'messageCreate',
   type: 'on',
   on: async (client: Client, args: any[]) => {
     const message: Message = args[0];

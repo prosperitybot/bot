@@ -5,13 +5,15 @@
         "es2021": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "airbnb-typescript/base"
     ],
     "parserOptions": {
-        "ecmaVersion": "latest"
+        "ecmaVersion": "latest",
+        "project": "./tsconfig.json"
     },
     "rules": {
-        "max-len": ["error", 160, 2, {
+        "max-len": ["error", 180, 2, {
             "ignoreUrls": true,
             "ignoreComments": false,
             "ignoreRegExpLiterals": true,

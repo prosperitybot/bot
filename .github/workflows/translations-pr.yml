@@ -39,4 +39,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
         run: |
-          gh pr create --title "🌍 Updated Translations" --body "Pull Request for @prosperitybot/translations" -B main -H automatic/update-translations -l "🌍 Translations" -r "prosperitybot/approvers" -a "@me"
+          gh pr create --title "chore: 🌍 Updated Translations" --body "Pull Request for @prosperitybot/translations" -B main -H automatic/update-translations -l "🌍 Translations" -r "prosperitybot/approvers" -a "@me"

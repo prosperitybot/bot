@@ -80,7 +80,7 @@ const HandleButtonList = async (client: Client, interaction: ButtonInteraction<'
 const HandleSelectMenu = async (client: Client, interaction: SelectMenuInteraction<'cached'>): Promise<void> => {
   const selectMenu = SelectMenus.find((c) => c.name === interaction.customId);
   if (!selectMenu) {
-    interaction.followUp({ content: 'An error has occurred' });
+    interaction.reply({ content: 'An error has occurred' });
     return;
   }
   selectMenu.execute(interaction);

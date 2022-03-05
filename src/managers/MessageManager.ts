@@ -1,5 +1,5 @@
 import {
-  BaseCommandInteraction, ButtonInteraction, Message, MessageActionRow, MessageEmbed, SelectMenuInteraction, TextBasedChannel,
+  BaseCommandInteraction, ButtonInteraction, DMChannel, Message, MessageActionRow, MessageEmbed, SelectMenuInteraction, TextBasedChannel,
 } from 'discord.js';
 
 export const CreateEmbed = (): MessageEmbed => new MessageEmbed()
@@ -30,7 +30,7 @@ export const ReplyToMessage = async (
 };
 
 export const SendMessage = async (
-  channel: TextBasedChannel,
+  channel: TextBasedChannel | DMChannel,
   messageToSend: string,
   components: MessageActionRow[] = [],
 ): Promise<void> => {

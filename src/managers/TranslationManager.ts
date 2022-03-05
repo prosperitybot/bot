@@ -14,7 +14,10 @@ const GetUserLocale = async (userId): Promise<string | undefined> => {
   }
 
   const user = await User.findByPk(userId);
-  if (user.locale !== null) {
+  if (user === null) {
+    return undefined;
+  }
+  if (user?.locale !== null) {
     UserLocale.set(userId, user.locale);
   }
 

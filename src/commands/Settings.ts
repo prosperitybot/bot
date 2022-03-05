@@ -90,31 +90,31 @@ const Settings: Command = {
           const notificationsRow: MessageActionRow = new MessageActionRow()
             .addComponents(
               new MessageSelectMenu()
-                .setCustomId('guild_notification_settings')
+                .setCustomId('guild_settings_notifications')
                 .setPlaceholder('Choose type of notifications')
                 .addOptions([
                   {
                     label: translations.commands.settings.notification_type_reply_label,
                     description: translations.commands.settings.notification_type_reply_description,
-                    value: 'guild_notification_settings-reply',
+                    value: 'guild_settings_notifications-reply',
                     emoji: '💬',
                   },
                   {
                     label: translations.commands.settings.notification_type_channel_label,
                     description: translations.commands.settings.notification_type_channel_description,
-                    value: 'guild_notification_settings-channel',
+                    value: 'guild_settings_notifications-channel',
                     emoji: '📃',
                   },
                   {
                     label: translations.commands.settings.notification_type_dm_label,
                     description: translations.commands.settings.notification_type_dm_description,
-                    value: 'guild_notification_settings-dm',
+                    value: 'guild_settings_notifications-dm',
                     emoji: '🔏',
                   },
                   {
                     label: translations.commands.settings.notification_type_disabled_label,
                     description: translations.commands.settings.notification_type_disabled_description,
-                    value: 'guild_notification_settings-disable',
+                    value: 'guild_settings_notifications-disable',
                     emoji: '🚫',
                   },
                 ]),

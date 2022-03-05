@@ -10,7 +10,8 @@ import { Event } from '../typings/Event';
 const GuildDeleteEvent: Event = {
   name: 'guildDelete',
   type: 'on',
-  on: async (client: Client, guild: Guild) => {
+  on: async (client: Client, args: any[]) => {
+    const guild: Guild = args[0];
     try {
       await dGuild.upsert({
         id: guild.id,

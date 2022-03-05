@@ -7,7 +7,8 @@ import { EventLogger } from '../utils/Logging';
 const GuildCreateEvent: Event = {
   name: 'guildCreate',
   type: 'on',
-  on: async (client: Client, guild: Guild) => {
+  on: async (client: Client, args: any[]) => {
+    const guild: Guild = args[0];
     try {
       await dGuild.upsert({
         id: guild.id,

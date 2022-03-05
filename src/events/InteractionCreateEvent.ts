@@ -10,6 +10,7 @@ import ButtonLists from '../managers/ButtonListManager';
 import SelectMenus from '../managers/SelectMenuManager';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
+  console.log(interaction);
   const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
   if (!slashCommand) {
     interaction.followUp({ content: 'An error has occurred' });
@@ -86,15 +87,16 @@ const HandleSelectMenu = async (client: Client, interaction: SelectMenuInteracti
 const InteractionCreateEvent: Event = {
   name: 'interactionCreate',
   type: 'on',
-  on: async (client: Client, interaction: Interaction) => {
+  on: async (client: Client, args: any[]) => {
     try {
-      if (interaction.isCommand() && interaction.inCachedGuild()) {
+      const interaction: Interaction = args[0];
+      if (interaction instanceof CommandInteraction && interaction.inCachedGuild()) {
         await HandleSlashCommand(client, interaction);
       }
-      if (interaction.isButton() && interaction.inCachedGuild()) {
+      if (interaction instanceof ButtonInteraction && interaction.inCachedGuild()) {
         await HandleButtonList(client, interaction);
       }
-      if (interaction.isSelectMenu() && interaction.inCachedGuild()) {
+      if (interaction instanceof SelectMenuInteraction && interaction.inCachedGuild()) {
         await HandleSelectMenu(client, interaction);
       }
     } catch (e) {

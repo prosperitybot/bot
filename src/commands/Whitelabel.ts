@@ -25,7 +25,7 @@ const Whitelabel: Command = {
           },
           {
             type: Constants.ApplicationCommandOptionTypes.STRING,
-            name: 'botId',
+            name: 'bot_id',
             description: 'Bot Id',
             required: true,
           },
@@ -35,14 +35,6 @@ const Whitelabel: Command = {
         type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
         name: 'actions',
         description: 'Controls a whitelabel bot',
-        options: [
-          {
-            type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-            name: 'notification-channel',
-            description: 'The channel to send the notifications to',
-            required: false,
-          },
-        ],
       },
     ],
     type: 'CHAT_INPUT',
@@ -58,7 +50,7 @@ const Whitelabel: Command = {
       switch (command) {
         case 'setup': {
           const botToken = interaction.options.getString('token', true);
-          const botId = interaction.options.getString('botId', true);
+          const botId = interaction.options.getString('bot_id', true);
 
           if (currentBot !== null) {
             currentBot.oldBotId = currentBot.botId;

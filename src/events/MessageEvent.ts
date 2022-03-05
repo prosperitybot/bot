@@ -14,7 +14,8 @@ import { ReplyToMessage, SendMessage } from '../managers/MessageManager';
 const MessageEvent: Event = {
   name: 'message',
   type: 'on',
-  on: async (client: Client, message: Message) => {
+  on: async (client: Client, args: any[]) => {
+    const message: Message = args[0];
     if (message.author.bot) return;
 
     try {

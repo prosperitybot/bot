@@ -20,7 +20,6 @@ const MessageEvent: Event = {
     if (message.author.bot) return;
 
     try {
-      const translations = await GetTranslations(message.author.id, message.guildId!);
       const guild: Guild = await Guild.findByPk(message.guildId);
 
       await User.upsert({
@@ -28,6 +27,8 @@ const MessageEvent: Event = {
         username: message.author.username,
         discriminator: message.author.discriminator,
       });
+
+      const translations = await GetTranslations(message.author.id, message.guildId!);
 
       let guildUser: GuildUser | null = await GuildUser.findOne({ where: { guildId: message.guildId, userId: message.author.id } });
 
@@ -51,8 +52,8 @@ const MessageEvent: Event = {
           guildUser.messageCount += 1;
           const xpToGain = Math.floor(Math.random() * (15 - 7 + 1) + 7) * guild.xpRate;
 
-          guild.xp += xpToGain;
-          guild.lastXpMessageSent = fn('NOW');
+          guildUser.xp += xpToGain;
+          guildUser.lastXpMessageSent = fn('NOW');
 
           if (guildUser.xp > GetXpForNextLevel(guildUser)) {
             const newLevelRole: LevelRole | null = await LevelRole.findOne({ where: { level: guildUser.level, guildId: message.guildId } });

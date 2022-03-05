@@ -73,7 +73,7 @@ const Settings: Command = {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
       const command: string = interaction.options.getSubcommand();
-      const guild: Guild = await Guild.findbyPk(interaction.guildId!);
+      const guild: Guild = await Guild.findByPk(interaction.guildId!);
 
       switch (command) {
         case 'notifications': {

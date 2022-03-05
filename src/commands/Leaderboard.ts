@@ -8,20 +8,22 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 
 const Leaderboard: Command = {
-  name: 'leaderboard',
+  data: {
+    name: 'leaderboard',
+    description: 'Displays the top users and their levels',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.INTEGER,
+        name: 'page',
+        description: 'The page you want to display',
+        required: false,
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: [],
   ownerOnly: false,
-  description: 'Displays the top users and their levels',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.INTEGER,
-      name: 'page',
-      description: 'The page you want to display',
-      required: false,
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

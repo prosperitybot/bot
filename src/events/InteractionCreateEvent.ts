@@ -10,7 +10,7 @@ import ButtonLists from '../managers/ButtonListManager';
 import SelectMenus from '../managers/SelectMenuManager';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
-  const slashCommand = Commands.find((c) => c.name === interaction.commandName);
+  const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
   if (!slashCommand) {
     interaction.followUp({ content: 'An error has occurred' });
     return;

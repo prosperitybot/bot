@@ -8,45 +8,47 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 
 const IgnoredChannels: Command = {
-  name: 'ignoredchannels',
+  data: {
+    name: 'ignoredchannels',
+    description: 'Manages channels that are ignored from gaining xp',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'add',
+        description: 'Adds an ignored channel',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.CHANNEL,
+            name: 'channel',
+            description: 'The channel to ignore',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'remove',
+        description: 'Removes an ignored channel',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.CHANNEL,
+            name: 'channel',
+            description: 'The channel to remove',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'list',
+        description: 'Lists all ignored channels',
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'Manages channels that are ignored from gaining xp',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'add',
-      description: 'Adds an ignored channel',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-          name: 'channel',
-          description: 'The channel to ignore',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'remove',
-      description: 'Removes an ignored channel',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-          name: 'channel',
-          description: 'The channel to remove',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'list',
-      description: 'Lists all ignored channels',
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

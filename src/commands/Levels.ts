@@ -8,52 +8,54 @@ import { GetTranslations, Format } from '../managers/TranslationManager';
 import { GetGuildUser, GetXpNeededForLevel } from '../managers/GuildUserManager';
 
 const Levels: Command = {
-  name: 'levels',
+  data: {
+    name: 'levels',
+    description: 'Manages user levels',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'give',
+        description: 'Gives levels to a user',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.USER,
+            name: 'user',
+            description: 'The user to give levels to',
+            required: true,
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.INTEGER,
+            name: 'levels',
+            description: 'The amount of levels to give',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'take',
+        description: 'Takes levels from a user',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.USER,
+            name: 'user',
+            description: 'The user to take levels from',
+            required: true,
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.INTEGER,
+            name: 'levels',
+            description: 'The amount of levels to take',
+            required: true,
+          },
+        ],
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'Manages user levels',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'give',
-      description: 'Gives levels to a user',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.USER,
-          name: 'user',
-          description: 'The user to give levels to',
-          required: true,
-        },
-        {
-          type: Constants.ApplicationCommandOptionTypes.INTEGER,
-          name: 'levels',
-          description: 'The amount of levels to give',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'take',
-      description: 'Takes levels from a user',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.USER,
-          name: 'user',
-          description: 'The user to take levels from',
-          required: true,
-        },
-        {
-          type: Constants.ApplicationCommandOptionTypes.INTEGER,
-          name: 'levels',
-          description: 'The amount of levels to take',
-          required: true,
-        },
-      ],
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

@@ -11,54 +11,56 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetXpForNextLevel, GetXpNeededForLevel } from '../managers/GuildUserManager';
 
 const Xp: Command = {
-  name: 'xp',
+  data: {
+    name: 'xp',
+    description: 'Provides commands to give/remove xp from a user',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'give',
+        description: 'Gives xp to a user',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.USER,
+            name: 'user',
+            description: 'The user you want to give xp to',
+            required: true,
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.INTEGER,
+            name: 'amount',
+            description: 'The amount of xp to give',
+            required: true,
+            minValue: 1,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'take',
+        description: 'Takes xp from a user',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.USER,
+            name: 'user',
+            description: 'The user you want to take xp from',
+            required: true,
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.INTEGER,
+            name: 'amount',
+            description: 'The amount of xp to take',
+            required: true,
+            minValue: 1,
+          },
+        ],
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'Provides commands to give/remove xp from a user',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'give',
-      description: 'Gives xp to a user',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.USER,
-          name: 'user',
-          description: 'The user you want to give xp to',
-          required: true,
-        },
-        {
-          type: Constants.ApplicationCommandOptionTypes.INTEGER,
-          name: 'amount',
-          description: 'The amount of xp to give',
-          required: true,
-          minValue: 1,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'take',
-      description: 'Takes xp from a user',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.USER,
-          name: 'user',
-          description: 'The user you want to take xp from',
-          required: true,
-        },
-        {
-          type: Constants.ApplicationCommandOptionTypes.INTEGER,
-          name: 'amount',
-          description: 'The amount of xp to take',
-          required: true,
-          minValue: 1,
-        },
-      ],
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

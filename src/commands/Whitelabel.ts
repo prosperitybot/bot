@@ -8,46 +8,48 @@ import { GetTranslations } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 
 const Whitelabel: Command = {
-  name: 'whitelabel',
+  data: {
+    name: 'whitelabel',
+    description: 'Manages a whitelabel bot',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'setup',
+        description: 'Runs the initial setup for whitelabel',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'token',
+            description: 'Bot Token',
+            required: true,
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'botId',
+            description: 'Bot Id',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'actions',
+        description: 'Controls a whitelabel bot',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.CHANNEL,
+            name: 'notification-channel',
+            description: 'The channel to send the notifications to',
+            required: false,
+          },
+        ],
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: ['WHITELABEL'],
   needsPermissions: [],
   ownerOnly: false,
-  description: 'Manages a whitelabel bot',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'setup',
-      description: 'Runs the initial setup for whitelabel',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.STRING,
-          name: 'token',
-          description: 'Bot Token',
-          required: true,
-        },
-        {
-          type: Constants.ApplicationCommandOptionTypes.STRING,
-          name: 'botId',
-          description: 'Bot Id',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'actions',
-      description: 'Controls a whitelabel bot',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-          name: 'notification-channel',
-          description: 'The channel to send the notifications to',
-          required: false,
-        },
-      ],
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

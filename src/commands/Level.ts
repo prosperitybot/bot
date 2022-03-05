@@ -9,20 +9,22 @@ import { GetTranslations, Format } from '../managers/TranslationManager';
 import { GetGuildUser, GetCurrentLevel, GetXpForNextLevel } from '../managers/GuildUserManager';
 
 const Level: Command = {
-  name: 'level',
+  data: {
+    name: 'level',
+    description: 'See your or someone elses current level',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.USER,
+        name: 'user',
+        description: 'The user you want to check the level of',
+        required: false,
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'See your or someone elses current level',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.USER,
-      name: 'user',
-      description: 'The user you want to check the level of',
-      required: false,
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

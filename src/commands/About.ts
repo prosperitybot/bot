@@ -9,12 +9,14 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { GetTranslations } from '../managers/TranslationManager';
 
 const About: Command = {
-  name: 'about',
+  data: {
+    name: 'about',
+    description: 'Information about the bot',
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: [],
   ownerOnly: false,
-  description: 'Information about the bot',
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

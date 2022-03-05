@@ -4,12 +4,14 @@ import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../managers/MessageManager';
 
 const Import: Command = {
-  name: 'import',
+  data: {
+    name: 'import',
+    description: 'Import levels from another bot',
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: [],
   ownerOnly: false,
-  description: 'Import levels from another bot',
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
       await ReplyToInteraction(interaction, 'Please message Ben#2028 to get your levels migrated', true);

@@ -9,51 +9,53 @@ import { EditReplyToInteraction, ReplyToInteraction } from '../managers/MessageM
 import { GetTranslations, Format } from '../managers/TranslationManager';
 
 const LevelRoles: Command = {
-  name: 'levelroles',
+  data: {
+    name: 'levelroles',
+    description: 'Manages level roles',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'add',
+        description: 'Adds a level role',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.ROLE,
+            name: 'role',
+            description: 'The role to give',
+            required: true,
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.INTEGER,
+            name: 'level',
+            description: 'The level to give the role at',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'remove',
+        description: 'Removes a level role',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.ROLE,
+            name: 'role',
+            description: 'The role to remove',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'list',
+        description: 'Lists all level roles',
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'Manages level roles',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'add',
-      description: 'Adds a level role',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.ROLE,
-          name: 'role',
-          description: 'The role to give',
-          required: true,
-        },
-        {
-          type: Constants.ApplicationCommandOptionTypes.INTEGER,
-          name: 'level',
-          description: 'The level to give the role at',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'remove',
-      description: 'Removes a level role',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.ROLE,
-          name: 'role',
-          description: 'The role to remove',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'list',
-      description: 'Lists all level roles',
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

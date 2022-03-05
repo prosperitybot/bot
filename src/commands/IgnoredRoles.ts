@@ -8,45 +8,47 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 
 const IgnoredRoles: Command = {
-  name: 'ignoredroles',
+  data: {
+    name: 'ignoredroles',
+    description: 'Manages roles that are ignored from gaining xp',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'add',
+        description: 'Adds an ignored role',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.ROLE,
+            name: 'role',
+            description: 'The role to ignore',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'remove',
+        description: 'Removes an ignored role',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.ROLE,
+            name: 'role',
+            description: 'The role to remove',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'list',
+        description: 'Lists all ignored roles',
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'Manages roles that are ignored from gaining xp',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'add',
-      description: 'Adds an ignored role',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.ROLE,
-          name: 'role',
-          description: 'The role to ignore',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'remove',
-      description: 'Removes an ignored role',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.ROLE,
-          name: 'role',
-          description: 'The role to remove',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'list',
-      description: 'Lists all ignored roles',
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

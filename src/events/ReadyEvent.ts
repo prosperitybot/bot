@@ -12,7 +12,7 @@ const ReadyEvent: Event = {
     try {
       // eslint-disable-next-line no-console
       console.log(`Logged in as ${client.user?.username}#${client.user?.discriminator}`);
-      await client.application?.commands.set(Commands);
+      await client.application?.commands.set(Commands.map((c) => c.data));
       client.user?.setActivity({ name: '/about', type: ActivityTypes.LISTENING });
     } catch (e) {
       await LogClientError(e, client);

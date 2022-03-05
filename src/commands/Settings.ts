@@ -8,65 +8,67 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 
 const Settings: Command = {
-  name: 'settings',
+  data: {
+    name: 'settings',
+    description: 'Manages settings for the server',
+    options: [
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'notifications',
+        description: 'Choose where the notifications are displayed for the guild',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.CHANNEL,
+            name: 'notification-channel',
+            description: 'The channel to send the notifications to',
+            required: false,
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'roles',
+        description: 'Choose the type of logic to apply on the role (stack/single)',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'type',
+            description: 'The type of logic to apply to the role',
+            required: true,
+            choices: [
+              {
+                name: 'Single (Only apply one at a time and remove the previous role)',
+                value: 'single',
+              },
+              {
+                name: 'Stack (Stack all previous roles and do not remove old ones)',
+                value: 'stack',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'multiplier',
+        description: 'Choose the XP multiplier for this server (1x by default)',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.NUMBER,
+            name: 'multiplier',
+            description: 'The multiplier to apply',
+            minValue: 0.00,
+            maxValue: 5.00,
+            required: true,
+          },
+        ],
+      },
+    ],
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: ['ADMINISTRATOR'],
   ownerOnly: false,
-  description: 'Manages settings for the server',
-  options: [
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'notifications',
-      description: 'Choose where the notifications are displayed for the guild',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-          name: 'notification-channel',
-          description: 'The channel to send the notifications to',
-          required: false,
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'roles',
-      description: 'Choose the type of logic to apply on the role (stack/single)',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.STRING,
-          name: 'type',
-          description: 'The type of logic to apply to the role',
-          required: true,
-          choices: [
-            {
-              name: 'Single (Only apply one at a time and remove the previous role)',
-              value: 'single',
-            },
-            {
-              name: 'Stack (Stack all previous roles and do not remove old ones)',
-              value: 'stack',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-      name: 'multiplier',
-      description: 'Choose the XP multiplier for this server (1x by default)',
-      options: [
-        {
-          type: Constants.ApplicationCommandOptionTypes.NUMBER,
-          name: 'multiplier',
-          description: 'The multiplier to apply',
-          minValue: 0.00,
-          maxValue: 5.00,
-          required: true,
-        },
-      ],
-    },
-  ],
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

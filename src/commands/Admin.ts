@@ -6,12 +6,14 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { LogInteractionError } from '../managers/ErrorManager';
 
 const Admin: Command = {
-  name: 'admin',
-  needsAccessLevel: [],
+  data: {
+    name: 'admin',
+    description: 'Information about the bot',
+    type: 'CHAT_INPUT',
+  },
+  needsAccessLevel: ['OWNER'],
   needsPermissions: [],
   ownerOnly: true,
-  description: 'Information about the bot',
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
       const adminRow = new MessageActionRow()

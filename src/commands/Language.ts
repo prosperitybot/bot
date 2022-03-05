@@ -8,12 +8,14 @@ import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations } from '../managers/TranslationManager';
 
 const Language: Command = {
-  name: 'language',
+  data: {
+    name: 'language',
+    description: 'Shows current language & language settings for both user and servers',
+    type: 'CHAT_INPUT',
+  },
   needsAccessLevel: [],
   needsPermissions: [],
   ownerOnly: false,
-  description: 'Shows current language & language settings for both user and servers',
-  type: 'CHAT_INPUT',
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       if (interaction.inCachedGuild()) {

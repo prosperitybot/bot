@@ -56,6 +56,7 @@ const MessageEvent: Event = {
           guildUser.lastXpMessageSent = fn('NOW');
 
           if (guildUser.xp > GetXpForNextLevel(guildUser)) {
+            guildUser.level += 1;
             const newLevelRole: LevelRole | null = await LevelRole.findOne({ where: { level: guildUser.level, guildId: message.guildId } });
             if (newLevelRole !== null) {
               message.member?.roles.add(newLevelRole.id, 'User Levelled up');
@@ -98,9 +99,9 @@ const MessageEvent: Event = {
               default:
                 break;
             }
-          } else {
-            await guildUser.save();
           }
+
+          await guildUser.save();
         }
       }
     } catch (e) {

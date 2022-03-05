@@ -13,6 +13,7 @@ import LevelRoles from '../commands/LevelRoles';
 import Levels from '../commands/Levels';
 import Settings from '../commands/Settings';
 import Whitelabel from '../commands/Whitelabel';
+import Xp from '../commands/Xp';
 
 const Commands: Command[] = [
   About,
@@ -27,6 +28,7 @@ const Commands: Command[] = [
   Levels,
   Settings,
   Whitelabel,
+  Xp,
 ];
 
 export default Commands;

@@ -1,4 +1,6 @@
-import { Client, Message } from 'discord.js';
+import {
+  Client, Constants, Message, MessageActionRow, MessageButton,
+} from 'discord.js';
 import {
   Guild, GuildUser, IgnoredChannel, IgnoredRole, LevelRole, MessageLog, User,
 } from '@prosperitybot/database';
@@ -79,7 +81,18 @@ const MessageEvent: Event = {
                 break;
               case 'dm':
                 message.author.createDM().then(async (dmChannel) => {
-                  await SendMessage(dmChannel, Format(translations.events.message_create.message_level_up_dm, [['user', message.author.tag], ['level', guildUser.level]]));
+                  const serverButton = new MessageActionRow()
+                    .addComponents(
+                      new MessageButton()
+                        .setLabel(`Sent from ${guild.name}`)
+                        .setStyle(Constants.MessageButtonStyles.LINK)
+                        .setDisabled(true),
+                    );
+                  await SendMessage(
+                    dmChannel,
+                    Format(translations.events.message_create.message_level_up_dm, [['user', message.author.tag], ['level', guildUser.level]]),
+                    [serverButton],
+                  );
                 }).catch(() => {});
                 break;
               default:

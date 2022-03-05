@@ -8,9 +8,9 @@ import { LogClientError } from '../managers/ErrorManager';
 import { Event } from '../typings/Event';
 import ButtonLists from '../managers/ButtonListManager';
 import SelectMenus from '../managers/SelectMenuManager';
+import { CommandLogger } from '../utils/Logging';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
-  console.log(interaction);
   const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
   if (!slashCommand) {
     interaction.followUp({ content: 'An error has occurred' });
@@ -42,6 +42,8 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
       interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
     }
   }
+  // eslint-disable-next-line max-len
+  CommandLogger.info(`${interaction.user.tag} ran /${interaction.commandName} in ${interaction.guild.name} - ${interaction.guildId} (#${interaction.channel?.name} - ${interaction.channelId})`);
   slashCommand.run(client, interaction);
 };
 

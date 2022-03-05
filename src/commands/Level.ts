@@ -23,7 +23,7 @@ const Level: Command = {
     type: 'CHAT_INPUT',
   },
   needsAccessLevel: [],
-  needsPermissions: ['ADMINISTRATOR'],
+  needsPermissions: [],
   ownerOnly: false,
   run: async (client: Client, interaction: CommandInteraction) => {
     try {

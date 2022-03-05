@@ -4,8 +4,7 @@ import {
 import {
   Guild, GuildUser, IgnoredChannel, IgnoredRole, LevelRole, MessageLog, User,
 } from '@prosperitybot/database';
-import { fn } from 'sequelize/types';
-import { Op } from 'sequelize';
+import { Op, fn } from 'sequelize';
 import { LogMessageError } from '../managers/ErrorManager';
 import { Format, GetTranslations } from '../managers/TranslationManager';
 

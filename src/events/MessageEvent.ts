@@ -88,7 +88,7 @@ const MessageEvent: Event = {
                       new MessageButton()
                         .setLabel(`Sent from ${guild.name}`)
                         .setStyle(Constants.MessageButtonStyles.LINK)
-                        .setDisabled(true),
+                        .setURL(message.url),
                     );
                   await SendMessage(
                     dmChannel,

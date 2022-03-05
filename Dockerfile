@@ -26,4 +26,4 @@ COPY --from=0 /usr/src/bot/dist .
 COPY translations /usr/src/bot/translations
 
 # Start the bot
-CMD ["node", "src/index.js"]
+CMD ["node", "index.js"]

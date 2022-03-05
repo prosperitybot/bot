@@ -11,6 +11,7 @@ import { Format, GetTranslations } from '../managers/TranslationManager';
 import { Event } from '../typings/Event';
 import { GetXpForNextLevel } from '../managers/GuildUserManager';
 import { ReplyToMessage, SendMessage } from '../managers/MessageManager';
+import { EventLogger } from '../utils/Logging';
 
 const MessageEvent: Event = {
   name: 'messageCreate',
@@ -94,7 +95,7 @@ const MessageEvent: Event = {
                     Format(translations.events.message_create.message_level_up_dm, [['user', message.author.tag], ['level', guildUser.level]]),
                     [serverButton],
                   );
-                }).catch(() => {});
+                }).catch((e: Error) => EventLogger.error(`Could not open a dm - ${e.message}`));
                 break;
               default:
                 break;

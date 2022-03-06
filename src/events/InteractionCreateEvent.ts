@@ -17,9 +17,13 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
     return;
   }
 
+  // eslint-disable-next-line max-len
+  CommandLogger.info(`${interaction.user.tag} ran /${interaction.commandName} in ${interaction.guild.name} - ${interaction.guildId} (#${interaction.channel?.name} - ${interaction.channelId})`);
+
   if (slashCommand.ownerOnly === true) {
     if (interaction.user.id !== '126429064218017802') {
       interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      return;
     }
   }
   if (slashCommand.needsAccessLevel.length > 0 && interaction.user.id !== '126429064218017802') {
@@ -35,15 +39,15 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
       } else {
         interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
       }
+      return;
     }
   }
   if (slashCommand.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
     if (!interaction.member?.permissions.has(slashCommand.needsPermissions)) {
       interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      return;
     }
   }
-  // eslint-disable-next-line max-len
-  CommandLogger.info(`${interaction.user.tag} ran /${interaction.commandName} in ${interaction.guild.name} - ${interaction.guildId} (#${interaction.channel?.name} - ${interaction.channelId})`);
   slashCommand.run(client, interaction);
 };
 
@@ -67,11 +71,13 @@ const HandleButtonList = async (client: Client, interaction: ButtonInteraction<'
       } else {
         interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
       }
+      return;
     }
   }
   if (buttonList.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
     if (!interaction.member?.permissions.has(buttonList.needsPermissions)) {
       interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      return;
     }
   }
   buttonList.execute(interaction);

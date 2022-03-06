@@ -94,7 +94,7 @@ const Levels: Command = {
           }
 
           gUser.level -= levels;
-          gUser.xp = GetXpNeededForLevel(gUser, 0 - levels);
+          gUser.xp = GetXpNeededForLevel(gUser);
           await gUser.save();
 
           await ReplyToInteraction(

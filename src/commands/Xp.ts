@@ -94,7 +94,7 @@ const Xp: Command = {
                   guildId: interaction.guildId,
                 },
               });
-              if (member instanceof GuildMember) {
+              if (member instanceof GuildMember && oldLevelRole !== null) {
                 member.roles.remove(oldLevelRole.id, 'user levelled up to a new level');
               }
             }
@@ -120,7 +120,7 @@ const Xp: Command = {
                 guildId: interaction.guildId,
               },
             });
-            if (member instanceof GuildMember) {
+            if (member instanceof GuildMember && oldLevelRole !== null) {
               member.roles.remove(oldLevelRole.id, 'user deranked to a new level');
             }
           }

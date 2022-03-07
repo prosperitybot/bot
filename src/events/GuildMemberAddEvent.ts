@@ -1,5 +1,5 @@
 import { Client, GuildMember } from 'discord.js';
-import { GuildUser } from '@prosperitybot/database';
+import { GuildUser, User } from '@prosperitybot/database';
 import { fn } from 'sequelize';
 import { LogMemberError } from '../managers/ErrorManager';
 import { Event } from '../typings/Event';
@@ -10,8 +10,13 @@ const GuildMemberAddEvent: Event = {
   on: async (client: Client, args: any[]) => {
     const member: GuildMember = args[0];
     try {
-      const gu = await GuildUser.findOne({ where: { userId: member.id, guildId: member.guild.id } });
-      if (gu === null) {
+      const guildUser: GuildUser | null = await GuildUser.findOne({ where: { userId: member.id, guildId: member.guild.id } });
+      if (guildUser === null) {
+        await User.upsert({
+          id: member.id,
+          username: member.user.username,
+          discriminator: member.user.discriminator,
+        });
         await GuildUser.create({
           userId: member.id,
           guildId: member.guild.id,

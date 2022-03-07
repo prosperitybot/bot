@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import {
-  BaseCommandInteraction, ButtonInteraction, Client, CommandInteraction, Guild, Message, SelectMenuInteraction,
+  BaseCommandInteraction, ButtonInteraction, Client, CommandInteraction, Guild, GuildMember, Message, SelectMenuInteraction,
 } from 'discord.js';
 import { ReplyToInteraction } from './MessageManager';
 
@@ -30,5 +30,12 @@ export const LogMessageError = (error: Error, message: Message): void => {
 export const LogGuildError = (error: Error, guild: Guild): void => {
   Sentry.setTag('guild_id', guild.id);
   Sentry.setTag('bot_id', guild.applicationId);
+  Sentry.captureException(error);
+};
+
+export const LogMemberError = (error: Error, guildMember: GuildMember): void => {
+  Sentry.setTag('user_id', guildMember.id);
+  Sentry.setTag('guild_id', guildMember.guild.id);
+  Sentry.setTag('bot_id', guildMember.client.application?.id);
   Sentry.captureException(error);
 };

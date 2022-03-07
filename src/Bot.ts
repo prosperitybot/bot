@@ -6,6 +6,7 @@ const Login = async (token: string): Promise<Client> => {
     intents: [
       Intents.FLAGS.GUILDS,
       Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_MEMBERS,
     ],
   });
 

@@ -1,7 +1,7 @@
 import {
   CommandInteraction, Client, Interaction, ButtonInteraction, SelectMenuInteraction,
 } from 'discord.js';
-import { User } from '@prosperitybot/database';
+import { User, CommandLog } from '@prosperitybot/database';
 import Commands from '../managers/CommandManager';
 import { CreateEmbed } from '../managers/MessageManager';
 import { LogClientError } from '../managers/ErrorManager';
@@ -48,6 +48,13 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
       return;
     }
   }
+
+  await CommandLog.create({
+    userId: interaction.user.id,
+    guildId: interaction.guildId!,
+    command: interaction.commandName,
+  });
+
   slashCommand.run(client, interaction);
 };
 

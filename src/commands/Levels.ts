@@ -5,7 +5,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
-import { GetGuildUser, GetXpNeededForLevel } from '../managers/GuildUserManager';
+import { GetGuildUser, GetXpNeededForUserLevel } from '../managers/GuildUserManager';
 
 const Levels: Command = {
   data: {
@@ -77,7 +77,7 @@ const Levels: Command = {
           }
 
           gUser.level += levels;
-          gUser.xp = GetXpNeededForLevel(gUser, levels);
+          gUser.xp = GetXpNeededForUserLevel(gUser, levels);
           await gUser.save();
 
           await ReplyToInteraction(
@@ -94,7 +94,7 @@ const Levels: Command = {
           }
 
           gUser.level -= levels;
-          gUser.xp = GetXpNeededForLevel(gUser);
+          gUser.xp = GetXpNeededForUserLevel(gUser);
           await gUser.save();
 
           await ReplyToInteraction(

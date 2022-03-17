@@ -8,7 +8,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { Format, GetTranslations } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
-import { GetXpForNextLevel, GetXpNeededForLevel } from '../managers/GuildUserManager';
+import { GetXpNeededForLevel } from '../managers/GuildUserManager';
 
 const Xp: Command = {
   data: {
@@ -79,8 +79,19 @@ const Xp: Command = {
         case 'give': {
           guildUser.xp += amount;
 
-          if (guildUser.xp > GetXpForNextLevel(guildUser)) {
-            guildUser.level += 1;
+          let levelToSet = guildUser.level;
+          let levelFound = false;
+
+          while (levelFound === false) {
+            if (guildUser.xp > GetXpNeededForLevel(levelToSet)) {
+              levelToSet += 1;
+            } else {
+              levelFound = true;
+            }
+          }
+
+          if (guildUser.level !== levelToSet) {
+            guildUser.level = levelToSet;
             const newLevelRole: LevelRole = await LevelRole.findOne({ where: { level: guildUser.level, guildId: interaction.guildId } });
             if (newLevelRole !== null) {
               if (member instanceof GuildMember) {
@@ -106,8 +117,19 @@ const Xp: Command = {
         case 'take': {
           guildUser.xp -= amount;
 
-          if (guildUser.xp < GetXpNeededForLevel(guildUser, -1)) {
-            guildUser.level -= 1;
+          let levelToSet = guildUser.level;
+          let levelFound = false;
+
+          while (levelFound === false) {
+            if (guildUser.xp < GetXpNeededForLevel(levelToSet)) {
+              levelToSet -= 1;
+            } else {
+              levelFound = true;
+            }
+          }
+
+          if (guildUser.level !== levelToSet) {
+            guildUser.level = levelToSet;
             const newLevelRole: LevelRole = await LevelRole.findOne({ where: { level: guildUser.level, guildId: interaction.guildId } });
             if (newLevelRole !== null) {
               if (member instanceof GuildMember) {

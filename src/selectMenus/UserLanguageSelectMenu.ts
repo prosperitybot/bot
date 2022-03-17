@@ -3,7 +3,7 @@ import { User } from '@prosperitybot/database';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { SelectMenu } from '../typings/SelectMenu';
 import {
-  Format, GetTranslations, LanguageList, SetGuildLocale,
+  Format, GetTranslations, LanguageList, SetUserLocale,
 } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 
@@ -16,7 +16,7 @@ const UserLanguageSelectMenu: SelectMenu = {
       const locale = interaction.values[0];
       const language = LanguageList().find((l) => l.locale === locale)!;
 
-      SetGuildLocale(interaction.user.id, locale);
+      SetUserLocale(interaction.user.id, locale);
       user.locale = locale;
       await user.save();
 

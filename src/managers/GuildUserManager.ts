@@ -1,8 +1,38 @@
-import { GuildUser } from '@prosperitybot/database';
+import { GuildUser, User } from '@prosperitybot/database';
+import { Client } from 'discord.js';
+import { LogClientError } from './ErrorManager';
 
 export const GetGuildUser = async (userId: string, guildId: string): Promise<GuildUser | null> => {
   const guildUser = await GuildUser.findOne({ where: { userId, guildId } });
   return guildUser;
+};
+
+export const AttemptToInitialiseUser = async (client: Client, userId: string, guildId: string): Promise<boolean> => {
+  try {
+    const guildUser: GuildUser = await GuildUser.findOne({ where: { userId, guildId } });
+    if (guildUser === null) {
+      const user: User | null = await User.findByPk(userId);
+      const discordUser = await client.users.fetch(userId);
+
+      if (user === null) {
+        await User.create({
+          id: discordUser.id,
+          username: discordUser.username,
+          discriminator: discordUser.discriminator,
+        });
+      }
+
+      await GuildUser.create({
+        userId,
+        guildId,
+      });
+    }
+
+    return true;
+  } catch (e) {
+    await LogClientError(e, client);
+    return false;
+  }
 };
 
 export const GetCurrentLevel = (user: GuildUser): number => user.level;

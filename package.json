@@ -11,7 +11,7 @@
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
     "@discordjs/rest": "^0.4.0-dev.1646654929.b162f27",
-    "@prosperitybot/database": "^1.7.0",
+    "@prosperitybot/database": "^1.8.0",
     "@sentry/node": "^6.18.2",
     "@sentry/tracing": "^6.18.2",
     "axios": "^0.26.1",

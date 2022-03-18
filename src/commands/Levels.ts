@@ -5,7 +5,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
-import { GetGuildUser, GetXpNeededForUserLevel } from '../managers/GuildUserManager';
+import { AttemptToInitialiseUser, GetGuildUser, GetXpNeededForUserLevel } from '../managers/GuildUserManager';
 
 const Levels: Command = {
   data: {
@@ -65,6 +65,13 @@ const Levels: Command = {
 
       if (user === null || levels === null) {
         await ReplyToInteraction(interaction, Format(translations.commands.levels.user_doesnt_exist, [['user', user!.toString()]]), true);
+        return;
+      }
+
+      const attemptInitialise = await AttemptToInitialiseUser(client, interaction.guildId!, user.id);
+
+      if (attemptInitialise === false) {
+        await ReplyToInteraction(interaction, 'User not found', true);
         return;
       }
 

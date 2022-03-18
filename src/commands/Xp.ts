@@ -8,7 +8,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { Format, GetTranslations } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
-import { GetXpNeededForLevel } from '../managers/GuildUserManager';
+import { AttemptToInitialiseUser, GetXpNeededForLevel } from '../managers/GuildUserManager';
 
 const Xp: Command = {
   data: {
@@ -68,8 +68,17 @@ const Xp: Command = {
       const user: User = interaction.options.getUser('user', true);
       const member: GuildMember | APIInteractionDataResolvedGuildMember = interaction.options.getMember('user', true);
       const amount: number = interaction.options.getInteger('amount', true);
+
+      const attemptInitialise = await AttemptToInitialiseUser(client, interaction.guildId!, user.id);
+
+      if (attemptInitialise === false) {
+        await ReplyToInteraction(interaction, 'User not found', true);
+        return;
+      }
+
       const guildUser: GuildUser | null = await GuildUser.findOne({ where: { userId: user.id, guildId: interaction.guildId } });
       const guild: Guild = await Guild.findByPk(interaction.guildId);
+
       if (guildUser === null) {
         await ReplyToInteraction(interaction, Format(translations.commands.xp.user_doesnt_exist, [['user', interaction.user.tag]]), true);
         return;

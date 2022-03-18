@@ -194,10 +194,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@prosperitybot/database@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.7.0.tgz#b64e615f6311e5597a1828da1d46ad3a18772e06"
-  integrity sha512-6G54ueiy1LGcZOEImfQugK6W9st3grTuECNvDYyXxeO8vlqr2eBwDPYU2/IOjkwh7bCAzZBrkvOjWqAZHOG7Qg==
+"@prosperitybot/database@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.8.0.tgz#5919c32e7f9d762b19f61660c64588aed7cc9995"
+  integrity sha512-wpVh09jr26ONg+qYDE3kEZvOv8yPLLRTIwvCVs/0sJtgLXJFi5VL64aAATZlPnvi4aEI2QaBPPCdmrwDNC85/Q==
   dependencies:
     debug "^4.3.3"
     dottie "^2.0.2"

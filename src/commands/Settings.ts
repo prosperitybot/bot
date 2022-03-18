@@ -80,7 +80,7 @@ const Settings: Command = {
           const channel = interaction.options.getChannel('channel');
           if (channel !== null) {
             guild.notificationType = 'channel';
-            guild.notificationChanel = channel.id;
+            guild.notificationChannel = channel.id;
             await guild.save();
 
             await ReplyToInteraction(interaction, Format(translations.commands.settings.notification_channel_updated, [['channel', channel.toString()]]), true);

@@ -16,6 +16,7 @@ const GuildMemberAddEvent: Event = {
           id: member.id,
           username: member.user.username,
           discriminator: member.user.discriminator,
+          access_levels: [''],
         });
         await GuildUser.create({
           userId: member.id,

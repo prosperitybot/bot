@@ -69,7 +69,7 @@ const Xp: Command = {
       const member: GuildMember | APIInteractionDataResolvedGuildMember = interaction.options.getMember('user', true);
       const amount: number = interaction.options.getInteger('amount', true);
 
-      const attemptInitialise = await AttemptToInitialiseUser(client, interaction.guildId!, user.id);
+      const attemptInitialise = await AttemptToInitialiseUser(client, user.id, interaction.guildId!);
 
       if (attemptInitialise === false) {
         await ReplyToInteraction(interaction, 'User not found', true);

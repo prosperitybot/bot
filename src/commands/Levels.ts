@@ -68,7 +68,7 @@ const Levels: Command = {
         return;
       }
 
-      const attemptInitialise = await AttemptToInitialiseUser(client, interaction.guildId!, user.id);
+      const attemptInitialise = await AttemptToInitialiseUser(client, user.id, interaction.guildId!);
 
       if (attemptInitialise === false) {
         await ReplyToInteraction(interaction, 'User not found', true);

@@ -12,9 +12,9 @@ export const AttemptToInitialiseUser = async (client: Client, userId: string, gu
     const guildUser: GuildUser = await GuildUser.findOne({ where: { userId, guildId } });
     if (guildUser === null) {
       const user: User | null = await User.findByPk(userId);
-      const discordUser = await client.users.fetch(userId);
 
       if (user === null) {
+        const discordUser = await client.users.fetch(userId);
         await User.create({
           id: discordUser.id,
           username: discordUser.username,

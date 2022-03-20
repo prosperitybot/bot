@@ -7,6 +7,7 @@ import { Command } from '../typings/Command';
 import { CreateEmbed } from '../managers/MessageManager';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { GetTranslations } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const About: Command = {
   data: {
@@ -24,7 +25,7 @@ const About: Command = {
       const guildCount: number = await Guild.count();
       const userCount: number = await GuildUser.count({ distinct: false });
 
-      const embed: MessageEmbed = CreateEmbed();
+      const embed: MessageEmbed = CreateEmbed(IsWhitelabel(client));
       const totalMessageCount: Number = await MessageLog.count();
       const translators: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'TRANSLATOR' } }, order: [['username', 'ASC']] });
       const administrators: User[] = await User.findAll({ where: { access_levels: { [Op.substring]: 'ADMINISTRATOR' } }, order: [['username', 'ASC']] });

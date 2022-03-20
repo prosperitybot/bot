@@ -6,6 +6,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const IgnoredRoles: Command = {
   data: {
@@ -61,7 +62,7 @@ const IgnoredRoles: Command = {
           }
           const ignoredRole: IgnoredRole = await IgnoredRole.findOne({ where: { id: role?.id } });
           if (ignoredRole !== null) {
-            await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_already_ignored, [['role', role?.toString()!]]), true);
+            await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_already_ignored, [['role', role?.toString()!]]), true, IsWhitelabel(client));
             break;
           }
 
@@ -70,7 +71,7 @@ const IgnoredRoles: Command = {
             guildId: interaction.guild!.id,
           });
 
-          await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_now_ignored, [['role', role?.toString()!]]));
+          await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_now_ignored, [['role', role?.toString()!]]), false, IsWhitelabel(client));
           break;
         }
         case 'remove': {
@@ -79,13 +80,13 @@ const IgnoredRoles: Command = {
           }
           const ignoredRole: IgnoredRole = await IgnoredRole.findOne({ where: { id: role?.id } });
           if (ignoredRole === null) {
-            await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_not_ignored, [['role', role?.toString()!]]), true);
+            await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_not_ignored, [['role', role?.toString()!]]), true, IsWhitelabel(client));
             break;
           }
 
           await ignoredRole.destroy();
 
-          await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_now_not_ignored, [['role', role?.toString()!]]));
+          await ReplyToInteraction(interaction, Format(translations.commands.ignoredroles.role_now_not_ignored, [['role', role?.toString()!]]), false, IsWhitelabel(client));
           break;
         }
         case 'list': {
@@ -95,7 +96,7 @@ const IgnoredRoles: Command = {
             listMsg += `\n- <#${c.id}>`;
           });
 
-          await ReplyToInteraction(interaction, listMsg, false);
+          await ReplyToInteraction(interaction, listMsg, false, IsWhitelabel(client));
           break;
         }
         default:

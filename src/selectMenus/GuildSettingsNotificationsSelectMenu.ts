@@ -4,6 +4,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { SelectMenu } from '../typings/SelectMenu';
 import { GetTranslations } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const GuildSettingsNotificationsSelectMenu: SelectMenu = {
   name: 'guild_settings_notifications',
@@ -17,25 +18,25 @@ const GuildSettingsNotificationsSelectMenu: SelectMenu = {
           guild.notificationType = 'reply';
           guild.notificationChannel = null;
           await guild.save();
-          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.reply, true);
+          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.reply, true, IsWhitelabel(interaction.client));
           break;
         case 'guild_settings_notifications-channel':
           guild.notificationType = 'channel';
           guild.notificationChannel = null;
           await guild.save();
-          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.channel, true);
+          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.channel, true, IsWhitelabel(interaction.client));
           break;
         case 'guild_settings_notifications-dm':
           guild.notificationType = 'dm';
           guild.notificationChannel = null;
           await guild.save();
-          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.dm, true);
+          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.dm, true, IsWhitelabel(interaction.client));
           break;
         case 'guild_settings_notifications-disable':
           guild.notificationType = 'disable';
           guild.notificationChannel = null;
           await guild.save();
-          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.disable, true);
+          await ReplyToInteraction(interaction, translations.menus.guild_settings_notifications.disable, true, IsWhitelabel(interaction.client));
           break;
         default:
           break;

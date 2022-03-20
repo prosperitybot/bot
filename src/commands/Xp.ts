@@ -9,6 +9,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { Format, GetTranslations } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { AttemptToInitialiseUser, GetXpNeededForLevel } from '../managers/GuildUserManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Xp: Command = {
   data: {
@@ -72,7 +73,7 @@ const Xp: Command = {
       const attemptInitialise = await AttemptToInitialiseUser(client, user.id, interaction.guildId!);
 
       if (attemptInitialise === false) {
-        await ReplyToInteraction(interaction, 'User not found', true);
+        await ReplyToInteraction(interaction, 'User not found', true, IsWhitelabel(client));
         return;
       }
 
@@ -80,7 +81,7 @@ const Xp: Command = {
       const guild: Guild = await Guild.findByPk(interaction.guildId);
 
       if (guildUser === null) {
-        await ReplyToInteraction(interaction, Format(translations.commands.xp.user_doesnt_exist, [['user', interaction.user.tag]]), true);
+        await ReplyToInteraction(interaction, Format(translations.commands.xp.user_doesnt_exist, [['user', interaction.user.tag]]), true, IsWhitelabel(client));
         return;
       }
 
@@ -120,7 +121,7 @@ const Xp: Command = {
             }
           }
           await guildUser.save();
-          await ReplyToInteraction(interaction, Format(translations.commands.xp.xp_added, [['user', user.tag], ['amount', amount]]), false);
+          await ReplyToInteraction(interaction, Format(translations.commands.xp.xp_added, [['user', user.tag], ['amount', amount]]), false, IsWhitelabel(client));
           break;
         }
         case 'take': {
@@ -156,7 +157,7 @@ const Xp: Command = {
             }
           }
           await guildUser.save();
-          await ReplyToInteraction(interaction, Format(translations.commands.xp.xp_taken, [['user', user.tag], ['amount', amount]]), false);
+          await ReplyToInteraction(interaction, Format(translations.commands.xp.xp_taken, [['user', user.tag], ['amount', amount]]), false, IsWhitelabel(client));
           break;
         }
         default:

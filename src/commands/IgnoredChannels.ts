@@ -6,6 +6,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const IgnoredChannels: Command = {
   data: {
@@ -61,7 +62,7 @@ const IgnoredChannels: Command = {
           }
           const ignoredChannel: IgnoredChannel = await IgnoredChannel.findOne({ where: { id: channel?.id } });
           if (ignoredChannel !== null) {
-            await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_already_ignored, [['channel', channel?.toString()!]]), true);
+            await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_already_ignored, [['channel', channel?.toString()!]]), true, IsWhitelabel(client));
             break;
           }
 
@@ -70,7 +71,7 @@ const IgnoredChannels: Command = {
             guildId: interaction.guild!.id,
           });
 
-          await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_now_ignored, [['channel', channel?.toString()!]]));
+          await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_now_ignored, [['channel', channel?.toString()!]]), false, IsWhitelabel(client));
           break;
         }
         case 'remove': {
@@ -79,13 +80,13 @@ const IgnoredChannels: Command = {
           }
           const ignoredChannel: IgnoredChannel = await IgnoredChannel.findOne({ where: { id: channel?.id } });
           if (ignoredChannel === null) {
-            await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_not_ignored, [['channel', channel?.toString()!]]), true);
+            await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_not_ignored, [['channel', channel?.toString()!]]), true, IsWhitelabel(client));
             break;
           }
 
           await ignoredChannel.destroy();
 
-          await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_now_not_ignored, [['channel', channel?.toString()!]]));
+          await ReplyToInteraction(interaction, Format(translations.commands.ignoredchannels.channel_now_not_ignored, [['channel', channel?.toString()!]]), false, IsWhitelabel(client));
           break;
         }
         case 'list': {
@@ -95,7 +96,7 @@ const IgnoredChannels: Command = {
             listMsg += `\n- <#${c.id}>`;
           });
 
-          await ReplyToInteraction(interaction, listMsg, false);
+          await ReplyToInteraction(interaction, listMsg, false, IsWhitelabel(client));
           break;
         }
         default:

@@ -12,6 +12,7 @@ import { Event } from '../typings/Event';
 import { GetXpForNextLevel } from '../managers/GuildUserManager';
 import { ReplyToMessage, SendMessage } from '../managers/MessageManager';
 import { EventLogger } from '../utils/Logging';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const MessageEvent: Event = {
   name: 'messageCreate',
@@ -72,13 +73,13 @@ const MessageEvent: Event = {
             // Send level up message.
             switch (guild.notificationType) {
               case 'reply':
-                await ReplyToMessage(message, Format(translations.events.message_create.message_level_up_reply, [['user', message.author.tag], ['level', guildUser.level]]));
+                await ReplyToMessage(message, Format(translations.events.message_create.message_level_up_reply, [['user', message.author.tag], ['level', guildUser.level]]), IsWhitelabel(client));
                 break;
               case 'channel':
                 // eslint-disable-next-line no-case-declarations
                 const textChannel = await message.guild?.channels.fetch(guild.notificationChannel);
                 if (textChannel !== undefined && textChannel !== null && textChannel.isText()) {
-                  await SendMessage(textChannel, Format(translations.events.message_create.message_level_up_channel, [['user', message.author.tag], ['level', guildUser.level]]));
+                  await SendMessage(textChannel, Format(translations.events.message_create.message_level_up_channel, [['user', message.author.tag], ['level', guildUser.level]]), IsWhitelabel(client));
                 }
                 break;
               case 'dm':
@@ -93,6 +94,7 @@ const MessageEvent: Event = {
                   await SendMessage(
                     dmChannel,
                     Format(translations.events.message_create.message_level_up_dm, [['user', message.author.tag], ['level', guildUser.level]]),
+                    IsWhitelabel(client),
                     [serverButton],
                   );
                 }).catch((e: Error) => EventLogger.error(`Could not open a dm - ${e.message}`));

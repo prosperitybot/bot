@@ -194,10 +194,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@prosperitybot/database@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.8.0.tgz#5919c32e7f9d762b19f61660c64588aed7cc9995"
-  integrity sha512-wpVh09jr26ONg+qYDE3kEZvOv8yPLLRTIwvCVs/0sJtgLXJFi5VL64aAATZlPnvi4aEI2QaBPPCdmrwDNC85/Q==
+"@prosperitybot/database@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@prosperitybot/database/-/database-1.9.0.tgz#4b4a18e17be29337004cca382a58d54ca80417a1"
+  integrity sha512-JGTb6aKbphr7CIsyFahYOu7mAdjq5G5B1u51kqf9nT5BtvrZi7FKALehM72cWaI+fDgzTzZkkOTKeS6wDvpvFg==
   dependencies:
     debug "^4.3.3"
     dottie "^2.0.2"
@@ -1038,10 +1038,10 @@ eslint-config-airbnb-base@^15.0.0:
     object.entries "^1.1.5"
     semver "^6.3.0"
 
-eslint-config-airbnb-typescript@^16.1.3:
-  version "16.1.3"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-typescript/-/eslint-config-airbnb-typescript-16.1.3.tgz#ad2cfc66a3c29ba8a589938788fb838a8ece1469"
-  integrity sha512-Pxv+dnXuzyXsjKefl1THWMN7eJ7pALU05L7UyW/WmJ2FKlwsKpBE4Z8KSv5Fz+4R6Kvu7kLFYqkXdkg4wsZUow==
+eslint-config-airbnb-typescript@^16.1.4:
+  version "16.1.4"
+  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-typescript/-/eslint-config-airbnb-typescript-16.1.4.tgz#ac8553a55080cce34aa1ab5625564b4faf5a5f1c"
+  integrity sha512-dfm2cEaYXh4mCYd+RyJO8+PQfd5/zp8WwrCeRznly5qD9W5tal3KTjgdInYWuEAdwWnNJxWcmQ/HFiA4bfkM1g==
   dependencies:
     eslint-config-airbnb-base "^15.0.0"
 

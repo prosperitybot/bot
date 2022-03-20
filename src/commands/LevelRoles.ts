@@ -7,6 +7,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { EditReplyToInteraction, ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const LevelRoles: Command = {
   data: {
@@ -84,7 +85,7 @@ const LevelRoles: Command = {
             level: level!,
           });
 
-          await ReplyToInteraction(interaction, Format(translations.commands.levelroles.role_granted, [['role', role!.toString()], ['level', level!]]));
+          await ReplyToInteraction(interaction, Format(translations.commands.levelroles.role_granted, [['role', role!.toString()], ['level', level!]]), false, IsWhitelabel(client));
 
           let nextHighestLevel = 1000;
           const nextLevel = await LevelRole.findOne({ where: { level: { [Op.gt]: level } } });
@@ -92,20 +93,20 @@ const LevelRoles: Command = {
             nextHighestLevel = nextLevel.level;
           }
 
-          const { count: roleMemberCount, rows: members } = await GuildUser.findAndCountAll({
+          const { count: memCount, rows: members } = await GuildUser.findAndCountAll({
             where: {
               level: { [Op.gte]: level, [Op.lt]: nextHighestLevel },
               guildId: interaction.guildId,
             },
           });
 
-          await EditReplyToInteraction(interaction, Format(translations.commands.levelroles.role_granted_status, [['level', level!], ['amount', roleMemberCount]]));
+          await EditReplyToInteraction(interaction, Format(translations.commands.levelroles.role_granted_status, [['level', level!], ['amount', memCount]]), IsWhitelabel(client));
 
           members.forEach(async (member: GuildUser) => {
             interaction.guild?.members.fetch(member.userId).then(async (gMember) => {
               gMember.roles.add(role!.id, `${interaction.user.tag} added a level role using /levelroles`);
               if (Object.is(members.length - 1, member)) {
-                await EditReplyToInteraction(interaction, Format(translations.commands.levelroles.role_granted_status_complete, [['level', level!], ['amount', roleMemberCount]]));
+                await EditReplyToInteraction(interaction, Format(translations.commands.levelroles.role_granted_status_complete, [['level', level!], ['amount', memCount]]), IsWhitelabel(client));
               }
             }).catch((e) => console.log(`Could not add role - ${e}`));
           });
@@ -114,17 +115,17 @@ const LevelRoles: Command = {
         }
         case 'remove': {
           if (role === null) {
-            await ReplyToInteraction(interaction, 'Role does not exist', true);
+            await ReplyToInteraction(interaction, 'Role does not exist', true, IsWhitelabel(client));
           }
           const levelRole: LevelRole = await LevelRole.findOne({ where: { id: role?.id } });
           if (levelRole === null) {
-            await ReplyToInteraction(interaction, Format(translations.commands.levelroles.role_not_used, [['role', role!.toString()]]), true);
+            await ReplyToInteraction(interaction, Format(translations.commands.levelroles.role_not_used, [['role', role!.toString()]]), true, IsWhitelabel(client));
             break;
           }
 
           await levelRole.destroy();
 
-          await ReplyToInteraction(interaction, Format(translations.commands.levelroles.role_removed, [['role', role!.toString()], ['level', level!]]));
+          await ReplyToInteraction(interaction, Format(translations.commands.levelroles.role_removed, [['role', role!.toString()], ['level', level!]]), false, IsWhitelabel(client));
           break;
         }
         case 'list': {
@@ -134,7 +135,7 @@ const LevelRoles: Command = {
             listMsg += `\n- <#${c.id}>`;
           });
 
-          await ReplyToInteraction(interaction, listMsg, false);
+          await ReplyToInteraction(interaction, listMsg, false, IsWhitelabel(client));
           break;
         }
         default:

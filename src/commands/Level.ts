@@ -7,6 +7,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 import { GetGuildUser, GetCurrentLevel, GetXpForNextLevel } from '../managers/GuildUserManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Level: Command = {
   data: {
@@ -38,6 +39,7 @@ const Level: Command = {
           interaction,
           user === interaction.user ? translations.commands.level.not_spoken_yet : Format(translations.commands.level.user_not_spoken_yet, [['user', user.tag]]),
           true,
+          IsWhitelabel(client),
         );
         return;
       }
@@ -49,6 +51,7 @@ const Level: Command = {
           [['user', user.tag], ['level', GetCurrentLevel(guildUser).toString()], ['xp', (GetXpForNextLevel(guildUser) - guildUser.xp).toString()]],
         ),
         false,
+        IsWhitelabel(client),
       );
     } catch (e) {
       await LogInteractionError(e, interaction);

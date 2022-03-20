@@ -1,4 +1,5 @@
 import { ButtonInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
+import { IsWhitelabel } from '../managers/ClientManager';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { CreateEmbed, ReplyToInteraction } from '../managers/MessageManager';
 import { LanguageList } from '../managers/TranslationManager';
@@ -23,7 +24,7 @@ const LanguageButtonList: ButtonList = {
         case 'language-server_menu':
           if (interaction.inCachedGuild()) {
             if (!interaction.member?.permissions.has('ADMINISTRATOR') && interaction.user.id !== '126429064218017802') {
-              interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+              interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(interaction.client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
             }
 
             languageMenu.setCustomId('language_server_menu');
@@ -44,7 +45,7 @@ const LanguageButtonList: ButtonList = {
             const languageRow = new MessageActionRow().addComponents(languageMenu);
             const settingsRow = new MessageActionRow().addComponents(settingsMenu);
 
-            await ReplyToInteraction(interaction, 'Please choose a language & settings...', true, [languageRow, settingsRow]);
+            await ReplyToInteraction(interaction, 'Please choose a language & settings...', true, IsWhitelabel(interaction.client), [languageRow, settingsRow]);
             break;
           }
           break;
@@ -53,7 +54,7 @@ const LanguageButtonList: ButtonList = {
             languageMenu.setCustomId('language_user_menu');
             const languageRow = new MessageActionRow().addComponents(languageMenu);
 
-            await ReplyToInteraction(interaction, 'Please choose a language...', true, [languageRow]);
+            await ReplyToInteraction(interaction, 'Please choose a language...', true, IsWhitelabel(interaction.client), [languageRow]);
             break;
           }
           break;

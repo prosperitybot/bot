@@ -9,6 +9,7 @@ import { Event } from '../typings/Event';
 import ButtonLists from '../managers/ButtonListManager';
 import SelectMenus from '../managers/SelectMenuManager';
 import { CommandLogger } from '../utils/Logging';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
   const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
@@ -22,7 +23,7 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
 
   if (slashCommand.ownerOnly === true) {
     if (interaction.user.id !== '126429064218017802') {
-      interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
       return;
     }
   }
@@ -32,19 +33,19 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
       if (slashCommand.needsAccessLevel.includes('WHITELABEL')) {
         interaction.reply({
           embeds: [
-            CreateEmbed().setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
+            CreateEmbed(IsWhitelabel(client)).setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
           ],
           ephemeral: true,
         });
       } else {
-        interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+        interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
       }
       return;
     }
   }
   if (slashCommand.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
     if (!interaction.member?.permissions.has(slashCommand.needsPermissions)) {
-      interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
       return;
     }
   }
@@ -71,19 +72,19 @@ const HandleButtonList = async (client: Client, interaction: ButtonInteraction<'
       if (buttonList.needsAccessLevel.includes('WHITELABEL')) {
         interaction.reply({
           embeds: [
-            CreateEmbed().setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
+            CreateEmbed(IsWhitelabel(client)).setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
           ],
           ephemeral: true,
         });
       } else {
-        interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+        interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
       }
       return;
     }
   }
   if (buttonList.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
     if (!interaction.member?.permissions.has(buttonList.needsPermissions)) {
-      interaction.reply({ embeds: [CreateEmbed().setColor('RED').setDescription('Access Denied')], ephemeral: true });
+      interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
       return;
     }
   }

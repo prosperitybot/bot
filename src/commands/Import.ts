@@ -2,6 +2,7 @@ import { BaseCommandInteraction, Client } from 'discord.js';
 import * as Sentry from '@sentry/node';
 import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../managers/MessageManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Import: Command = {
   data: {
@@ -14,7 +15,7 @@ const Import: Command = {
   ownerOnly: false,
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     try {
-      await ReplyToInteraction(interaction, 'Please message Ben#2028 to get your levels migrated', true);
+      await ReplyToInteraction(interaction, 'Please message Ben#2028 to get your levels migrated', true, IsWhitelabel(client));
       return;
     } catch (e) {
       Sentry.setTag('guild_id', interaction.guild?.id);

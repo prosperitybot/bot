@@ -6,6 +6,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { HasPermission } from '../managers/PermissionManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Language: Command = {
   data: {
@@ -34,7 +35,7 @@ const Language: Command = {
               .setEmoji('🧍')
               .setCustomId('language-user_menu'),
           );
-        await ReplyToInteraction(interaction, translations.commands.language.choice_message, true, [buttonRow]);
+        await ReplyToInteraction(interaction, translations.commands.language.choice_message, true, IsWhitelabel(client), [buttonRow]);
       }
       return;
     } catch (e) {

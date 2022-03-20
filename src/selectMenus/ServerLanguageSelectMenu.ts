@@ -6,6 +6,7 @@ import {
   Format, GetTranslations, LanguageList, SetGuildLocale,
 } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const ServerLanguageSelectMenu: SelectMenu = {
   name: 'language_server_menu',
@@ -24,6 +25,7 @@ const ServerLanguageSelectMenu: SelectMenu = {
         interaction,
         Format(translations.menus.language_server_menu.language_updated, [['language_flag', language.flag], ['language_name', language.name]]),
         true,
+        IsWhitelabel(interaction.client),
       );
     } catch (e) {
       await LogInteractionError(e, interaction);

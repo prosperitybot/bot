@@ -3,6 +3,7 @@ import { WhitelabelBot } from '@prosperitybot/database';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { ButtonList } from '../typings/ButtonList';
 import { ReplyToInteraction } from '../managers/MessageManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const WhitelabelButtonList: ButtonList = {
   name: 'whitelabel',
@@ -15,17 +16,17 @@ const WhitelabelButtonList: ButtonList = {
         case 'whitelabel-bot_start':
           bot.action = 'start';
           await bot.save();
-          await ReplyToInteraction(interaction, 'Bot Started, it may take a few seconds to appear.', true);
+          await ReplyToInteraction(interaction, 'Bot Started, it may take a few seconds to appear.', true, IsWhitelabel(interaction.client));
           break;
         case 'whitelabel-bot_restart':
           bot.action = 'restart';
           await bot.save();
-          await ReplyToInteraction(interaction, 'Bot Restarted, it may take a few seconds to appear.', true);
+          await ReplyToInteraction(interaction, 'Bot Restarted, it may take a few seconds to appear.', true, IsWhitelabel(interaction.client));
           break;
         case 'whitelabel-bot_stop':
           bot.action = 'stop';
           await bot.save();
-          await ReplyToInteraction(interaction, 'Bot Stopped, it may take a few seconds to process.', true);
+          await ReplyToInteraction(interaction, 'Bot Stopped, it may take a few seconds to process.', true, IsWhitelabel(interaction.client));
           break;
         default:
           break;

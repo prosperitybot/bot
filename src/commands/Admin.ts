@@ -4,6 +4,7 @@ import {
 import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { LogInteractionError } from '../managers/ErrorManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Admin: Command = {
   data: {
@@ -45,7 +46,7 @@ const Admin: Command = {
             ]),
         );
 
-      ReplyToInteraction(interaction, 'Please select an action from the below...', true, [adminRow, databaseAdminRow]);
+      ReplyToInteraction(interaction, 'Please select an action from the below...', true, IsWhitelabel(client), [adminRow, databaseAdminRow]);
       return;
     } catch (e) {
       await LogInteractionError(e, interaction);

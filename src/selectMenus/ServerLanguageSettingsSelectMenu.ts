@@ -3,6 +3,7 @@ import { Guild } from '@prosperitybot/database';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { SelectMenu } from '../typings/SelectMenu';
 import { ReplyToInteraction } from '../managers/MessageManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const ServerLanguageSettingsSelectMenu: SelectMenu = {
   name: 'language_server_settings_menu',
@@ -18,6 +19,7 @@ const ServerLanguageSettingsSelectMenu: SelectMenu = {
         interaction,
         `The server's Language settings have been set to ${languagePriority === 'language_server' ? '**Server-Based Languages**' : '**User-Based Languages**'}`,
         true,
+        IsWhitelabel(interaction.client),
       );
     } catch (e) {
       await LogInteractionError(e, interaction);

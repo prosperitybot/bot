@@ -6,6 +6,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Settings: Command = {
   data: {
@@ -83,7 +84,7 @@ const Settings: Command = {
             guild.notificationChannel = channel.id;
             await guild.save();
 
-            await ReplyToInteraction(interaction, Format(translations.commands.settings.notification_channel_updated, [['channel', channel.toString()]]), true);
+            await ReplyToInteraction(interaction, Format(translations.commands.settings.notification_channel_updated, [['channel', channel.toString()]]), true, IsWhitelabel(client));
             break;
           }
 
@@ -120,7 +121,7 @@ const Settings: Command = {
                 ]),
             );
 
-          await ReplyToInteraction(interaction, translations.commands.settings.please_select, true, [notificationsRow]);
+          await ReplyToInteraction(interaction, translations.commands.settings.please_select, true, IsWhitelabel(client), [notificationsRow]);
           break;
         }
         case 'roles': {
@@ -129,7 +130,7 @@ const Settings: Command = {
           guild.roleAssignType = roleType;
           await guild.save();
 
-          await ReplyToInteraction(interaction, roleType === 'stack' ? translations.commands.settings.role_type_stacked : translations.commands.settings.role_type_single, true);
+          await ReplyToInteraction(interaction, roleType === 'stack' ? translations.commands.settings.role_type_stacked : translations.commands.settings.role_type_single, true, IsWhitelabel(client));
           break;
         }
         case 'multiplier': {
@@ -138,7 +139,7 @@ const Settings: Command = {
           guild.xpRate = multiplier;
           await guild.save();
 
-          await ReplyToInteraction(interaction, Format(translations.commands.settings.multiplier_set, [['multiplier', multiplier]]), true);
+          await ReplyToInteraction(interaction, Format(translations.commands.settings.multiplier_set, [['multiplier', multiplier]]), true, IsWhitelabel(client));
           break;
         }
         default:

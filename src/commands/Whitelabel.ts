@@ -6,6 +6,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { GetTranslations } from '../managers/TranslationManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
+import { GetClient, IsWhitelabel } from '../managers/ClientManager';
 
 const Whitelabel: Command = {
   data: {
@@ -35,6 +36,43 @@ const Whitelabel: Command = {
         type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
         name: 'actions',
         description: 'Controls a whitelabel bot',
+      },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'status',
+        description: 'Sets the status of a whitelabel bot',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'status_type',
+            description: 'The type of status to display (e.g. Playing ...)',
+            required: true,
+            choices: [
+              {
+                name: 'Playing',
+                value: 'PLAYING',
+              },
+              {
+                name: 'Streaming',
+                value: 'STREAMING',
+              },
+              {
+                name: 'Listening',
+                value: 'LISTENING',
+              },
+              {
+                name: 'Watching',
+                value: 'WATCHING',
+              },
+            ],
+          },
+          {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'status_content',
+            description: 'The content to display (e.g. Minecraft0',
+            required: true,
+          },
+        ],
       },
     ],
     type: 'CHAT_INPUT',
@@ -72,14 +110,14 @@ const Whitelabel: Command = {
                   .setStyle(Constants.MessageButtonStyles.LINK)
                   .setURL(`https://discord.com/oauth2/authorize?client_id=${botId}&permissions=277294156864&scope=applications.commands%20bot`),
               );
-            await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_created_started, true, [whitelabelInviteRow]);
+            await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_created_started, true, IsWhitelabel(client), [whitelabelInviteRow]);
           }
 
           break;
         }
         case 'actions': {
           if (currentBot === null) {
-            await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_not_active, true);
+            await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_not_active, true, IsWhitelabel(client));
             break;
           }
 
@@ -101,7 +139,21 @@ const Whitelabel: Command = {
                 .setDisabled(currentBot.last_action === 'stop'),
             );
 
-          await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_actions, true, [whitelabelActionRow]);
+          await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_actions, true, IsWhitelabel(client), [whitelabelActionRow]);
+          break;
+        }
+        case 'status': {
+          if (currentBot === null) {
+            await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_not_active, true, IsWhitelabel(client));
+            break;
+          }
+
+          currentBot.statusType = interaction.options.getString('status_type', true);
+          currentBot.statusContent = interaction.options.getString('status_content', true);
+          await currentBot.save();
+
+          GetClient(currentBot.botId).user?.setActivity({ type: currentBot.statusType, name: currentBot.statusContent });
+          await ReplyToInteraction(interaction, 'Updated activity', true, IsWhitelabel(client));
           break;
         }
         default:

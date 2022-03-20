@@ -6,6 +6,7 @@ import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Leaderboard: Command = {
   data: {
@@ -69,7 +70,7 @@ const Leaderboard: Command = {
             .setURL(`https://dash.prosperitybot.net/leaderboard/${interaction.guildId!}`),
         );
 
-      await ReplyToInteraction(interaction, leaderboardMessage, false, [leaderboardButton]);
+      await ReplyToInteraction(interaction, leaderboardMessage, false, IsWhitelabel(client), [leaderboardButton]);
       return;
     } catch (e) {
       await LogInteractionError(e, interaction);

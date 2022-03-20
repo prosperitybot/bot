@@ -6,6 +6,7 @@ import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
 import { AttemptToInitialiseUser, GetGuildUser, GetXpNeededForUserLevel } from '../managers/GuildUserManager';
+import { IsWhitelabel } from '../managers/ClientManager';
 
 const Levels: Command = {
   data: {
@@ -64,14 +65,14 @@ const Levels: Command = {
       const levels = interaction.options.getInteger('levels');
 
       if (user === null || levels === null) {
-        await ReplyToInteraction(interaction, Format(translations.commands.levels.user_doesnt_exist, [['user', user!.toString()]]), true);
+        await ReplyToInteraction(interaction, Format(translations.commands.levels.user_doesnt_exist, [['user', user!.toString()]]), true, IsWhitelabel(client));
         return;
       }
 
       const attemptInitialise = await AttemptToInitialiseUser(client, user.id, interaction.guildId!);
 
       if (attemptInitialise === false) {
-        await ReplyToInteraction(interaction, 'User not found', true);
+        await ReplyToInteraction(interaction, 'User not found', true, IsWhitelabel(client));
         return;
       }
 
@@ -79,7 +80,7 @@ const Levels: Command = {
       switch (command) {
         case 'give': {
           if (levels <= 0) {
-            await ReplyToInteraction(interaction, translations.commands.levels.level_to_give_must_be_positive, true);
+            await ReplyToInteraction(interaction, translations.commands.levels.level_to_give_must_be_positive, true, IsWhitelabel(client));
             break;
           }
 
@@ -90,13 +91,15 @@ const Levels: Command = {
           await ReplyToInteraction(
             interaction,
             Format(translations.commands.levels.levels_added, [['amount', levels], ['plural', levels > 1 ? 's' : ''], ['user', user.tag]]),
+            false,
+            IsWhitelabel(client),
           );
 
           break;
         }
         case 'take': {
           if (levels <= 0) {
-            await ReplyToInteraction(interaction, translations.commands.levels.level_to_take_must_be_positive, true);
+            await ReplyToInteraction(interaction, translations.commands.levels.level_to_take_must_be_positive, true, IsWhitelabel(client));
             break;
           }
 
@@ -107,6 +110,8 @@ const Levels: Command = {
           await ReplyToInteraction(
             interaction,
             Format(translations.commands.levels.levels_taken, [['amount', levels], ['plural', levels > 1 ? 's' : ''], ['user', user.tag]]),
+            false,
+            IsWhitelabel(client),
           );
 
           break;

@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/node';
 import {
   BaseCommandInteraction, ButtonInteraction, Client, CommandInteraction, Guild, GuildMember, Message, SelectMenuInteraction,
 } from 'discord.js';
+import { IsWhitelabel } from './ClientManager';
 import { ReplyToInteraction } from './MessageManager';
 
 export const LogInteractionError = async (error: Error, interaction: CommandInteraction | BaseCommandInteraction | SelectMenuInteraction | ButtonInteraction): Promise<void> => {
@@ -12,7 +13,7 @@ export const LogInteractionError = async (error: Error, interaction: CommandInte
     Sentry.setTag('command', interaction.commandName);
   }
   const errorCode = Sentry.captureException(error);
-  await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true);
+  await ReplyToInteraction(interaction, `There was an error while executing this interaction!\nPlease provide the error code ${errorCode} to the support team`, true, IsWhitelabel(interaction.client));
 };
 
 export const LogClientError = async (error: Error, client: Client): Promise<void> => {

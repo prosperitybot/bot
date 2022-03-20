@@ -84,7 +84,7 @@ const Whitelabel: Command = {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
       const command: string = interaction.options.getSubcommand();
-      const currentBot: WhitelabelBot = WhitelabelBot.findOne({ where: { userId: interaction.user.id } });
+      const currentBot: WhitelabelBot | null = WhitelabelBot.findOne({ where: { userId: interaction.user.id } });
       switch (command) {
         case 'setup': {
           const botToken = interaction.options.getString('token', true);

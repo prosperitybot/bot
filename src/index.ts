@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { Client } from 'discord.js';
 import { Op } from 'sequelize';
 import { WhitelabelBot, setup as SetupDatabase } from '@prosperitybot/database';
+import { ActivityTypes } from 'discord.js/typings/enums';
 import Bot from './Bot';
 import { SqlLogger } from './utils/Logging';
 import {
@@ -31,6 +32,7 @@ async function start() {
 
   const mainBot: Client = await Bot(process.env.DISCORD_TOKEN!);
   AddClient(process.env.CLIENT_ID!, mainBot);
+  mainBot.user?.setActivity({ name: '/about', type: ActivityTypes.LISTENING });
 }
 
 const translationFiles = fs.readdirSync('./translations').filter((file) => file.endsWith('.json'));

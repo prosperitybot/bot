@@ -19,6 +19,7 @@
             "ignoreRegExpLiterals": true,
             "ignoreStrings": false,
             "ignoreTemplateLiterals": false
-        }]
+        }],
+        "no-param-reassign": 0
     }
 }

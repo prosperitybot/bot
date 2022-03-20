@@ -65,6 +65,9 @@ setInterval(async () => {
       default:
         break;
     }
+    bot.last_action = bot.action;
+    bot.action = null;
+    await bot.save();
   });
 }, 5000);
 

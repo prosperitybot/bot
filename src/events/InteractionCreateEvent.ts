@@ -9,7 +9,7 @@ import { Event } from '../typings/Event';
 import ButtonLists from '../managers/ButtonListManager';
 import SelectMenus from '../managers/SelectMenuManager';
 import { CommandLogger } from '../utils/Logging';
-import { IsWhitelabel } from '../managers/ClientManager';
+import { IsWhitelabel, UpdateClient } from '../managers/ClientManager';
 
 const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
   const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
@@ -104,6 +104,7 @@ const InteractionCreateEvent: Event = {
   name: 'interactionCreate',
   type: 'on',
   on: async (client: Client, args: any[]) => {
+    UpdateClient(client);
     try {
       const interaction: Interaction = args[0];
       if (interaction instanceof CommandInteraction && interaction.inCachedGuild()) {

@@ -12,12 +12,13 @@ import { Event } from '../typings/Event';
 import { GetXpForNextLevel } from '../managers/GuildUserManager';
 import { ReplyToMessage, SendMessage } from '../managers/MessageManager';
 import { EventLogger } from '../utils/Logging';
-import { IsWhitelabel } from '../managers/ClientManager';
+import { IsWhitelabel, UpdateClient } from '../managers/ClientManager';
 
 const MessageEvent: Event = {
   name: 'messageCreate',
   type: 'on',
   on: async (client: Client, args: any[]) => {
+    UpdateClient(client);
     const message: Message = args[0];
     if (message.author.bot) return;
 

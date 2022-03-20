@@ -15,3 +15,7 @@ export const GetClient = (clientId: string): Client => clients[clientId];
 export const GetAllClients = (): Client[] => clients;
 
 export const IsWhitelabel = (client: Client): boolean => client.application?.id !== process.env.CLIENT_ID;
+
+export const UpdateClient = (client: Client): void => {
+  clients[client.application!.id] = client;
+};

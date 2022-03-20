@@ -6,11 +6,13 @@ import { LogGuildError } from '../managers/ErrorManager';
 import { EventLogger } from '../utils/Logging';
 
 import { Event } from '../typings/Event';
+import { UpdateClient } from '../managers/ClientManager';
 
 const GuildDeleteEvent: Event = {
   name: 'guildDelete',
   type: 'on',
   on: async (client: Client, args: any[]) => {
+    UpdateClient(client);
     const guild: Guild = args[0];
     try {
       await dGuild.upsert({

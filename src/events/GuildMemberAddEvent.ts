@@ -3,11 +3,13 @@ import { GuildUser, User } from '@prosperitybot/database';
 import { fn } from 'sequelize';
 import { LogMemberError } from '../managers/ErrorManager';
 import { Event } from '../typings/Event';
+import { UpdateClient } from '../managers/ClientManager';
 
 const GuildMemberAddEvent: Event = {
   name: 'guildMemberAdd',
   type: 'on',
   on: async (client: Client, args: any[]) => {
+    UpdateClient(client);
     const member: GuildMember = args[0];
     try {
       const guildUser: GuildUser | null = await GuildUser.findOne({ where: { userId: member.id, guildId: member.guild.id } });

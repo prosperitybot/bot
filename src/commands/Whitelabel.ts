@@ -103,15 +103,15 @@ const Whitelabel: Command = {
               userId: interaction.user.id,
               action: 'start',
             });
-            const whitelabelInviteRow = new MessageActionRow()
-              .addComponents(
-                new MessageButton()
-                  .setLabel('Invite me!')
-                  .setStyle(Constants.MessageButtonStyles.LINK)
-                  .setURL(`https://discord.com/oauth2/authorize?client_id=${botId}&permissions=277294156864&scope=applications.commands%20bot`),
-              );
-            await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_created_started, true, IsWhitelabel(client), [whitelabelInviteRow]);
           }
+          const whitelabelInviteRow = new MessageActionRow()
+            .addComponents(
+              new MessageButton()
+                .setLabel('Invite me!')
+                .setStyle(Constants.MessageButtonStyles.LINK)
+                .setURL(`https://discord.com/oauth2/authorize?client_id=${botId}&permissions=277294156864&scope=applications.commands%20bot`),
+            );
+          await ReplyToInteraction(interaction, translations.commands.whitelabel.whitelabel_bot_created_started, true, IsWhitelabel(client), [whitelabelInviteRow]);
 
           break;
         }

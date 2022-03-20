@@ -23,7 +23,9 @@ if (process.env.SENTRY_DSN !== '') {
 async function start() {
   WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
     whitelabelBots.forEach(async (bot: WhitelabelBot) => {
-      AddClient(bot.botId, await Bot(bot.token));
+      const wlBot = await Bot(bot.token);
+      wlBot.user?.setActivity({ name: bot.statusContent, type: bot.statusType });
+      AddClient(bot.botId, wlBot);
     });
   });
 
@@ -46,6 +48,7 @@ setInterval(async () => {
         GetClient(bot.oldBotId ?? bot.botId).destroy();
         RemoveClient(bot.oldBotId ?? bot.botId);
         AddClient(bot.botId, await Bot(bot.token));
+        GetClient(bot.botId).user?.setActivity({ name: bot.statusContent, type: bot.statusType });
         break;
       case 'start':
         if (bot.oldBotId != null) {
@@ -53,6 +56,7 @@ setInterval(async () => {
         }
         RemoveClient(bot.oldBotId ?? bot.botId);
         AddClient(bot.botId, await Bot(bot.token));
+        GetClient(bot.botId).user?.setActivity({ name: bot.statusContent, type: bot.statusType });
         break;
       case 'stop':
         GetClient(bot.botId).destroy();

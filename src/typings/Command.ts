@@ -1,11 +1,10 @@
 import {
-  CommandInteraction, ChatInputApplicationCommandData, Client, PermissionResolvable,
+  CommandInteraction, ChatInputApplicationCommandData, Client,
 } from 'discord.js';
+import { BaseInteraction } from './BaseInteraction';
 
-export interface Command {
+export interface Command extends BaseInteraction {
   data: ChatInputApplicationCommandData,
-  needsAccessLevel: string[],
-  needsPermissions: PermissionResolvable[],
   ownerOnly: Boolean,
   run: (client: Client, interaction: CommandInteraction) => void;
 }

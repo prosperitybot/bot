@@ -10,27 +10,17 @@ import ButtonLists from '../managers/ButtonListManager';
 import SelectMenus from '../managers/SelectMenuManager';
 import { CommandLogger } from '../utils/Logging';
 import { IsWhitelabel, UpdateClient } from '../managers/ClientManager';
+import { BaseInteraction } from '../typings/BaseInteraction';
 
-const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
-  const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
-  if (!slashCommand) {
-    interaction.followUp({ content: 'An error has occurred' });
-    return;
-  }
-
-  // eslint-disable-next-line max-len
-  CommandLogger.info(`${interaction.user.tag} ran /${interaction.commandName} in ${interaction.guild.name} - ${interaction.guildId} (#${interaction.channel?.name} - ${interaction.channelId})`);
-
-  if (slashCommand.ownerOnly === true) {
-    if (interaction.user.id !== '126429064218017802') {
-      interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
-      return;
-    }
-  }
-  if (slashCommand.needsAccessLevel.length > 0 && interaction.user.id !== '126429064218017802') {
+const HasPermission = async (
+  client: Client,
+  baseInteraction: BaseInteraction,
+  interaction: ButtonInteraction<'cached'> | CommandInteraction<'cached'> | SelectMenuInteraction<'cached'>,
+): Promise<boolean> => {
+  if (baseInteraction.needsAccessLevel.length > 0 && interaction.user.id !== '126429064218017802') {
     const user = await User.findByPk(interaction.user.id);
-    if (!user.access_levels.some((accessLevel: string) => slashCommand.needsAccessLevel.includes(accessLevel))) {
-      if (slashCommand.needsAccessLevel.includes('WHITELABEL')) {
+    if (!user.access_levels.some((accessLevel: string) => baseInteraction.needsAccessLevel.includes(accessLevel))) {
+      if (baseInteraction.needsAccessLevel.includes('WHITELABEL')) {
         interaction.reply({
           embeds: [
             CreateEmbed(IsWhitelabel(client)).setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
@@ -40,14 +30,30 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
       } else {
         interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
       }
-      return;
+      return false;
     }
   }
-  if (slashCommand.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
-    if (!interaction.member?.permissions.has(slashCommand.needsPermissions)) {
+  if (baseInteraction.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
+    if (!interaction.member?.permissions.has(baseInteraction.needsPermissions)) {
       interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
-      return;
+      return false;
     }
+  }
+
+  return true;
+};
+
+const HandleSlashCommand = async (client: Client, interaction: CommandInteraction<'cached'>): Promise<void> => {
+  const slashCommand = Commands.find((c) => c.data.name === interaction.commandName);
+  if (!slashCommand) {
+    interaction.followUp({ content: 'An error has occurred' });
+    return;
+  }
+
+  CommandLogger.info(`${interaction.user.tag} ran /${interaction.commandName} in ${interaction.guild.name} - ${interaction.guildId} (#${interaction.channel?.name} - ${interaction.channelId})`);
+
+  if (!HasPermission(client, slashCommand, interaction)) {
+    return;
   }
 
   await CommandLog.create({
@@ -66,28 +72,10 @@ const HandleButtonList = async (client: Client, interaction: ButtonInteraction<'
     return;
   }
 
-  if (buttonList.needsAccessLevel.length > 0 && interaction.user.id !== '126429064218017802') {
-    const user = await User.findByPk(interaction.user.id);
-    if (!user.access_levels.some((accessLevel: string) => buttonList.needsAccessLevel.includes(accessLevel))) {
-      if (buttonList.needsAccessLevel.includes('WHITELABEL')) {
-        interaction.reply({
-          embeds: [
-            CreateEmbed(IsWhitelabel(client)).setColor('BLURPLE').setDescription('This command requires WHITELABEL!\nYou can subscribe to the patreon [here](https://patreon.com/benhdev) to get access now!'),
-          ],
-          ephemeral: true,
-        });
-      } else {
-        interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
-      }
-      return;
-    }
+  if (!HasPermission(client, buttonList, interaction)) {
+    return;
   }
-  if (buttonList.needsPermissions.length > 0 && interaction.user.id !== '126429064218017802') {
-    if (!interaction.member?.permissions.has(buttonList.needsPermissions)) {
-      interaction.reply({ embeds: [CreateEmbed(IsWhitelabel(client)).setColor('RED').setDescription('Access Denied')], ephemeral: true });
-      return;
-    }
-  }
+
   buttonList.execute(interaction);
 };
 
@@ -97,6 +85,11 @@ const HandleSelectMenu = async (client: Client, interaction: SelectMenuInteracti
     interaction.reply({ content: 'An error has occurred' });
     return;
   }
+
+  if (!HasPermission(client, selectMenu, interaction)) {
+    return;
+  }
+
   selectMenu.execute(interaction);
 };
 

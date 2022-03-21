@@ -1,8 +1,7 @@
-import { ButtonInteraction, PermissionResolvable } from 'discord.js';
+import { ButtonInteraction } from 'discord.js';
+import { BaseInteraction } from './BaseInteraction';
 
-export interface ButtonList {
+export interface ButtonList extends BaseInteraction {
   name: string,
-  needsAccessLevel: string[],
-  needsPermissions: PermissionResolvable[],
   execute: (interaction: ButtonInteraction) => void;
 }

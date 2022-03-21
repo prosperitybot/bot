@@ -16,9 +16,9 @@ const ReadyEvent: Event = {
       await client.application?.commands.set(Commands.map((c) => c.data));
       if (IsWhitelabel(client)) {
         const wlBot: WhitelabelBot = await WhitelabelBot.findOne({ where: { botId: client.application?.id } });
-        client.user?.setActivity({ name: wlBot.statusContent, type: wlBot.statusType });
+        client.user?.setActivity({ name: wlBot.statusContent, type: wlBot.statusType, url: 'https://prosperitybot.net' });
       } else {
-        client.user?.setActivity({ name: '/about', type: ActivityTypes.LISTENING });
+        client.user?.setActivity({ name: '/about', type: ActivityTypes.LISTENING, url: 'https://prosperitybot.net' });
       }
     } catch (e) {
       await LogClientError(e, client);

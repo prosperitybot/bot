@@ -65,10 +65,10 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.6.0-dev.1646395404.6f7a366.tgz#20fcd77d2dbb6b506703ea3b662f8d9236b8cbe8"
   integrity sha512-OMsu4nkraNAgJYGMmsSAnPtg5n+5mMb+Fywa/ZRAF+RyRd4g1qaUmRDi2haE/R0i55N0ltLqLbRFDWzMFOaPCA==
 
-"@discordjs/rest@^0.4.0-dev.1646654929.b162f27":
-  version "0.4.0-dev.1646654929.b162f27"
-  resolved "https://registry.yarnpkg.com/@discordjs/rest/-/rest-0.4.0-dev.1646654929.b162f27.tgz#158543c1a3930e9216913b33424e857260e40535"
-  integrity sha512-RYUnjdW9dnhBaKOFOieJMLsOmwqysR7VIC4yssnyi64KgwlLicCLBwsXQpnDW3VrI42HaFG3JmaFkeC8fz3GBw==
+"@discordjs/rest@^0.4.0-dev.1647259762.2297c2b":
+  version "0.4.0-dev.1647259762.2297c2b"
+  resolved "https://registry.yarnpkg.com/@discordjs/rest/-/rest-0.4.0-dev.1647259762.2297c2b.tgz#3e2441bc94064c2e9863c1ce8b100192b0e958b8"
+  integrity sha512-Pt1InmNvdDKSO8/vZg7K2VLB05iOdtScM9jHczLd3NsMWd66DDOzNorKQUjc84nL80RkZ7CCELy/eOn0uwrN4A==
   dependencies:
     "@discordjs/collection" "^0.6.0-dev"
     "@sapphire/async-queue" "^1.2.0"

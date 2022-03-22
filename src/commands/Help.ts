@@ -29,7 +29,7 @@ const Help: Command = {
 
       const regularCommandString = regularCommands.map((c) => {
         const options = c.data.options?.filter((o) => o.type === ApplicationCommandOptionTypes.SUB_COMMAND).map((o) => `${o.name}`).join('/');
-        return c.data.options === null ? `**/${c.data.name}**: ${c.data.description}\n` : `**/${c.data.name} <${options}>**: ${c.data.description}\n`;
+        return options === undefined || options === '' ? `**/${c.data.name}**: ${c.data.description}\n` : `**/${c.data.name} <${options}>**: ${c.data.description}\n`;
       }).join('');
 
       const embed = CreateEmbed(IsWhitelabel(client))

@@ -20,7 +20,7 @@ const Help: Command = {
     try {
       const allCommands = Commands;
       const whitelabelCommands = allCommands.filter((command) => command.needsAccessLevel.includes('WHITELABEL'));
-      const regularCommands = allCommands.filter((command) => ['WHITELABEL', 'ADMINISTRATOR', 'OWNER'].some((x) => command.needsAccessLevel.includes(x)));
+      const regularCommands = allCommands.filter((command) => ['WHITELABEL', 'ADMINISTRATOR', 'OWNER'].some((x) => !command.needsAccessLevel.includes(x)));
 
       const whitelabelCommandString = whitelabelCommands.map((c) => {
         const options = c.data.options?.filter((o) => o.type === ApplicationCommandOptionTypes.SUB_COMMAND).map((o) => `${o.name}`).join('/');
@@ -29,12 +29,12 @@ const Help: Command = {
 
       const regularCommandString = regularCommands.map((c) => {
         const options = c.data.options?.filter((o) => o.type === ApplicationCommandOptionTypes.SUB_COMMAND).map((o) => `${o.name}`).join('/');
-        return `**/${c.data.name} <${options}>**: ${c.data.description}\n`;
+        return c.data.options === null ? `**/${c.data.name}**: ${c.data.description}\n` : `**/${c.data.name} <${options}>**: ${c.data.description}\n`;
       }).join('');
 
       const embed = CreateEmbed(IsWhitelabel(client))
-        .addField('Whitelabel Commands', whitelabelCommandString, false)
-        .addField('General Commands', regularCommandString, false);
+        .addField('General Commands', regularCommandString, false)
+        .addField('Whitelabel Commands', whitelabelCommandString, false);
 
       interaction.reply({ embeds: [embed], ephemeral: true });
 

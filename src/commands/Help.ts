@@ -4,6 +4,7 @@ import { Command } from '../typings/Command';
 import { CreateEmbed } from '../managers/MessageManager';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { IsWhitelabel } from '../managers/ClientManager';
+// eslint-disable-next-line import/no-cycle
 import Commands from '../managers/CommandManager';
 
 const Help: Command = {

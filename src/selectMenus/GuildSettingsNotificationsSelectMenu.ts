@@ -8,6 +8,8 @@ import { IsWhitelabel } from '../managers/ClientManager';
 
 const GuildSettingsNotificationsSelectMenu: SelectMenu = {
   name: 'guild_settings_notifications',
+  needsAccessLevel: [],
+  needsPermissions: ['ADMINISTRATOR'],
   execute: async (interaction: SelectMenuInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

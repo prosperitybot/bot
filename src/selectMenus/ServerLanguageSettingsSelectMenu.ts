@@ -7,6 +7,8 @@ import { IsWhitelabel } from '../managers/ClientManager';
 
 const ServerLanguageSettingsSelectMenu: SelectMenu = {
   name: 'language_server_settings_menu',
+  needsAccessLevel: [],
+  needsPermissions: ['ADMINISTRATOR'],
   execute: async (interaction: SelectMenuInteraction) => {
     try {
       const guild: Guild = await Guild.findByPk(interaction.guildId);

@@ -6,6 +6,8 @@ import { SelectMenu } from '../typings/SelectMenu';
 
 const DbAdminSelectMenu: SelectMenu = {
   name: 'db_admin_menu',
+  needsAccessLevel: ['OWNER'],
+  needsPermissions: [],
   execute: async (interaction: SelectMenuInteraction) => {
     try {
       switch (interaction.values[0]) {

@@ -10,6 +10,8 @@ import { IsWhitelabel } from '../managers/ClientManager';
 
 const UserLanguageSelectMenu: SelectMenu = {
   name: 'language_user_menu',
+  needsAccessLevel: [],
+  needsPermissions: [],
   execute: async (interaction: SelectMenuInteraction) => {
     try {
       const translations = await GetTranslations(interaction.user.id, interaction.guildId!);

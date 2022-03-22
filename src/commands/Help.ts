@@ -20,7 +20,7 @@ const Help: Command = {
     try {
       const allCommands = Commands;
       const whitelabelCommands = allCommands.filter((command) => command.needsAccessLevel.includes('WHITELABEL'));
-      const regularCommands = allCommands.filter((command) => ['WHITELABEL', 'ADMINISTRATOR', 'OWNER'].some((x) => !command.needsAccessLevel.includes(x)));
+      const regularCommands = allCommands.filter((command) => !command.needsAccessLevel.includes('OWNER'));
 
       const whitelabelCommandString = whitelabelCommands.map((c) => {
         const options = c.data.options?.filter((o) => o.type === ApplicationCommandOptionTypes.SUB_COMMAND).map((o) => `${o.name}`).join('/');

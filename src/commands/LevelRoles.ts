@@ -130,9 +130,9 @@ const LevelRoles: Command = {
         }
         case 'list': {
           const levelRoles: LevelRole[] = await LevelRole.findAll({ where: { guildId: interaction.guild!.id } });
-          let listMsg = `${translations.commands.ignoredroles.role_list_title}: \n`;
+          let listMsg = 'Level Roles: \n';
           levelRoles.forEach((c) => {
-            listMsg += `\n- <#${c.id}>`;
+            listMsg += `\n- <@&${c.id}>`;
           });
 
           await ReplyToInteraction(interaction, listMsg, false, IsWhitelabel(client));

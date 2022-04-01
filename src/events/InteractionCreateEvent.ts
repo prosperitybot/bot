@@ -52,17 +52,16 @@ const HandleSlashCommand = async (client: Client, interaction: CommandInteractio
 
   CommandLogger.info(`${interaction.user.tag} ran /${interaction.commandName} in ${interaction.guild.name} - ${interaction.guildId} (#${interaction.channel?.name} - ${interaction.channelId})`);
 
-  if (!HasPermission(client, slashCommand, interaction)) {
-    return;
+  const hasPermission = await HasPermission(client, slashCommand, interaction);
+  if (hasPermission) {
+    await CommandLog.create({
+      userId: interaction.user.id,
+      guildId: interaction.guildId!,
+      command: interaction.commandName,
+    });
+
+    slashCommand.run(client, interaction);
   }
-
-  await CommandLog.create({
-    userId: interaction.user.id,
-    guildId: interaction.guildId!,
-    command: interaction.commandName,
-  });
-
-  slashCommand.run(client, interaction);
 };
 
 const HandleButtonList = async (client: Client, interaction: ButtonInteraction<'cached'>): Promise<void> => {
@@ -71,12 +70,11 @@ const HandleButtonList = async (client: Client, interaction: ButtonInteraction<'
     interaction.followUp({ content: 'An error has occurred' });
     return;
   }
+  const hasPermission = await HasPermission(client, buttonList, interaction);
 
-  if (!HasPermission(client, buttonList, interaction)) {
-    return;
+  if (hasPermission) {
+    buttonList.execute(interaction);
   }
-
-  buttonList.execute(interaction);
 };
 
 const HandleSelectMenu = async (client: Client, interaction: SelectMenuInteraction<'cached'>): Promise<void> => {
@@ -86,11 +84,10 @@ const HandleSelectMenu = async (client: Client, interaction: SelectMenuInteracti
     return;
   }
 
-  if (!HasPermission(client, selectMenu, interaction)) {
-    return;
+  const hasPermission = await HasPermission(client, selectMenu, interaction);
+  if (hasPermission) {
+    selectMenu.execute(interaction);
   }
-
-  selectMenu.execute(interaction);
 };
 
 const InteractionCreateEvent: Event = {

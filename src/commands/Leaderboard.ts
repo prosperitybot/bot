@@ -51,10 +51,11 @@ const Leaderboard: Command = {
         if (guildUser.user.access_levels.length > 0 && guildUser.user.access_levels[0] !== '') {
           rolePrefix = '(';
           guildUser.user.access_levels.forEach((accessLevel: string) => {
-            if (accessLevel === 'TRANSLATOR') rolePrefix += '<:prosperity_language:940692871181381632>';
-            if (accessLevel === 'ADMINISTRATOR') rolePrefix += '<:prosperity_admin:940692667216564244>';
-            if (accessLevel === 'DEVELOPER') rolePrefix += '<:prosperity_dev:940692660388261928>';
-            if (accessLevel === 'OWNER') rolePrefix += '<:prosperity_owner:940692775454797825>';
+            if (accessLevel === 'TRANSLATOR') rolePrefix += '💬';
+            if (accessLevel === 'BUG_HUNTER') rolePrefix += '🐛';
+            if (accessLevel === 'ADMINISTRATOR') rolePrefix += '🛡️';
+            if (accessLevel === 'DEVELOPER') rolePrefix += '🛠️';
+            if (accessLevel === 'OWNER') rolePrefix += '👑';
           });
 
           rolePrefix += ') ';

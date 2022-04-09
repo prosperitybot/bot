@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
-    "@discordjs/rest": "^0.4.0-dev.1646654929.b162f27",
+    "@discordjs/rest": "^0.4.0-dev.1649505800-3c0bbac",
     "@prosperitybot/database": "^1.10.0",
     "@sentry/node": "^6.19.6",
     "@sentry/tracing": "^6.19.6",

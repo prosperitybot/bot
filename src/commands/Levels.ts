@@ -1,11 +1,13 @@
-import {
-  Client, CommandInteraction, Constants,
-} from 'discord.js';
+import { Client, CommandInteraction, Constants } from 'discord.js';
 import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { GetTranslations, Format } from '../managers/TranslationManager';
-import { AttemptToInitialiseUser, GetGuildUser, GetXpNeededForUserLevel } from '../managers/GuildUserManager';
+import {
+  AttemptToInitialiseUser,
+  GetGuildUser,
+  GetXpNeededForUserLevel,
+} from '../managers/GuildUserManager';
 import { IsWhitelabel } from '../managers/ClientManager';
 
 const Levels: Command = {
@@ -55,24 +57,43 @@ const Levels: Command = {
     type: 'CHAT_INPUT',
   },
   needsAccessLevel: [],
-  needsPermissions: ['ADMINISTRATOR'],
+  needsPermissions: ['MANAGE_MESSAGES', 'MANAGE_ROLES'],
   ownerOnly: false,
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
-      const translations = await GetTranslations(interaction.user.id, interaction.guildId!);
+      const translations = await GetTranslations(
+        interaction.user.id,
+        interaction.guildId!,
+      );
       const command: string = interaction.options.getSubcommand();
       const user = interaction.options.getUser('user');
       const levels = interaction.options.getInteger('levels');
 
       if (user === null || levels === null) {
-        await ReplyToInteraction(interaction, Format(translations.commands.levels.user_doesnt_exist, [['user', user!.toString()]]), true, IsWhitelabel(client));
+        await ReplyToInteraction(
+          interaction,
+          Format(translations.commands.levels.user_doesnt_exist, [
+            ['user', user!.toString()],
+          ]),
+          true,
+          IsWhitelabel(client),
+        );
         return;
       }
 
-      const attemptInitialise = await AttemptToInitialiseUser(client, user.id, interaction.guildId!);
+      const attemptInitialise = await AttemptToInitialiseUser(
+        client,
+        user.id,
+        interaction.guildId!,
+      );
 
       if (attemptInitialise === false) {
-        await ReplyToInteraction(interaction, 'User not found', true, IsWhitelabel(client));
+        await ReplyToInteraction(
+          interaction,
+          'User not found',
+          true,
+          IsWhitelabel(client),
+        );
         return;
       }
 
@@ -80,7 +101,12 @@ const Levels: Command = {
       switch (command) {
         case 'give': {
           if (levels <= 0) {
-            await ReplyToInteraction(interaction, translations.commands.levels.level_to_give_must_be_positive, true, IsWhitelabel(client));
+            await ReplyToInteraction(
+              interaction,
+              translations.commands.levels.level_to_give_must_be_positive,
+              true,
+              IsWhitelabel(client),
+            );
             break;
           }
 
@@ -90,7 +116,11 @@ const Levels: Command = {
 
           await ReplyToInteraction(
             interaction,
-            Format(translations.commands.levels.levels_added, [['amount', levels], ['plural', levels > 1 ? 's' : ''], ['user', user.tag]]),
+            Format(translations.commands.levels.levels_added, [
+              ['amount', levels],
+              ['plural', levels > 1 ? 's' : ''],
+              ['user', user.tag],
+            ]),
             false,
             IsWhitelabel(client),
           );
@@ -99,7 +129,12 @@ const Levels: Command = {
         }
         case 'take': {
           if (levels <= 0) {
-            await ReplyToInteraction(interaction, translations.commands.levels.level_to_take_must_be_positive, true, IsWhitelabel(client));
+            await ReplyToInteraction(
+              interaction,
+              translations.commands.levels.level_to_take_must_be_positive,
+              true,
+              IsWhitelabel(client),
+            );
             break;
           }
 
@@ -109,7 +144,11 @@ const Levels: Command = {
 
           await ReplyToInteraction(
             interaction,
-            Format(translations.commands.levels.levels_taken, [['amount', levels], ['plural', levels > 1 ? 's' : ''], ['user', user.tag]]),
+            Format(translations.commands.levels.levels_taken, [
+              ['amount', levels],
+              ['plural', levels > 1 ? 's' : ''],
+              ['user', user.tag],
+            ]),
             false,
             IsWhitelabel(client),
           );

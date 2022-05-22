@@ -60,7 +60,7 @@ const Xp: Command = {
     type: 'CHAT_INPUT',
   },
   needsAccessLevel: [],
-  needsPermissions: ['ADMINISTRATOR'],
+  needsPermissions: ['MANAGE_MESSAGES', 'MANAGE_ROLES'],
   ownerOnly: false,
   run: async (client: Client, interaction: CommandInteraction) => {
     try {

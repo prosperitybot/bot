@@ -25,7 +25,7 @@ const GuildMemberAddEvent: Event = {
           guildId: member.guild.id,
           level: 0,
           xp: 0,
-          lastXpMessageSent: fn('NOW'),
+          lastXpMessageSent: fn('SYSDATE'),
         });
       }
     } catch (e) {

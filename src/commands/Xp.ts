@@ -3,7 +3,7 @@ import {
 } from 'discord.js';
 import { Guild, GuildUser, LevelRole } from '@prosperitybot/database';
 import { Op } from 'sequelize';
-import { APIInteractionDataResolvedGuildMember } from 'discord.js/node_modules/discord-api-types';
+import { APIInteractionDataResolvedGuildMember } from 'discord-api-types/v10';
 import { Command } from '../typings/Command';
 import { LogInteractionError } from '../managers/ErrorManager';
 import { Format, GetTranslations } from '../managers/TranslationManager';

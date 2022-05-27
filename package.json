@@ -20,7 +20,7 @@
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
     "mariadb": "^3.0.0",
-    "sequelize": "^6.19.2",
+    "sequelize": "^6.20.1",
     "umzug": "^3.1.1",
     "winston": "^3.7.2",
     "winston-loki": "^6.0.5"

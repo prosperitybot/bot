@@ -52,8 +52,8 @@ const Admin: Command = {
 
       switch (command) {
         case 'createkey': {
-          const keyCount = interaction.options.getNumber('key_count', true);
-          const keyExpiryDays = interaction.options.getNumber('key_expiry', true);
+          const keyCount = interaction.options.getInteger('key_count', true);
+          const keyExpiryDays = interaction.options.getInteger('key_expiry', true);
 
           let reply = `Generated **${keyCount}** keys that expire after **${keyExpiryDays}** days: \n`;
 

@@ -94,6 +94,7 @@ export interface Settings {
   role_type_stacked: string;
   role_type_single: string;
   multiplier_set: string;
+  delay_set: string;
 }
 
 export interface Whitelabel {

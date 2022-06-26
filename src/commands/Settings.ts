@@ -64,6 +64,20 @@ const Settings: Command = {
           },
         ],
       },
+      {
+        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        name: 'delay',
+        description: 'Choose the delay between messages that give XP in seconds (60 by default)',
+        options: [
+          {
+            type: Constants.ApplicationCommandOptionTypes.NUMBER,
+            name: 'delay',
+            description: 'The delay to apply',
+            minValue: 1,
+            required: true,
+          },
+        ],
+      },
     ],
     type: 'CHAT_INPUT',
   },
@@ -140,6 +154,15 @@ const Settings: Command = {
           await guild.save();
 
           await ReplyToInteraction(interaction, Format(translations.commands.settings.multiplier_set, [['multiplier', multiplier]]), true, IsWhitelabel(client));
+          break;
+        }
+        case 'delay': {
+          const delay = interaction.options.getNumber('delay', true);
+
+          guild.xpDelay = delay;
+          await guild.save();
+
+          await ReplyToInteraction(interaction, Format(translations.commands.settings.delay_set, [['delay', delay]]), true, IsWhitelabel(client));
           break;
         }
         default:

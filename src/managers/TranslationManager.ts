@@ -49,7 +49,7 @@ export const GetTranslations = async (userId: string, guildId: string): Promise<
 
 export const SetupTranslation = (locale: string): void => {
   // eslint-disable-next-line
-  const translation: TranslationFile = require(`../../translations/${locale}`);
+  const translation: TranslationFile = require(`../translations/${locale}`);
   TranslationFiles.set(locale, translation);
 };
 

@@ -25,10 +25,6 @@ async function start() {
   WhitelabelBot.findAll({ where: { last_action: { [Op.in]: ['start', 'restart'] } } }).then((whitelabelBots) => {
     whitelabelBots.forEach(async (bot: WhitelabelBot) => {
       const wlBot = await Bot(bot.token);
-      bot.botName = wlBot.user?.username;
-      bot.botDiscrim = wlBot.user?.discriminator;
-      bot.botAvatarHash = wlBot.user?.avatar;
-      await bot.save();
       wlBot.user?.setActivity({ name: bot.statusContent, type: bot.statusType });
       AddClient(bot.botId, wlBot);
     });
@@ -77,9 +73,6 @@ setInterval(async () => {
         break;
     }
     if (bot.action !== 'delete') {
-      bot.botName = GetClient(bot.botId).user?.username;
-      bot.botDiscrim = GetClient(bot.botId).user?.discriminator;
-      bot.botAvatarHash = GetClient(bot.botId).user?.avatar;
       bot.last_action = bot.action;
       bot.action = null;
       await bot.save();

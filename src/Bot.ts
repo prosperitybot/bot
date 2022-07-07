@@ -1,4 +1,5 @@
 import { Client, Intents } from 'discord.js';
+import { WhitelabelBot } from '@prosperitybot/database';
 import Events from './managers/EventManager';
 
 const Login = async (token: string): Promise<Client> => {
@@ -19,6 +20,16 @@ const Login = async (token: string): Promise<Client> => {
   });
 
   client.login(token);
+
+  client.on('ready', async () => {
+    const bot = await WhitelabelBot.findOne({ where: { botId: client.user?.id } });
+    if (bot != null) {
+      bot.botName = client.user?.username;
+      bot.botDiscrim = client.user?.discriminator;
+      bot.botAvatarHash = client.user?.avatar;
+      await bot.save();
+    }
+  });
 
   return client;
 };

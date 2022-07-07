@@ -1,8 +1,6 @@
 import {
   Client, CommandInteraction, Constants, MessageActionRow, MessageSelectMenu,
 } from 'discord.js';
-import { PremiumKey } from '@prosperitybot/database';
-import { v4 as uuidv4 } from 'uuid';
 import { Command } from '../typings/Command';
 import { ReplyToInteraction } from '../managers/MessageManager';
 import { LogInteractionError } from '../managers/ErrorManager';
@@ -19,27 +17,6 @@ const Admin: Command = {
         name: 'menu',
         description: 'Opens the admin menu',
       },
-      {
-        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
-        name: 'createkey',
-        description: 'Creates a premium key',
-        options: [
-          {
-            type: Constants.ApplicationCommandOptionTypes.INTEGER,
-            name: 'key_count',
-            description: 'Amount of keys to create',
-            required: true,
-            minValue: 1,
-          },
-          {
-            type: Constants.ApplicationCommandOptionTypes.INTEGER,
-            name: 'key_expiry',
-            description: 'Set how many days until the key expires',
-            required: true,
-            minValue: -1,
-          },
-        ],
-      },
     ],
   },
   needsAccessLevel: ['OWNER'],
@@ -48,29 +25,8 @@ const Admin: Command = {
   run: async (client: Client, interaction: CommandInteraction) => {
     try {
       const command: string = interaction.options.getSubcommand();
-      // const guild: Guild = await Guild.findByPk(interaction.guildId!);
 
       switch (command) {
-        case 'createkey': {
-          const keyCount = interaction.options.getInteger('key_count', true);
-          const keyExpiryDays = interaction.options.getInteger('key_expiry', true);
-
-          let reply = `Generated **${keyCount}** keys that expire after **${keyExpiryDays}** days: \n`;
-
-          // eslint-disable-next-line no-plusplus
-          for (let i = 1; i <= keyCount; i++) {
-            const key: string = uuidv4();
-            PremiumKey.create({
-              duration: keyExpiryDays,
-              key,
-              redeemed: false,
-            });
-            reply += `${keyCount}. \`${key}\`\n`;
-          }
-
-          ReplyToInteraction(interaction, reply, true, IsWhitelabel(client));
-          break;
-        }
         case 'menu': {
           const adminRow = new MessageActionRow()
             .addComponents(

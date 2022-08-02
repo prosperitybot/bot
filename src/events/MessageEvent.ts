@@ -60,6 +60,7 @@ const MessageEvent: Event = {
         });
       }
 
+      console.log((Date.now() - guildUser.lastXpMessageSent) / 1000);
       if ((Date.now() - guildUser.lastXpMessageSent) / 1000 >= guild.xpDelay) {
         await MessageLog.create({
           userId: message.author.id,

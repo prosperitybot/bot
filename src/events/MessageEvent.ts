@@ -60,13 +60,7 @@ const MessageEvent: Event = {
         });
       }
 
-      if (message.author.id === '126429064218017802') {
-        console.log((Date.now() - guildUser.lastXpMessageSent) / 1000);
-      }
       if ((Date.now() - guildUser.lastXpMessageSent) / 1000 >= guild.xpDelay) {
-        if (message.author.id === '126429064218017802') {
-          console.log("Message is old enough to be xp'd");
-        }
         await MessageLog.create({
           userId: message.author.id,
           guildId: message.guildId,
@@ -77,20 +71,14 @@ const MessageEvent: Event = {
           where: { id: message.member?.roles.cache.map((mr) => mr.id) },
         });
 
-        if (message.author.id === '126429064218017802') {
-          console.log(ignoredChannel);
-          console.log(ignoredRole);
-        }
-
         if (ignoredChannel === null && ignoredRole.length === 0) {
-          if (message.author.id === '126429064218017802') {
-            console.log('Message is not ignored');
-          }
           guildUser.messageCount += 1;
           const xpToGain = Math.floor(Math.random() * (15 - 7 + 1) + 7) * guild.xpRate;
 
           guildUser.xp += xpToGain;
           guildUser.lastXpMessageSent = fn('SYSDATE');
+
+          await guildUser.save();
 
           if (guildUser.xp > GetXpForNextLevel(guildUser)) {
             guildUser.level += 1;
@@ -114,6 +102,7 @@ const MessageEvent: Event = {
                 }
               }
             }
+            await guildUser.save();
 
             // Send level up message.
             switch (guild.notificationType) {
@@ -183,15 +172,10 @@ const MessageEvent: Event = {
                 break;
             }
           }
-
-          await guildUser.save();
         }
       }
     } catch (e) {
       await LogMessageError(e, message);
-      if (message.author.id === '126429064218017802') {
-        console.log(e);
-      }
     }
   },
 };

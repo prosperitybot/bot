@@ -93,9 +93,9 @@ const MessageEvent: Event = {
                     level: { [Op.lt]: guildUser.level },
                     guildId: message.guildId,
                   },
+                  order: [['level', 'DESC']],
                 });
                 if (oldLevelRole !== null) {
-                  if (message.guildId === '754508774148014190') console.log(`Old level role was not null: ${oldLevelRole.id}`);
                   await message.member?.roles.remove(
                     oldLevelRole.id,
                     'User Levelled up',

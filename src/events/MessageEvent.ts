@@ -86,7 +86,7 @@ const MessageEvent: Event = {
               where: { level: guildUser.level, guildId: message.guildId },
             });
             if (newLevelRole !== null) {
-              message.member?.roles.add(newLevelRole.id, 'User Levelled up');
+              await message.member?.roles.add(newLevelRole.id, 'User Levelled up');
               if (guild.roleAssignType === 'single') {
                 const oldLevelRole: LevelRole | null = await LevelRole.findOne({
                   where: {
@@ -95,7 +95,8 @@ const MessageEvent: Event = {
                   },
                 });
                 if (oldLevelRole !== null) {
-                  message.member?.roles.remove(
+                  if (message.guildId === '754508774148014190') console.log(`Old level role was not null: ${oldLevelRole.id}`);
+                  await message.member?.roles.remove(
                     oldLevelRole.id,
                     'User Levelled up',
                   );
